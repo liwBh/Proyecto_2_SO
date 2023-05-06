@@ -1,15 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-\
-
 #include <string.h>
 #include <pthread.h>
 #include "Listas/Lista.h"
 #include "Listas/Lista_E_S.h"
 
-pthread_mutex_t mutex_turno = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t cond_turno = PTHREAD_COND_INITIALIZER;
+
+pthread_cond_t cond = PTHREAD_COND_INITIALIZER; // inicializamos la variable de condición
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // inicializamos el mutex
+int num_hilos = 0; // contador de hilos que han llegado
 
 //bandera para la finalizacion de la simulacion
 int banderaFinalizacion = 0;
@@ -50,6 +50,7 @@ int main() {
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
 
+    exit(0);
     //temporal pasar los primeros 5
     //eliminar de uno en uno de la lista de espera y pasarlos a contenedor
 
@@ -61,7 +62,7 @@ int main() {
             listaPeticion->ultimo->siguiente = listaPeticion->primero;
             listaPeticion->primero->anterior=listaPeticion->ultimo;
             insertar(listaContenedor,nodoProceso);
-            printf("\neliminar", i);
+            printf("\neliminar: %d", i);
             eliminarProcesoEsperando(listaPeticion,nodoProceso);
             printf("\nrepartio nodo %d ", i);
         }
@@ -117,20 +118,17 @@ void llenarListaProcesosEsperando(){
     for (int i = 0; i < nProcesos; ++i) {
         char str[10];
         char nombre[10] = "P-";
-        int peso = 0;
+        int peso = rand() % 40 + 1 ;
         int iteraciones = rand() % 10 + 1;
-
-        do{
-            peso = rand() % 40 + 1 ;
-        } while (peso % 4 != 0);
+        int indice_aleatorio = rand() % 3;
+        int tiempo = (rand() % 5) + 1;
+        char *dispositivos[] = {"mouse", "teclado", "pantalla"};
 
         sprintf(str, "%d",(i+1));
-
         strcat(nombre,  str);
 
-
         //crear peticion de proceso
-        NodoProceso *nodo = crearNodoProceso(i,nombre,peso,iteraciones,0,"Pantalla",10);
+        NodoProceso *nodo = crearNodoProceso(i,nombre,peso,iteraciones,0,dispositivos[indice_aleatorio],tiempo);
         //insertar la peticion del proceso en la lista
         insertar(listaPeticion,nodo);
 
@@ -141,19 +139,41 @@ void llenarListaProcesosEsperando(){
 }
 
 void *administrarProcesos(void *args){
-
     //recibir parametro de nodo
     NodoProceso *nodoProceso = (NodoProceso *) args;
-    printf("\nimprimiendo informacion dentro del metodo administrar procesos del proceso añadido a la cola de listos:"
-           "  %s peso: %d id: %d \n", nodoProceso->nombre, nodoProceso->peso, nodoProceso->id);
+    printf("\nProceso dentro de contexto: %s id: %d \n", nodoProceso->nombre, nodoProceso->id);
 
     //iniciar el contexto
     //conforme llega un proceso metelo en lista de listo
+    NodoProceso *nodo = clonarNodo(nodoProceso);
+    insertar(listaListos, nodo);
 
-    //bloqueo los hilos
+    pthread_mutex_lock(&mutex); // bloqueamos el mutex antes de actualizar el contador
+    num_hilos++; // incrementamos el contador de hilos
+    if (num_hilos == 5) { // si han entrado todos los hilos
+        pthread_cond_broadcast(&cond); // enviamos una señal a todos los hilos que están esperando de que ya esten todos en listos
+        // llamado al metodo mandar a ejecucion
+        printf("\n ya estan todos ");
+    } else {
+        pthread_cond_wait(&cond, &mutex); // esperamos la señal del resto de hilos
+    }
+    pthread_mutex_unlock(&mutex); // liberamos el mutex antes de continua
 
+
+    //bloqueo los hilos, dormir el hilo en la posicion id del arreglo de procesos
+
+    // pthread_cond_wait(&cond_turno, &mutex_turno); // Esperar la señal del siguiente turno
+
+    //lista de listos llena
+    //if(nodoProceso->id == listaContenedor->ultimo->id){
+        //tomar el primero y pasarlo a ejecucion
+
+//        pthread_cancel(pthread_self());
+//        pthread_cond_signal()
+    //}
 
     //ir atendiendo por orden, solo los hilo que estan en el cotexto - listacontenedor
+
 
     //iterar el proceso
 
@@ -171,6 +191,13 @@ void *administrarProcesos(void *args){
 
     //si sale un hilo se mete otro en listaContenedor
 
+    //if( listaPeticion->primero == NULL && listaContenedor->primero == NULL   ){
+    if( nodoProceso->id == 4){
+        mostrarListaProcesos(listaListos);
+
+        printf("\n-----------Todos los procesos fueron Atendidos-----------\n");
+        banderaFinalizacion= 1;
+    }
 
 }
 
@@ -180,31 +207,20 @@ void *iniciarPlanificador(void *args){
     //suponiendo que aca la lista de contenedor ya tiene SOLAMENTE los elementos dentro del contexto de ejecucion, sino es asi hacer eso antes
 
     NodoProceso *aux = listaContenedor->primero;
-
-
-    while(aux != NULL&&banderaFinalizacion==0) {
-        printf("\nentro al while");
+    while(aux != NULL && banderaFinalizacion==0) {
+        printf("\nentro al while\n");
 
         // verificar si el hilo fue iniciado
         if (aux->contexto == false) {
-            printf("\nse envio al contexto de ejecucion!\n");
+            printf("\nEnviar hilo al contexto de ejecucion!\n");
             //iniciar hilo por id
             int index = (aux->id - 1);
             //crear el hilo, mandarlo a la cola de listos con el hilo creado pero en pausa y una vez este
-            // llena la cola de listos llamar al metodo de ejecutar hilo que vaya ejecutando cada proceso de la cola de listos
             pthread_create(&procesos[index], NULL, administrarProcesos, (void *) aux);
             //agregar
             aux->contexto = true;
-            aux = aux->siguiente;
-        }else{
-            //aca llamar al metodo de ejecucion del hilo
-            //cola listos a ejecutarse
-            //
-            printf("\nel proceso ya esta dentro del contexto!\n");
-            printf("\n se llego hasta el final de la lista,");
-            system("pause");
-            banderaFinalizacion = 1;
         }
+        sleep(2);
+        aux = aux->siguiente;
     }
-
 }

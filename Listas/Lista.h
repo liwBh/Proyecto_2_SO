@@ -105,7 +105,7 @@ void mostrarListaProcesos(ListaProcesos *lista){
     printf("\n\n");
     while(aux != lista->ultimo){
         mostrarNodoProceso(aux);
-      //  sleep(1);
+        sleep(1);
         aux = aux->siguiente;
     }
 }
