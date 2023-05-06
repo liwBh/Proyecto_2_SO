@@ -144,6 +144,9 @@ void *administrarProcesos(void *args){
 
     printf("\nNombre del proceso %s\n", nodoProceso->nombre);
 
+    if(nodoProceso->id == 4){
+        banderaFinalizacion=1;
+    }
 
 
     //iniciar el contexto
@@ -176,7 +179,7 @@ void *administrarProcesos(void *args){
 void *iniciarPlanificador(void *args){
 
 
-    while( listaPeticion->primero != NULL ){
+    while( listaPeticion->primero != NULL && banderaFinalizacion==0){
         
         //recorrer la lista de contenedor - serian los procesos en el contexto de ejecucion
         NodoProceso *aux = listaContenedor->primero;
