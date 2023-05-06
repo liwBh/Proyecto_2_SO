@@ -2,7 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "Proyecto_2_SO"
+			"path" : "Proyecto_2_SO.exe"
+		},
+		{
+			"path" : "Proyecto_2_SO.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -68,12 +71,16 @@
 			{
 				"fragment" : "",
 				"role" : "flags"
+			},
+			{
+				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"role" : "libraries"
 			}
 		],
 		"language" : "C"
 	},
 	"name" : "Proyecto_2_SO",
-	"nameOnDisk" : "Proyecto_2_SO",
+	"nameOnDisk" : "Proyecto_2_SO.exe",
 	"paths" : 
 	{
 		"build" : ".",

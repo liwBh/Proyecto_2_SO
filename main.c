@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <threads.h>
+\
+
 #include <string.h>
 #include <pthread.h>
 #include "Listas/Lista.h"
@@ -51,21 +52,24 @@ int main() {
 
     //temporal pasar los primeros 5
     //eliminar de uno en uno de la lista de espera y pasarlos a contenedor
+
     if(!listaVacia(listaPeticion)){
+        printf("\nentro a repartir a lista de contenedor ");
         for(int i = 0; i < 5; i++){
             NodoProceso *nodoProceso = listaPeticion->primero;
-                    /*crearNodoProceso(listaPeticion->primero->id,listaPeticion->primero->nombre,
-                                                        listaPeticion->primero->peso,listaPeticion->primero->nIteraciones,
-                                                        listaPeticion->primero->ejecucion,listaPeticion->primero->nombreE_S,listaPeticion->primero->tiempoE_S);*/
             listaPeticion->primero = listaPeticion->primero->siguiente;
+            listaPeticion->ultimo->siguiente = listaPeticion->primero;
+            listaPeticion->primero->anterior=listaPeticion->ultimo;
             insertar(listaContenedor,nodoProceso);
+            printf("\neliminar", i);
             eliminarProcesoEsperando(listaPeticion,nodoProceso);
+            printf("\nrepartio nodo %d ", i);
         }
     }else{
         printf("\nYa no hay peticiones de procesos\n");
     }
 
-
+    printf("\nsalio de repartir a lista de contenedor ");
     //FCFS
     //Nodo proceso: id, nombre, peso, listaDirecciones, nIteraciones, ejecucion, nombreE_S, TiempoE_S -> Jurguern
 
@@ -127,7 +131,6 @@ void llenarListaProcesosEsperando(){
 
         //crear peticion de proceso
         NodoProceso *nodo = crearNodoProceso(i,nombre,peso,iteraciones,0,"Pantalla",10);
-
         //insertar la peticion del proceso en la lista
         insertar(listaPeticion,nodo);
 
@@ -141,10 +144,8 @@ void *administrarProcesos(void *args){
 
     //recibir parametro de nodo
     NodoProceso *nodoProceso = (NodoProceso *) args;
-
-    printf("\nNombre del proceso %s\n", nodoProceso->nombre);
-
-
+    printf("\nimprimiendo informacion dentro del metodo administrar procesos del proceso añadido a la cola de listos:"
+           "  %s peso: %d id: %d \n", nodoProceso->nombre, nodoProceso->peso, nodoProceso->id);
 
     //iniciar el contexto
     //conforme llega un proceso metelo en lista de listo
@@ -174,25 +175,36 @@ void *administrarProcesos(void *args){
 }
 
 void *iniciarPlanificador(void *args){
+    printf("\n inicia el planificador \n");
+
+    //suponiendo que aca la lista de contenedor ya tiene SOLAMENTE los elementos dentro del contexto de ejecucion, sino es asi hacer eso antes
+
+    NodoProceso *aux = listaContenedor->primero;
 
 
-    while( listaPeticion->primero != NULL ){
-        
-        //recorrer la lista de contenedor - serian los procesos en el contexto de ejecucion
-        NodoProceso *aux = listaContenedor->primero;
-        while(aux != NULL) {
-            // verificar si el hilo fue iniciado
-            if (aux->contexto == false) {
-                printf("\nEntrooooo!\n");
+    while(aux != NULL&&banderaFinalizacion==0) {
+        printf("\nentro al while");
 
-                //iniciar hilo por id
-                int index = (aux->id - 1);
-                pthread_create(&procesos[index], NULL, administrarProcesos, (void *) aux);
-
-                aux->contexto = true;
-            }
+        // verificar si el hilo fue iniciado
+        if (aux->contexto == false) {
+            printf("\nse envio al contexto de ejecucion!\n");
+            //iniciar hilo por id
+            int index = (aux->id - 1);
+            //crear el hilo, mandarlo a la cola de listos con el hilo creado pero en pausa y una vez este
+            // llena la cola de listos llamar al metodo de ejecutar hilo que vaya ejecutando cada proceso de la cola de listos
+            pthread_create(&procesos[index], NULL, administrarProcesos, (void *) aux);
+            //agregar
+            aux->contexto = true;
             aux = aux->siguiente;
+        }else{
+            //aca llamar al metodo de ejecucion del hilo
+            //cola listos a ejecutarse
+            //
+            printf("\nel proceso ya esta dentro del contexto!\n");
+            printf("\n se llego hasta el final de la lista,");
+            system("pause");
+            banderaFinalizacion = 1;
         }
-
     }
+
 }
