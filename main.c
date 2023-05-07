@@ -124,7 +124,7 @@ void llenarListaProcesosEsperando(){
         char str[10];
         char nombre[10] = "P-";
         int peso = rand() % 30 + 1 ;
-        int iteraciones = rand() % 10 + 1;
+        int iteraciones = rand() % 5 + 1;
         int indice_aleatorio = rand() % 3;
         int tiempo = (rand() % 3) + 1;
         char *dispositivos[] = {"mouse", "teclado", "pantalla"};
@@ -204,36 +204,44 @@ void *administrarProcesos(void *args){
         nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
         printf("\nIteraciones restantes: %d",nodoProceso->nIteraciones );
 
-        //mostrar procesos restantes en lista de listos
-        printf("\nProcesos restantes en la lista de listos!");
-        mostrarListaProcesos(listaListos);
-
-        printf("\nProcesos restantes en la lista de E/S!");
-        mostrarListaProcesos(listaEspera);
-
-        //******** generar crecimiento memoria *************
-
-        //Continuar con procesos en lista de espera
-        continuarProcesosEspera(listaEspera,listaListos);
-
         //veificar si el proceso aun tiene iteraciones
         if(nodoProceso->nIteraciones == 0){
+            printf("\n------{ El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------",nodoProceso->id, nodoProceso->nombre);
             //librerar bloques de memoria
             liberarMemoria(nodoProceso,matriz);
+            printf("\nLiberando Memoria utilizada por el proceso");
+            mostrarMatriz(matriz);
+            printf("\nDireciones de Memoria a Liberar");
+            mostrarListaPosiciones(nodoProceso->listaPosicion);
 
-            //eliminar de lista de listos
+           //eliminar de lista de listos
             eliminarProcesoEsperando(listaListos,nodoProceso);
 
             //eliminar de lista de contenedor
             eliminarProcesoEsperando(listaContenedor,nodoProceso);
 
             //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
-            pasarProcesoContenedor(listaPeticion,listaContenedor);
+            pasarProcesoDePeticionListos(listaPeticion, listaContenedor, listaListos);
+
+            printf("\nProcesos restantes en la lista de Contenedor!");
+            mostrarListaProcesos(listaContenedor);
+
+            //eliminar hilo?????
+        }else{
+            //Agregar en lista espera
+            insertar(listaEspera,nodoProceso);
         }
 
-        //Agregar en lista espera
-        insertar(listaEspera,nodoProceso);
+        //******** generar crecimiento memoria *************
+        //Continuar con procesos en lista de espera
+        continuarProcesosEspera(listaEspera,listaListos);
 
+        //mostrar procesos restantes en lista de listos
+        printf("\nProcesos restantes en la lista de listos!");
+        mostrarListaProcesos(listaListos);
+
+        printf("\nProcesos restantes en la lista de E/S!");
+        mostrarListaProcesos(listaEspera);
 
         if(nodoProceso->id==5){
             printf("\n¡Condicion de finalizacion!");

@@ -13,7 +13,21 @@
 void insertarUnProceso(ListaProcesos *lista, NodoProceso *nodo){
     insertar(lista, nodo);
 }
-
+void pasarProcesoDePeticionListos(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor, ListaProcesos *listaListos){
+    if(!listaVacia(listaPeticion)){
+        //Crea un nodo con el primero de la lista de espera
+        NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
+        //Cambia la referencia del primero de lista
+        listaPeticion->primero = listaPeticion->primero->siguiente;
+        //Inserta el nodo en la lista contenedor
+        insertar(listaContenedor,almacenarProceso);
+        insertar(listaListos,almacenarProceso);
+        //Elimina el nodo de la lista de espera
+        eliminarProcesoEsperando(listaPeticion,almacenarProceso);
+    }else{
+        printf("Ya no hay mas procesos");
+    }
+}
 //Pasa un proceso de la lista de espera a la lista que ya fueron atendidos en memoria
 void pasarProcesoContenedor(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor){
     if(!listaVacia(listaPeticion)){
@@ -66,6 +80,9 @@ void asignarEspacioDisponible(struct Bloque matriz[8][8], NodoProceso *nodo){
             }
         }
     }
+
+    printf("\nDireciones de Memoria Asignadas");
+    mostrarListaPosiciones(nodo->listaPosicion);
 }
 
 //Metodo para liberar memoria de la matriz segun las posiciones en que se ubica el proceso, con la lista de posiciones
