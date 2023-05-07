@@ -6,9 +6,13 @@
 #include <pthread.h>
 #include "Listas/Lista.h"
 #include "Listas/Lista_E_S.h"
+#include "MatrizMemoria/Matriz.h"
+#include "Logica/Logica.h"
 
 pthread_mutex_t mutex_turno = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond_turno = PTHREAD_COND_INITIALIZER;
+struct Bloque matriz[8][8];
+
 
 //bandera para la finalizacion de la simulacion
 int banderaFinalizacion = 0;
@@ -36,6 +40,7 @@ ListaProcesos *listaListos;
 
 void crearListas();
 void llenarListaProcesosEsperando();
+void llenarMemoriaInicio();
 void *administrarProcesos(void *args);
 void *iniciarPlanificador(void *args);
 
@@ -43,27 +48,37 @@ int main() {
 
     printf("------------- Emulador de memoria Particiones Fijas y Variables ------------\n");
 
+    printf("\nTamaño de memoria = 256kb\n");
+    printf("Tamaño del bloque = 4kb\n");
+
     //creando las listas del emulador
     crearListas();
 
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
 
-    //temporal pasar los primeros 5
-    //eliminar de uno en uno de la lista de espera y pasarlos a contenedor
-    if(!listaVacia(listaPeticion)){
-        for(int i = 0; i < 5; i++){
-            NodoProceso *nodoProceso = listaPeticion->primero;
-                    /*crearNodoProceso(listaPeticion->primero->id,listaPeticion->primero->nombre,
-                                                        listaPeticion->primero->peso,listaPeticion->primero->nIteraciones,
-                                                        listaPeticion->primero->ejecucion,listaPeticion->primero->nombreE_S,listaPeticion->primero->tiempoE_S);*/
-            listaPeticion->primero = listaPeticion->primero->siguiente;
-            insertar(listaContenedor,nodoProceso);
-            eliminarProcesoEsperando(listaPeticion,nodoProceso);
-        }
-    }else{
-        printf("\nYa no hay peticiones de procesos\n");
-    }
+    printf("\nInicializando estructura de Memoria\n");
+    //crear aquitectura de memoria
+    llenarMatriz( matriz);
+
+    //Imprimir matriz
+    mostrarMatriz( matriz );
+
+    //llenar lista de contenedor -> en base a la capacidad de la memoria
+    llenarMemoriaInicio();
+
+    //Imprimir matriz
+    mostrarMatriz( matriz );
+
+    //mostra listas
+    printf("\nProcesos restantes en la lista de solicitudes\n");
+    mostrarListaProcesos(listaPeticion);
+    printf("\nProcesos agregados en la lista de contexto de ejecucion\n");
+    mostrarListaProcesos(listaContenedor);
+
+
+    exit(0);
+
 
 
     //FCFS
@@ -113,21 +128,17 @@ void llenarListaProcesosEsperando(){
     for (int i = 0; i < nProcesos; ++i) {
         char str[10];
         char nombre[10] = "P-";
-        int peso = 0;
+        int peso = rand() % 40 + 1 ;
         int iteraciones = rand() % 10 + 1;
-
-        do{
-            peso = rand() % 40 + 1 ;
-        } while (peso % 4 != 0);
+        int indice_aleatorio = rand() % 3;
+        int tiempo = (rand() % 5) + 1;
+        char *dispositivos[] = {"mouse", "teclado", "pantalla"};
 
         sprintf(str, "%d",(i+1));
-
         strcat(nombre,  str);
 
-
         //crear peticion de proceso
-        NodoProceso *nodo = crearNodoProceso(i,nombre,peso,iteraciones,0,"Pantalla",10);
-
+        NodoProceso *nodo = crearNodoProceso(i,nombre,peso,iteraciones,0,dispositivos[indice_aleatorio],tiempo);
         //insertar la peticion del proceso en la lista
         insertar(listaPeticion,nodo);
 
@@ -135,6 +146,30 @@ void llenarListaProcesosEsperando(){
 
     //imprimiendo lista de procesos
     mostrarListaProcesos(listaPeticion);
+}
+
+void llenarMemoriaInicio(){
+
+    int deterner = 0;
+
+    while( deterner == 0) {
+
+        //asignarle espacio en memoria
+        asignarEspacioDisponible(matriz, listaPeticion->primero);
+
+        //inserta el primero en lista
+        insertar(listaListos,listaPeticion->primero);
+
+        //mover un proceso de lista peticion a lista contenedor y asinale un espacio en memoria
+        pasarProcesoContenedor(listaPeticion, listaContenedor);
+
+        //mientras la matriz no se llene mas del 60%
+        if( validarLlenado(matriz) ) {
+            deterner = 1;
+        }
+    }
+
+
 }
 
 void *administrarProcesos(void *args){
@@ -179,6 +214,52 @@ void *administrarProcesos(void *args){
 void *iniciarPlanificador(void *args){
 
 
+    while (banderaFinalizacion==0){
+
+        //identificar el proceso entrante
+        NodoProceso *nodoProceso = listaPeticion->primero;
+
+        //tomar un proceso de la lista de peticion y enviarlo
+        if (pthread_create( &(procesos[nodoProceso->id]), NULL, &administrarProcesos,(void *)nodoProceso) != 0){
+            printf("Error al crear hilos\n");
+        }
+
+        pthread_join(procesos[nodoProceso->id], NULL);
+
+
+        //verificar si el llenado es igual o mayor al 65%, 1 = Si, 0 = No
+//       if( validarLlenado(matriz) ) {
+//            printf("\nLa memoria ha llegado aun 60%% de su capacidad\n");
+//
+//            NodoProceso *nodoEliminar = seleccionarNodoAleatorio(listaContenedor); // Almacenar nodo a eliminar
+//            printf("\nLiberando de memoria %d bloques del proceso: %d",(nodoEliminar->peso/4), nodoEliminar->id);
+//            //liberarProceso(nodoEliminar->id, matriz); // Liberar memoria
+//            eliminarProcesoEsperando(listaContenedor, nodoEliminar); // Eliminar proceso de la lista
+//            //mostrarMatriz(matriz); // Imprimir matriz
+//
+//        }
+
+//ciclo
+// eliminar nodo de listos
+//sleep -> el proceso esta ejcucion
+//iteraciones -1
+//generar crecimiento memoria
+//metodo en lista espara
+//slepp -> el proceso esta esperando E/S
+//veificar si el proceso aun tiene iteraciones
+//si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
+
+        //cuando la lista de esperando se quede vacia
+        if(listaPeticion->primero ==NULL){
+            banderaFinalizacion = 1;
+
+            printf("\n{---- Simulacion Finalizada -----}\n");
+        }
+
+        sleep(2); //con esto pueden alterar la velocidad con que muestran las cosas
+    }
+
+/*
     while( listaPeticion->primero != NULL && banderaFinalizacion==0){
         
         //recorrer la lista de contenedor - serian los procesos en el contexto de ejecucion
@@ -197,5 +278,5 @@ void *iniciarPlanificador(void *args){
             aux = aux->siguiente;
         }
 
-    }
+    }*/
 }
