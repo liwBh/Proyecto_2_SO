@@ -97,13 +97,32 @@ void eliminarProcesoEsperando(ListaProcesos *lista, NodoProceso *nodoEliminar){ 
     }
 }
 
+int identificarOrden(ListaProcesos *lista, int ordenEjecucion){
+
+    int id = 0;
+    NodoProceso *aux = lista->primero;
+    while (aux != NULL ){
+        if(aux->id == ordenEjecucion && aux->id != lista->ultimo->id){
+            id = aux->siguiente->id;
+            break;
+        }else if(aux->id == ordenEjecucion){
+            id = lista->primero->id;
+            break;
+        }
+
+        aux = aux->siguiente;
+    }
+    printf("El turno siguiente es: %d",id);
+    return id;
+}
+
 //Se recorre la lista para mostrar los procesos
 void mostrarListaProcesos(ListaProcesos *lista){
     NodoProceso *aux = lista->primero;
     printf("\n\n");
     while(aux != NULL){
         mostrarNodoProceso(aux);
-        sleep(1);
+       // sleep(1);
         aux = aux->siguiente;
     }
 }

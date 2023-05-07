@@ -11,6 +11,7 @@
 
 pthread_mutex_t mutex_turno = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t cond_turno = PTHREAD_COND_INITIALIZER;
+int ordenEjecucion = 0;
 struct Bloque matriz[8][8];
 
 
@@ -75,10 +76,8 @@ int main() {
     mostrarListaProcesos(listaPeticion);
     printf("\nProcesos agregados en la lista de contexto de ejecucion\n");
     mostrarListaProcesos(listaContenedor);
-
-
-    exit(0);
-
+    printf("\nProcesos agregados en la lista de listos\n");
+    mostrarListaProcesos(listaListos);
 
 
     //FCFS
@@ -158,7 +157,8 @@ void llenarMemoriaInicio(){
         asignarEspacioDisponible(matriz, listaPeticion->primero);
 
         //inserta el primero en lista
-        insertar(listaListos,listaPeticion->primero);
+        NodoProceso *nodo = clonarNodo(listaPeticion->primero);
+        insertar(listaListos,nodo);
 
         //mover un proceso de lista peticion a lista contenedor y asinale un espacio en memoria
         pasarProcesoContenedor(listaPeticion, listaContenedor);
@@ -173,48 +173,93 @@ void llenarMemoriaInicio(){
 }
 
 void *administrarProcesos(void *args){
-
     //recibir parametro de nodo
     NodoProceso *nodoProceso = (NodoProceso *) args;
-
-    printf("\nNombre del proceso %s\n", nodoProceso->nombre);
-
-    if(nodoProceso->id == 4){
-        banderaFinalizacion=1;
+    //inciar con el primero id de la lista de listos
+    //se valida el turno del proceso a ejecutarse
+    if(ordenEjecucion == 0) {
+        ordenEjecucion = listaListos->primero->id;
     }
+    int turnoActual = ordenEjecucion;
+    while(1){//mientras que no haya terminado la simulacion
 
+        pthread_mutex_lock(&mutex_turno);//se bloquea el mutex para la validacion correcta del turno
 
-    //iniciar el contexto
-    //conforme llega un proceso metelo en lista de listo
+        while(turnoActual!=nodoProceso->id){
+            if(banderaFinalizacion==1){
+                pthread_mutex_unlock(&mutex_turno);
+                return NULL;
+            }
+            //esperar la señal del siguiente turno
+           pthread_cond_wait(&cond_turno, &mutex_turno);
+        }
 
-    //bloqueo los hilos
+        //si el mae llega aqui es porque ya se aseguro de que sea el turno correspondiente
 
+       printf("\nNombre del proceso %s\n", nodoProceso->nombre);
+        if(nodoProceso->id==5){
+            banderaFinalizacion = 1;
+        }
+        //ir atendiendo por orden, solo los hilo que estan en el cotexto - listacontenedor
 
-    //ir atendiendo por orden, solo los hilo que estan en el cotexto - listacontenedor
+        //iterar el proceso
 
-    //iterar el proceso
+        //solo un proceso va estar en ejecucion x tiempo
 
-    //solo un proceso va estar en ejecucion x tiempo
+        //pasa a lista de E/S
 
-    //pasa a lista de E/S
+        //pasa a lista de listos
 
-    //pasa a lista de listos
+        //pasa a ejecucion
 
-    //pasa a ejecucion
+        //validar si el proceso aun tiene iteracion
 
-    //validar si el proceso aun tiene iteracion
+        //si no tiene iteracion sale de listaContenedor y se elimina el hilo
 
-    //si no tiene iteracion sale de listaContenedor y se elimina el hilo
-
-    //si sale un hilo se mete otro en listaContenedor
-
-
+        //si sale un hilo se mete otro en listaContenedor
+        ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
+        pthread_cond_broadcast(&cond_turno);
+        pthread_mutex_unlock(&mutex_turno);
+    }
+    return NULL;
 }
 
 void *iniciarPlanificador(void *args){
 
+    while( listaPeticion->primero != NULL && banderaFinalizacion == 0){
+        
+        //recorrer la lista de contenedor - serian los procesos en el contexto de ejecucion
+        NodoProceso *aux = listaListos->primero;
+        while(aux != NULL) {
+            // verificar si el hilo fue iniciado
+            if (aux->contexto == false) {
+                //iniciar hilo por id
+                int index = (aux->id - 1);
+                pthread_create(&procesos[index], NULL, administrarProcesos, (void *) aux);
+                aux->contexto = true;
+            }
+            aux = aux->siguiente;
+        }
+    }
 
-    while (banderaFinalizacion==0){
+    pthread_mutex_lock(&mutex_turno);  // se bloquea el mutex de turno para sincronizar el acceso a la variable turno_actual
+    ordenEjecucion = 0;  // se establece el turno inicial en 0
+    pthread_cond_broadcast(&cond_turno);  // se señaliza la variable de condición para notificar a todos los hilos que el turno ha cambiado
+    pthread_mutex_unlock(&mutex_turno);  // se desbloquea el mutex de turno
+
+    // esperar a que terminen los hilos
+    for (int i = 0; i < nProcesos; i++) {
+        // se espera a que cada hilo termine su ejecución para que el programa no quede en un bulce infintito y se cierre el uso de los hilos
+        pthread_join(procesos[i], NULL);
+    }
+
+}
+
+
+/*
+
+     //mantenerse recorriendo la lista de listo
+    while ( banderaFinalizacion==0 ){
 
         //identificar el proceso entrante
         NodoProceso *nodoProceso = listaPeticion->primero;
@@ -225,6 +270,7 @@ void *iniciarPlanificador(void *args){
         }
 
         pthread_join(procesos[nodoProceso->id], NULL);
+
 
 
         //verificar si el llenado es igual o mayor al 65%, 1 = Si, 0 = No
@@ -239,15 +285,15 @@ void *iniciarPlanificador(void *args){
 //
 //        }
 
-//ciclo
-// eliminar nodo de listos
-//sleep -> el proceso esta ejcucion
-//iteraciones -1
-//generar crecimiento memoria
-//metodo en lista espara
-//slepp -> el proceso esta esperando E/S
-//veificar si el proceso aun tiene iteraciones
-//si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
+            //ciclo
+            // eliminar nodo de listos
+            //sleep -> el proceso esta ejcucion
+            //iteraciones -1
+            //generar crecimiento memoria
+            //metodo en lista espara
+            //slepp -> el proceso esta esperando E/S
+            //veificar si el proceso aun tiene iteraciones
+            //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
 
         //cuando la lista de esperando se quede vacia
         if(listaPeticion->primero ==NULL){
@@ -259,24 +305,7 @@ void *iniciarPlanificador(void *args){
         sleep(2); //con esto pueden alterar la velocidad con que muestran las cosas
     }
 
-/*
-    while( listaPeticion->primero != NULL && banderaFinalizacion==0){
-        
-        //recorrer la lista de contenedor - serian los procesos en el contexto de ejecucion
-        NodoProceso *aux = listaContenedor->primero;
-        while(aux != NULL) {
-            // verificar si el hilo fue iniciado
-            if (aux->contexto == false) {
-                printf("\nEntrooooo!\n");
 
-                //iniciar hilo por id
-                int index = (aux->id - 1);
-                pthread_create(&procesos[index], NULL, administrarProcesos, (void *) aux);
 
-                aux->contexto = true;
-            }
-            aux = aux->siguiente;
-        }
 
-    }*/
-}
+ */
