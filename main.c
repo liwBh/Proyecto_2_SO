@@ -4,7 +4,6 @@
 #include <string.h>
 #include <pthread.h>
 #include "Listas/Lista.h"
-#include "Listas/Lista_E_S.h"
 #include "MatrizMemoria/Matriz.h"
 #include "Logica/Logica.h"
 
@@ -124,13 +123,13 @@ void llenarListaProcesosEsperando(){
     for (int i = 0; i < nProcesos; ++i) {
         char str[10];
         char nombre[10] = "P-";
-        int peso = rand() % 40 + 1 ;
+        int peso = rand() % 30 + 1 ;
         int iteraciones = rand() % 10 + 1;
         int indice_aleatorio = rand() % 3;
-        int tiempo = (rand() % 5) + 1;
+        int tiempo = (rand() % 3) + 1;
         char *dispositivos[] = {"mouse", "teclado", "pantalla"};
 
-        sprintf(str, "%d",(i+1));
+        sprintf(str, "%d",i);
         strcat(nombre,  str);
 
         //crear peticion de proceso
@@ -190,18 +189,27 @@ void *administrarProcesos(void *args){
            pthread_cond_wait(&cond_turno, &mutex_turno);
         }
 
-       printf("\nNombre del proceso %s \n", nodoProceso->nombre);
-
+        printf("\n*************** Enviando proceso a Ejecucion *******************\n");
+        printf("\nDatos del proceso: ID %d, Nombre %s",nodoProceso->id, nodoProceso->nombre);
 
         // eliminar nodo de listos
         eliminarProcesoEsperando(listaListos,nodoProceso);
 
         //tiempo en ejecucion
         int tiempoEjecucion = (rand() % 5) + 1;
+        printf("\nTiempo de Ejecucion %d segundos", tiempoEjecucion);
         sleep(tiempoEjecucion);
 
         //restar una iteraciones
         nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
+        printf("\nIteraciones restantes: %d",nodoProceso->nIteraciones );
+
+        //mostrar procesos restantes en lista de listos
+        printf("\nProcesos restantes en la lista de listos!");
+        mostrarListaProcesos(listaListos);
+
+        printf("\nProcesos restantes en la lista de E/S!");
+        mostrarListaProcesos(listaEspera);
 
         //******** generar crecimiento memoria *************
 
@@ -223,12 +231,8 @@ void *administrarProcesos(void *args){
             pasarProcesoContenedor(listaPeticion,listaContenedor);
         }
 
-
         //Agregar en lista espera
         insertar(listaEspera,nodoProceso);
-
-
-
 
 
         if(nodoProceso->id==5){
@@ -250,7 +254,8 @@ void *administrarProcesos(void *args){
 
 
         //si sale un hilo se mete otro en listaContenedor
-        ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
+        //ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
+        ordenEjecucion = listaListos->primero->id;
         pthread_cond_broadcast(&cond_turno);
         pthread_mutex_unlock(&mutex_turno);
     }

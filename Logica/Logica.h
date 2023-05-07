@@ -96,7 +96,7 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
             //cuando sale de tiempo de espera llego a 0
             if(aux->tiempoE_S == 0){
                 //se debe generar otro aleatorio de espera
-                int nuevoTiempo = (rand() % 5) + 1;
+                int nuevoTiempo = (rand() % 3) + 1;
                 aux->tiempoE_S = nuevoTiempo;
                 //moverlo a lista de listos
                 insertar(listaListos,aux);
