@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <threads.h>
 #include <string.h>
 #include <pthread.h>
 #include "Listas/Lista.h"
@@ -180,12 +179,12 @@ void *administrarProcesos(void *args){
     if(ordenEjecucion == 0) {
         ordenEjecucion = listaListos->primero->id;
     }
-    int turnoActual = ordenEjecucion;
+
     while(1){//mientras que no haya terminado la simulacion
 
         pthread_mutex_lock(&mutex_turno);//se bloquea el mutex para la validacion correcta del turno
 
-        while(turnoActual!=nodoProceso->id){
+        while(ordenEjecucion!=nodoProceso->id){
             if(banderaFinalizacion==1){
                 pthread_mutex_unlock(&mutex_turno);
                 return NULL;
@@ -198,7 +197,18 @@ void *administrarProcesos(void *args){
 
        printf("\nNombre del proceso %s\n", nodoProceso->nombre);
         if(nodoProceso->id==5){
+            printf("\n!!!!no hay opcion para seguir jugando, ningun jugador puede poner, tampoco comer!!!!\n");
+            // Se establece la variable 'bandera finalizacion' en 1 para indicar que la simulacion ha terminado
             banderaFinalizacion = 1;
+            // Se establece 'turno_actual' en -1 para detener el juego y evitar que se sigan ejecutando turnos adicionales
+            ordenEjecucion = -1;
+            // Se utiliza 'pthread_cond_broadcast(&cond_turno)' para notificar a todos los hilos
+            // que el juego ha terminado y que deben terminar su ejecución
+            pthread_cond_broadcast(&cond_turno);
+            // Se libera el mutex
+            pthread_mutex_unlock(&mutex_turno);
+            // Se sale del ciclo 'while' usando 'break' ya que no hay más movimientos posibles
+            break;
         }
         //ir atendiendo por orden, solo los hilo que estan en el cotexto - listacontenedor
 
@@ -220,17 +230,19 @@ void *administrarProcesos(void *args){
         ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
         pthread_cond_broadcast(&cond_turno);
         pthread_mutex_unlock(&mutex_turno);
+        printf("\nsigue en while");
     }
+    printf("\nsalio del while");
     return NULL;
 }
 
 void *iniciarPlanificador(void *args){
 
-    while( listaPeticion->primero != NULL && banderaFinalizacion == 0){
-        
+    while(banderaFinalizacion == 0){
         //recorrer la lista de contenedor - serian los procesos en el contexto de ejecucion
         NodoProceso *aux = listaListos->primero;
-        while(aux != NULL) {
+
+        while(aux != NULL && banderaFinalizacion == 0) {
             // verificar si el hilo fue iniciado
             if (aux->contexto == false) {
                 //iniciar hilo por id
@@ -239,20 +251,24 @@ void *iniciarPlanificador(void *args){
                 aux->contexto = true;
             }
             aux = aux->siguiente;
+            printf("\nsigue en while planficiador");
         }
+        printf("\nsalio del while planificador ");
     }
-
-    pthread_mutex_lock(&mutex_turno);  // se bloquea el mutex de turno para sincronizar el acceso a la variable turno_actual
-    ordenEjecucion = 0;  // se establece el turno inicial en 0
+    printf("\n temrino ");
+   /* pthread_mutex_lock(&mutex_turno);  // se bloquea el mutex de turno para sincronizar el acceso a la variable turno_actual
+   // ordenEjecucion = 0;  // se establece el turno inicial en 0
     pthread_cond_broadcast(&cond_turno);  // se señaliza la variable de condición para notificar a todos los hilos que el turno ha cambiado
-    pthread_mutex_unlock(&mutex_turno);  // se desbloquea el mutex de turno
+    pthread_mutex_unlock(&mutex_turno);  // se desbloquea el mutex de turno*/
 
     // esperar a que terminen los hilos
     for (int i = 0; i < nProcesos; i++) {
+        printf("\n entro al for ");
         // se espera a que cada hilo termine su ejecución para que el programa no quede en un bulce infintito y se cierre el uso de los hilos
         pthread_join(procesos[i], NULL);
     }
 
+    printf("\n salio del for ");
 }
 
 
