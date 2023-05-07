@@ -82,4 +82,33 @@ void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
     }
 }
 
+void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaListos){
+    //validar que lista de espera no este vacia
+    if(!listaVacia(listaEspera)){
+
+        //recorre toda la lista de espera
+        NodoProceso *aux = listaEspera->primero;
+        while(aux != NULL){
+
+            //El tiempo de espera restarle 1
+            aux->tiempoE_S = aux->tiempoE_S - 1;
+
+            //cuando sale de tiempo de espera llego a 0
+            if(aux->tiempoE_S == 0){
+                //se debe generar otro aleatorio de espera
+                int nuevoTiempo = (rand() % 5) + 1;
+                aux->tiempoE_S = nuevoTiempo;
+                //moverlo a lista de listos
+                insertar(listaListos,aux);
+                //sacarlo de lista de espera
+                eliminarProcesoEsperando(listaEspera,aux);
+
+            }
+
+            //pasarlo a lista de listos
+            aux = aux->siguiente;
+        }
+    }
+}
+
 #endif //QUIZ_SO_LOGICA_H

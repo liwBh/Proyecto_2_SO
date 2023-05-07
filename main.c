@@ -33,7 +33,6 @@ ListaProcesos *listaContenedor;
 
 //FCFS
 //lista en espera -> lista de dispositivos: pantalla, mouse, teclado
-Lista_E_S  *lista_E_S;
 ListaProcesos *listaEspera;
 //lista de listos
 ListaProcesos *listaListos;
@@ -107,7 +106,6 @@ void crearListas(){
     listaPeticion = crearListaProcesos();
 
     //FCFS
-    lista_E_S = crearLista_E_S();
     listaEspera = crearListaProcesos();
     listaListos = crearListaProcesos();
 }
@@ -168,7 +166,6 @@ void llenarMemoriaInicio(){
         }
     }
 
-
 }
 
 void *administrarProcesos(void *args){
@@ -193,12 +190,52 @@ void *administrarProcesos(void *args){
            pthread_cond_wait(&cond_turno, &mutex_turno);
         }
 
+       printf("\nNombre del proceso %s \n", nodoProceso->nombre);
+
+
+        // eliminar nodo de listos
+        eliminarProcesoEsperando(listaListos,nodoProceso);
+
+        //tiempo en ejecucion
+        int tiempoEjecucion = (rand() % 5) + 1;
+        sleep(tiempoEjecucion);
+
+        //restar una iteraciones
+        nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
+
+        //******** generar crecimiento memoria *************
+
+        //Continuar con procesos en lista de espera
+        continuarProcesosEspera(listaEspera,listaListos);
+
+        //veificar si el proceso aun tiene iteraciones
+        if(nodoProceso->nIteraciones == 0){
+            //librerar bloques de memoria
+            liberarMemoria(nodoProceso,matriz);
+
+            //eliminar de lista de listos
+            eliminarProcesoEsperando(listaListos,nodoProceso);
+
+            //eliminar de lista de contenedor
+            eliminarProcesoEsperando(listaContenedor,nodoProceso);
+
+            //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
+            pasarProcesoContenedor(listaPeticion,listaContenedor);
+        }
+
+
+        //Agregar en lista espera
+        insertar(listaEspera,nodoProceso);
+
+
+
+
+
+        if(nodoProceso->id==5){
+            printf("\n¡Condicion de finalizacion!");
         //si el mae llega aqui es porque ya se aseguro de que sea el turno correspondiente
 
-       printf("\nNombre del proceso %s\n", nodoProceso->nombre);
-        if(nodoProceso->id==5){
-            printf("\n!!!!no hay opcion para seguir jugando, ningun jugador puede poner, tampoco comer!!!!\n");
-            // Se establece la variable 'bandera finalizacion' en 1 para indicar que la simulacion ha terminado
+            // Se establece la variable 'bandera finalizacioede poner, tampoco comer!!!!\n' en 1 para indicar que la simulacion ha terminado
             banderaFinalizacion = 1;
             // Se establece 'turno_actual' en -1 para detener el juego y evitar que se sigan ejecutando turnos adicionales
             ordenEjecucion = -1;
@@ -210,29 +247,13 @@ void *administrarProcesos(void *args){
             // Se sale del ciclo 'while' usando 'break' ya que no hay más movimientos posibles
             break;
         }
-        //ir atendiendo por orden, solo los hilo que estan en el cotexto - listacontenedor
 
-        //iterar el proceso
-
-        //solo un proceso va estar en ejecucion x tiempo
-
-        //pasa a lista de E/S
-
-        //pasa a lista de listos
-
-        //pasa a ejecucion
-
-        //validar si el proceso aun tiene iteracion
-
-        //si no tiene iteracion sale de listaContenedor y se elimina el hilo
 
         //si sale un hilo se mete otro en listaContenedor
         ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
         pthread_cond_broadcast(&cond_turno);
         pthread_mutex_unlock(&mutex_turno);
-        printf("\nsigue en while");
     }
-    printf("\nsalio del while");
     return NULL;
 }
 
@@ -251,77 +272,18 @@ void *iniciarPlanificador(void *args){
                 aux->contexto = true;
             }
             aux = aux->siguiente;
-            printf("\nsigue en while planficiador");
         }
-        printf("\nsalio del while planificador ");
     }
-    printf("\n temrino ");
-   /* pthread_mutex_lock(&mutex_turno);  // se bloquea el mutex de turno para sincronizar el acceso a la variable turno_actual
-   // ordenEjecucion = 0;  // se establece el turno inicial en 0
-    pthread_cond_broadcast(&cond_turno);  // se señaliza la variable de condición para notificar a todos los hilos que el turno ha cambiado
-    pthread_mutex_unlock(&mutex_turno);  // se desbloquea el mutex de turno*/
+
+    printf("\nTermino while");
 
     // esperar a que terminen los hilos
     for (int i = 0; i < nProcesos; i++) {
-        printf("\n entro al for ");
         // se espera a que cada hilo termine su ejecución para que el programa no quede en un bulce infintito y se cierre el uso de los hilos
         pthread_join(procesos[i], NULL);
     }
 
-    printf("\n salio del for ");
+    printf("\nTermino For");
+    printf("\nTermino Hilo Planificador");
+
 }
-
-
-/*
-
-     //mantenerse recorriendo la lista de listo
-    while ( banderaFinalizacion==0 ){
-
-        //identificar el proceso entrante
-        NodoProceso *nodoProceso = listaPeticion->primero;
-
-        //tomar un proceso de la lista de peticion y enviarlo
-        if (pthread_create( &(procesos[nodoProceso->id]), NULL, &administrarProcesos,(void *)nodoProceso) != 0){
-            printf("Error al crear hilos\n");
-        }
-
-        pthread_join(procesos[nodoProceso->id], NULL);
-
-
-
-        //verificar si el llenado es igual o mayor al 65%, 1 = Si, 0 = No
-//       if( validarLlenado(matriz) ) {
-//            printf("\nLa memoria ha llegado aun 60%% de su capacidad\n");
-//
-//            NodoProceso *nodoEliminar = seleccionarNodoAleatorio(listaContenedor); // Almacenar nodo a eliminar
-//            printf("\nLiberando de memoria %d bloques del proceso: %d",(nodoEliminar->peso/4), nodoEliminar->id);
-//            //liberarProceso(nodoEliminar->id, matriz); // Liberar memoria
-//            eliminarProcesoEsperando(listaContenedor, nodoEliminar); // Eliminar proceso de la lista
-//            //mostrarMatriz(matriz); // Imprimir matriz
-//
-//        }
-
-            //ciclo
-            // eliminar nodo de listos
-            //sleep -> el proceso esta ejcucion
-            //iteraciones -1
-            //generar crecimiento memoria
-            //metodo en lista espara
-            //slepp -> el proceso esta esperando E/S
-            //veificar si el proceso aun tiene iteraciones
-            //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
-
-        //cuando la lista de esperando se quede vacia
-        if(listaPeticion->primero ==NULL){
-            banderaFinalizacion = 1;
-
-            printf("\n{---- Simulacion Finalizada -----}\n");
-        }
-
-        sleep(2); //con esto pueden alterar la velocidad con que muestran las cosas
-    }
-
-
-
-
- */
