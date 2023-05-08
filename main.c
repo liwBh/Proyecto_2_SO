@@ -196,7 +196,7 @@ void *administrarProcesos(void *args){
             // eliminar nodo de listos
             NodoProceso *nodoEliminar = clonarNodo(nodoProceso);
             eliminarProcesoEsperando(listaListos,nodoEliminar);
-            mostrarListaProcesos(listaListos);// Si es eliminado - aqui no se inserta de nuevo!
+            //mostrarListaProcesos(listaListos);// Si es eliminado - aqui no se inserta de nuevo!
 
             //tiempo en ejecucion
             int tiempoEjecucion = (rand() % 3) + 1;
