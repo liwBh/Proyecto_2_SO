@@ -53,18 +53,21 @@ void eliminarProcesoEsperando(ListaProcesos *lista, NodoProceso *nodoEliminar){ 
 
     }else{ //En caso de no estar vacia
         NodoProceso *aux1 = lista->primero; //Un nodo que recorre la lista
-        NodoProceso *aux2 = crearNodoProceso(nodoEliminar->id,nodoEliminar->nombre,nodoEliminar->peso,nodoEliminar->nIteraciones,nodoEliminar->ejecucion,nodoEliminar->nombreE_S,nodoEliminar->tiempoE_S);
+        NodoProceso *aux2 = clonarNodo(nodoEliminar);
 
         while (aux1 != NULL){
-            //Si el nodo a eliminar es la ultima igualamos las variables de la lista a NULL
+            //Si solo hay un nodo en la lista
             if(aux2->id == lista->ultimo->id && lista->primero->id == lista->ultimo->id ){
                 lista->primero = NULL;
                 lista->ultimo = NULL;
+
                 //si elimina el ultimo nodo y solo hay 2 nodos
             }else if(  (aux2->id == lista->ultimo->id) && (lista->primero->siguiente == lista->ultimo) && (lista->ultimo->anterior == lista->primero)){
                 lista->ultimo = lista->primero;
                 lista->primero->siguiente = NULL;
                 lista->primero->anterior = NULL;
+
+
 
                 //si elimina el primer nodo y solo hay 2 nodos
             }else if( (aux2->id == lista->primero->id) && (lista->ultimo->anterior == lista->primero) && (lista->primero->siguiente == lista->ultimo) ){
@@ -74,9 +77,12 @@ void eliminarProcesoEsperando(ListaProcesos *lista, NodoProceso *nodoEliminar){ 
 
                 //elimina el último de la lista, si hay más de 2 nodos
             }else if((aux2->id == aux1->id) && (aux1->id == lista->ultimo->id)) {
+
                 lista->ultimo = aux1->anterior;
-                aux1->anterior->siguiente = NULL;
+                lista->ultimo->siguiente = NULL;
+//                aux1->anterior->siguiente = NULL;
                 aux1->anterior = NULL;
+                //Aquii fail :B
 
                 //elimina el primero de la lista, si hay más de 2 nodos
             }else if((aux2->id == aux1->id) && (aux1->id == lista->primero->id)) {

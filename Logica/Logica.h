@@ -13,21 +13,7 @@
 void insertarUnProceso(ListaProcesos *lista, NodoProceso *nodo){
     insertar(lista, nodo);
 }
-void pasarProcesoDePeticionListos(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor, ListaProcesos *listaListos){
-    if(!listaVacia(listaPeticion)){
-        //Crea un nodo con el primero de la lista de espera
-        NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
-        //Cambia la referencia del primero de lista
-        listaPeticion->primero = listaPeticion->primero->siguiente;
-        //Inserta el nodo en la lista contenedor
-        insertar(listaContenedor,almacenarProceso);
-        insertar(listaListos,almacenarProceso);
-        //Elimina el nodo de la lista de espera
-        eliminarProcesoEsperando(listaPeticion,almacenarProceso);
-    }else{
-        printf("Ya no hay mas procesos");
-    }
-}
+
 //Pasa un proceso de la lista de espera a la lista que ya fueron atendidos en memoria
 void pasarProcesoContenedor(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor){
     if(!listaVacia(listaPeticion)){
@@ -101,30 +87,54 @@ void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
 
 void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaListos){
     //validar que lista de espera no este vacia
-    if(!listaVacia(listaEspera)){
+    printf("\nLista que llego!!!!!!!!");
+    mostrarListaProcesos(listaListos);
 
-        //recorre toda la lista de espera
-        NodoProceso *aux = listaEspera->primero;
-        while(aux != NULL){
+    //recorre toda la lista de espera
+    NodoProceso *aux = listaEspera->primero;
+    while(aux != NULL){
 
-            //El tiempo de espera restarle 1
-            aux->tiempoE_S = aux->tiempoE_S - 1;
+        //El tiempo de espera restarle 1
+        aux->tiempoE_S = aux->tiempoE_S - 1;
 
-            //cuando sale de tiempo de espera llego a 0
-            if(aux->tiempoE_S == 0){
-                //se debe generar otro aleatorio de espera
-                int nuevoTiempo = (rand() % 3) + 1;
-                aux->tiempoE_S = nuevoTiempo;
-                //moverlo a lista de listos
-                insertar(listaListos,aux);
-                //sacarlo de lista de espera
-                eliminarProcesoEsperando(listaEspera,aux);
+        //cuando sale de tiempo de espera llego a 0
+        if(aux->tiempoE_S == 0){
+            printf("\nEl proceso id: %d termino su tiempo de E/S, %d", aux->id, aux->tiempoE_S);
+            //se debe generar otro aleatorio de espera
+            int nuevoTiempo = (rand() % 3) + 1;
+            aux->tiempoE_S = nuevoTiempo;
+            //moverlo a lista de listos
+            insertar(listaListos,aux);
+            printf("\nSe inserta el proceso id: %d, de la lista de listo", aux->id);
+            //sacarlo de lista de espera
+            eliminarProcesoEsperando(listaEspera,aux);
+            printf("\nSe elimina el proceso id: %d, de la lista de espera", aux->id);
 
-            }
-
-            //pasarlo a lista de listos
-            aux = aux->siguiente;
         }
+
+        //pasarlo a lista de listos
+        aux = aux->siguiente;
+    }
+
+}
+
+void pasarProcesoDePeticionListos(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor, ListaProcesos *listaListos, struct Bloque matriz[8][8]){
+    if(!listaVacia(listaPeticion)){
+        //Crea un nodo con el primero de la lista de peticion
+        NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
+        //Cambia la referencia del primero de lista de peticion, se elimina
+        listaPeticion->primero = listaPeticion->primero->siguiente;
+
+        //Inserta el nodo en la lista contenedor
+        insertar(listaContenedor,almacenarProceso);
+        insertar(listaListos,almacenarProceso);
+        asignarEspacioDisponible(matriz,almacenarProceso);
+
+
+        //Elimina el nodo de la lista de espera
+        //eliminarProcesoEsperando(listaPeticion,almacenarProceso);
+    }else{
+        printf("Ya no hay mas procesos");
     }
 }
 

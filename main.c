@@ -215,13 +215,15 @@ void *administrarProcesos(void *args){
             mostrarListaPosiciones(nodoProceso->listaPosicion);
 
            //eliminar de lista de listos
-            eliminarProcesoEsperando(listaListos,nodoProceso);
+           eliminarProcesoEsperando(listaListos,nodoProceso);
+            //printf("\nEliminando proceso x1");
 
             //eliminar de lista de contenedor
             eliminarProcesoEsperando(listaContenedor,nodoProceso);
+            printf("\nEliminando proceso x2");
 
             //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
-            pasarProcesoDePeticionListos(listaPeticion, listaContenedor, listaListos);
+            pasarProcesoDePeticionListos(listaPeticion, listaContenedor, listaListos, matriz);
 
             printf("\nProcesos restantes en la lista de Contenedor!");
             mostrarListaProcesos(listaContenedor);
@@ -243,9 +245,10 @@ void *administrarProcesos(void *args){
         printf("\nProcesos restantes en la lista de E/S!");
         mostrarListaProcesos(listaEspera);
 
-        if(nodoProceso->id==5){
+
+        /**/if( listaPeticion->primero == NULL){
             printf("\n¡Condicion de finalizacion!");
-        //si el mae llega aqui es porque ya se aseguro de que sea el turno correspondiente
+            //si el mae llega aqui es porque ya se aseguro de que sea el turno correspondiente
 
             // Se establece la variable 'bandera finalizacioede poner, tampoco comer!!!!\n' en 1 para indicar que la simulacion ha terminado
             banderaFinalizacion = 1;
@@ -261,8 +264,25 @@ void *administrarProcesos(void *args){
         }
 
 
+//        if(nodoProceso->id==5){
+//            printf("\n¡Condicion de finalizacion!");
+//            //si el mae llega aqui es porque ya se aseguro de que sea el turno correspondiente
+//
+//            // Se establece la variable 'bandera finalizacioede poner, tampoco comer!!!!\n' en 1 para indicar que la simulacion ha terminado
+//            banderaFinalizacion = 1;
+//            // Se establece 'turno_actual' en -1 para detener el juego y evitar que se sigan ejecutando turnos adicionales
+//            ordenEjecucion = -1;
+//            // Se utiliza 'pthread_cond_broadcast(&cond_turno)' para notificar a todos los hilos
+//            // que el juego ha terminado y que deben terminar su ejecución
+//            pthread_cond_broadcast(&cond_turno);
+//            // Se libera el mutex
+//            pthread_mutex_unlock(&mutex_turno);
+//            // Se sale del ciclo 'while' usando 'break' ya que no hay más movimientos posibles
+//            break;
+//        }
+
+
         //si sale un hilo se mete otro en listaContenedor
-        //ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
         ordenEjecucion = listaListos->primero->id;
         pthread_cond_broadcast(&cond_turno);
         pthread_mutex_unlock(&mutex_turno);

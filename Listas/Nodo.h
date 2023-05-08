@@ -47,7 +47,7 @@ NodoProceso *clonarNodo(NodoProceso *nodo){
     NodoProceso *nodoClonado = crearNodoProceso(nodo->id,nodo->nombre,nodo->peso,nodo->nIteraciones,nodo->ejecucion,nodo->nombreE_S,nodo->tiempoE_S);
     nodoClonado->listaPosicion = nodo->listaPosicion;
     return nodoClonado;
-} 
+}
 
 void mostrarNodoProceso(NodoProceso *nodoProceso){
     printf("Id: %d, Nombre: %s, Peso: %d, Iteraciones: %d, Ejecucion: %d, Dispositivo E/S: %s, Tiempo E/S: %d \n",nodoProceso->id,nodoProceso->nombre,nodoProceso->peso,nodoProceso->nIteraciones,nodoProceso->ejecucion,nodoProceso->nombreE_S,nodoProceso->tiempoE_S);
