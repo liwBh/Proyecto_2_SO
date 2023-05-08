@@ -215,12 +215,11 @@ void *administrarProcesos(void *args){
             mostrarListaPosiciones(nodoProceso->listaPosicion);
 
            //eliminar de lista de listos
-           eliminarProcesoEsperando(listaListos,nodoProceso);
+           //eliminarProcesoEsperando(listaListos,nodoProceso);
             //printf("\nEliminando proceso x1");
 
             //eliminar de lista de contenedor
             eliminarProcesoEsperando(listaContenedor,nodoProceso);
-            printf("\nEliminando proceso x2");
 
             //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
             pasarProcesoDePeticionListos(listaPeticion, listaContenedor, listaListos, matriz);

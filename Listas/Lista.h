@@ -58,11 +58,14 @@ void eliminarProcesoEsperando(ListaProcesos *lista, NodoProceso *nodoEliminar){ 
         while (aux1 != NULL){
             //Si solo hay un nodo en la lista
             if(aux2->id == lista->ultimo->id && lista->primero->id == lista->ultimo->id ){
+                printf("\n-------------------------------------------If elimina #1");
                 lista->primero = NULL;
                 lista->ultimo = NULL;
 
                 //si elimina el ultimo nodo y solo hay 2 nodos
             }else if(  (aux2->id == lista->ultimo->id) && (lista->primero->siguiente == lista->ultimo) && (lista->ultimo->anterior == lista->primero)){
+
+                printf("\n-------------------------------------------If elimina #2");
                 lista->ultimo = lista->primero;
                 lista->primero->siguiente = NULL;
                 lista->primero->anterior = NULL;
@@ -71,6 +74,7 @@ void eliminarProcesoEsperando(ListaProcesos *lista, NodoProceso *nodoEliminar){ 
 
                 //si elimina el primer nodo y solo hay 2 nodos
             }else if( (aux2->id == lista->primero->id) && (lista->ultimo->anterior == lista->primero) && (lista->primero->siguiente == lista->ultimo) ){
+                printf("\n-------------------------------------------If elimina #3");
                 lista->primero = lista->ultimo;
                 lista->ultimo->anterior = NULL;
                 lista->ultimo->siguiente = NULL;
@@ -78,20 +82,23 @@ void eliminarProcesoEsperando(ListaProcesos *lista, NodoProceso *nodoEliminar){ 
                 //elimina el último de la lista, si hay más de 2 nodos
             }else if((aux2->id == aux1->id) && (aux1->id == lista->ultimo->id)) {
 
+                printf("\n-------------------------------------------If elimina #4");
                 lista->ultimo = aux1->anterior;
                 lista->ultimo->siguiente = NULL;
-//                aux1->anterior->siguiente = NULL;
+                 aux1->anterior->siguiente = NULL;
                 aux1->anterior = NULL;
                 //Aquii fail :B
 
                 //elimina el primero de la lista, si hay más de 2 nodos
             }else if((aux2->id == aux1->id) && (aux1->id == lista->primero->id)) {
+                printf("\n-------------------------------------------If elimina #5");
                 lista->primero = aux1->siguiente;
                 aux1->siguiente = NULL;
                 aux1->anterior = NULL;
 
                 //Elimina en el medio de la lista
             }else if(aux2->id == aux1->id){
+                printf("\n-------------------------------------------If elimina #6");
                 aux1->anterior->siguiente = aux1->siguiente;
                 aux1->siguiente->anterior = aux1->anterior;
                 aux1->anterior = NULL;
