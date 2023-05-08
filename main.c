@@ -124,7 +124,7 @@ void llenarListaProcesosEsperando(){
         char str[10];
         char nombre[10] = "P-";
         int peso = rand() % 30 + 1 ;
-        int iteraciones = rand() % 10 + 1;
+        int iteraciones = rand() % 5 + 1;
         int indice_aleatorio = rand() % 3;
         int tiempo = (rand() % 3) + 1;
         char *dispositivos[] = {"mouse", "teclado", "pantalla"};
@@ -196,7 +196,6 @@ void *administrarProcesos(void *args){
             // eliminar nodo de listos
             NodoProceso *nodoEliminar = clonarNodo(nodoProceso);
             eliminarProcesoEsperando(listaListos,nodoEliminar);
-            //mostrarListaProcesos(listaListos);// Si es eliminado - aqui no se inserta de nuevo!
 
             //tiempo en ejecucion
             int tiempoEjecucion = (rand() % 3) + 1;
@@ -206,7 +205,6 @@ void *administrarProcesos(void *args){
             //restar una iteraciones
             nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
             printf("\nIteraciones restantes: %d",nodoProceso->nIteraciones );
-            //mostrarListaProcesos(listaListos);// Si es eliminado - aqui no se inserta de nuevo!
 
             //******** generar crecimiento memoria *************
 
@@ -217,6 +215,7 @@ void *administrarProcesos(void *args){
                 liberarMemoria(nodoProceso,matriz);
                 printf("\nLiberando Memoria utilizada por el proceso");
                 mostrarMatriz(matriz);
+
                 printf("\nDireciones de Memoria a Liberar:  ");
                 mostrarListaPosiciones(nodoProceso->listaPosicion);
                 printf("\n");
@@ -229,16 +228,17 @@ void *administrarProcesos(void *args){
 
                 //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
                 pasarProcesoDePeticionListos(listaPeticion, listaContenedor, listaListos, matriz);
-                //pasarProcesoContenedor(listaPeticion,listaContenedor);
 
                 printf("\nProcesos restantes en la lista de Contenedor!");
                 mostrarListaProcesos(listaContenedor);
+
+                //Matar al hilo del proceso que salio
+                //pthread_cancel(procesos[ordenEjecucion]);
+
             }else{
                 //Agregar en lista espera
                 insertar(listaEspera,nodoProceso);
             }
-
-            //mostrarListaProcesos(listaListos);// Si es eliminado
 
             //Descontar tiempo de espera de los procesos en lista espera de E/S
             continuarProcesosEspera(listaEspera,listaListos, nodoProceso->id);
@@ -250,28 +250,23 @@ void *administrarProcesos(void *args){
             printf("\nProcesos restantes en la lista de E/S!");
             mostrarListaProcesos(listaEspera);
 
-            if(nodoProceso->id==5){
-                //if( listaPeticion->primero == NULL){
+            //if(nodoProceso->id==5){
+            if( listaPeticion->primero == NULL){
                 printf("\n¡Condicion de finalizacion!");
-                //si el mae llega aqui es porque ya se aseguro de que sea el turno correspondiente
-
-                // Se establece la variable 'bandera finalizacioede poner, tampoco comer!!!!\n' en 1 para indicar que la simulacion ha terminado
+                //indicar que la simulacion ha terminado
                 banderaFinalizacion = 1;
                 // Se establece 'turno_actual' en -1 para detener el juego y evitar que se sigan ejecutando turnos adicionales
                 ordenEjecucion = -1;
-                // Se utiliza 'pthread_cond_broadcast(&cond_turno)' para notificar a todos los hilos
-                // que el juego ha terminado y que deben terminar su ejecución
+                // Se utiliza 'pthread_cond_broadcast(&cond_turno)' para notificar a todos los hilos que deben terminar su ejecución
                 pthread_cond_broadcast(&cond_turno);
                 // Se libera el mutex
                 pthread_mutex_unlock(&mutex_turno);
-                // Se sale del ciclo 'while' usando 'break' ya que no hay más movimientos posibles
+                // Se sale del ciclo 'while' usando 'break'
                 break;
 
             }
 
-
             //si sale un hilo se mete otro en listaContenedor
-            //ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
             ordenEjecucion = listaListos->primero->id;
             printf("\nEl proceso siguiente es: ------------------ %d",ordenEjecucion);
             pthread_cond_broadcast(&cond_turno);
