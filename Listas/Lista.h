@@ -58,34 +58,40 @@ void eliminarProcesoEsperando(ListaProcesos *lista, NodoProceso *nodoEliminar){ 
         while (aux1 != NULL){
             //Si el nodo a eliminar es la ultima igualamos las variables de la lista a NULL
             if(aux2->id == lista->ultimo->id && lista->primero->id == lista->ultimo->id ){
+                printf("\n---------------------------------- IF #1 Eliminar - el ultimo de la lista");
                 lista->primero = NULL;
                 lista->ultimo = NULL;
                 //si elimina el ultimo nodo y solo hay 2 nodos
             }else if(  (aux2->id == lista->ultimo->id) && (lista->primero->siguiente == lista->ultimo) && (lista->ultimo->anterior == lista->primero)){
+                printf("\n---------------------------------- IF #2 Eliminar - el ultimo de la lista");
                 lista->ultimo = lista->primero;
                 lista->primero->siguiente = NULL;
                 lista->primero->anterior = NULL;
 
                 //si elimina el primer nodo y solo hay 2 nodos
             }else if( (aux2->id == lista->primero->id) && (lista->ultimo->anterior == lista->primero) && (lista->primero->siguiente == lista->ultimo) ){
+                printf("\n---------------------------------- IF #3 Eliminar - el primero de la lista");
                 lista->primero = lista->ultimo;
                 lista->ultimo->anterior = NULL;
                 lista->ultimo->siguiente = NULL;
 
                 //elimina el último de la lista, si hay más de 2 nodos
             }else if((aux2->id == aux1->id) && (aux1->id == lista->ultimo->id)) {
+                printf("\n---------------------------------- IF #4 Eliminar - el ultimo de la lista");
                 lista->ultimo = aux1->anterior;
                 aux1->anterior->siguiente = NULL;
                 aux1->anterior = NULL;
 
                 //elimina el primero de la lista, si hay más de 2 nodos
             }else if((aux2->id == aux1->id) && (aux1->id == lista->primero->id)) {
+                printf("\n---------------------------------- IF #5 Eliminar - el primero de la lista");
                 lista->primero = aux1->siguiente;
                 aux1->siguiente = NULL;
                 aux1->anterior = NULL;
 
                 //Elimina en el medio de la lista
             }else if(aux2->id == aux1->id){
+                printf("\n---------------------------------- IF #6 Eliminar - en medio de la lista");
                 aux1->anterior->siguiente = aux1->siguiente;
                 aux1->siguiente->anterior = aux1->anterior;
                 aux1->anterior = NULL;

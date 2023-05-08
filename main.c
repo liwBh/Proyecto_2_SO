@@ -189,92 +189,95 @@ void *administrarProcesos(void *args){
            pthread_cond_wait(&cond_turno, &mutex_turno);
         }
 
-        printf("\n*************** Enviando proceso a Ejecucion *******************\n");
-        printf("\nDatos del proceso: ID %d, Nombre %s",nodoProceso->id, nodoProceso->nombre);
+        if(nodoProceso->id == ordenEjecucion){
+            printf("\n*************** Enviando proceso a Ejecucion *******************\n");
+            printf("\nDatos del proceso: ID %d, Nombre %s",nodoProceso->id, nodoProceso->nombre);
 
-        // eliminar nodo de listos
-        eliminarProcesoEsperando(listaListos,nodoProceso);
-        //mostrarListaProcesos(listaListos);// Si es eliminado
+            // eliminar nodo de listos
+            NodoProceso *nodoEliminar = clonarNodo(nodoProceso);
+            eliminarProcesoEsperando(listaListos,nodoEliminar);
+            mostrarListaProcesos(listaListos);// Si es eliminado - aqui no se inserta de nuevo!
 
-        //tiempo en ejecucion
-        int tiempoEjecucion = (rand() % 3) + 1;
-        printf("\nTiempo de Ejecucion %d segundos", tiempoEjecucion);
-        sleep(tiempoEjecucion);
+            //tiempo en ejecucion
+            int tiempoEjecucion = (rand() % 3) + 1;
+            printf("\nTiempo de Ejecucion %d segundos", tiempoEjecucion);
+            sleep(tiempoEjecucion);
 
-        //restar una iteraciones
-        nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
-        printf("\nIteraciones restantes: %d",nodoProceso->nIteraciones );
-        mostrarListaProcesos(listaListos);// Si es eliminado
+            //restar una iteraciones
+            nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
+            printf("\nIteraciones restantes: %d",nodoProceso->nIteraciones );
+            //mostrarListaProcesos(listaListos);// Si es eliminado - aqui no se inserta de nuevo!
 
-        //******** generar crecimiento memoria *************
+            //******** generar crecimiento memoria *************
 
-        //veificar si el proceso aun tiene iteraciones
-        if(nodoProceso->nIteraciones == 0){
-            printf("\n------{ El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------",nodoProceso->id, nodoProceso->nombre);
-            //librerar bloques de memoria
-            liberarMemoria(nodoProceso,matriz);
-            printf("\nLiberando Memoria utilizada por el proceso");
-            mostrarMatriz(matriz);
-            printf("\nDireciones de Memoria a Liberar:  ");
-            mostrarListaPosiciones(nodoProceso->listaPosicion);
-            printf("\n");
+            //veificar si el proceso aun tiene iteraciones
+            if(nodoProceso->nIteraciones == 0){
+                printf("\n------{ El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------",nodoProceso->id, nodoProceso->nombre);
+                //librerar bloques de memoria
+                liberarMemoria(nodoProceso,matriz);
+                printf("\nLiberando Memoria utilizada por el proceso");
+                mostrarMatriz(matriz);
+                printf("\nDireciones de Memoria a Liberar:  ");
+                mostrarListaPosiciones(nodoProceso->listaPosicion);
+                printf("\n");
 
-            //eliminar de lista de listos
-            eliminarProcesoEsperando(listaListos,nodoProceso);
+                //eliminar de lista de listos
+                eliminarProcesoEsperando(listaListos,nodoEliminar);
 
-            //eliminar de lista de contenedor
-            eliminarProcesoEsperando(listaContenedor,nodoProceso);
+                //eliminar de lista de contenedor
+                eliminarProcesoEsperando(listaContenedor,nodoEliminar);
 
-            //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
-            pasarProcesoDePeticionListos(listaPeticion, listaContenedor, listaListos, matriz);
-            //pasarProcesoContenedor(listaPeticion,listaContenedor);
+                //si un proceso sale, se elimina un proceso de lista peticion, y se agrega en lista contenedor
+                pasarProcesoDePeticionListos(listaPeticion, listaContenedor, listaListos, matriz);
+                //pasarProcesoContenedor(listaPeticion,listaContenedor);
 
-            printf("\nProcesos restantes en la lista de Contenedor!");
-            mostrarListaProcesos(listaContenedor);
-        }else{
-            //Agregar en lista espera
-            insertar(listaEspera,nodoProceso);
-        }
+                printf("\nProcesos restantes en la lista de Contenedor!");
+                mostrarListaProcesos(listaContenedor);
+            }else{
+                //Agregar en lista espera
+                insertar(listaEspera,nodoProceso);
+            }
 
-        //mostrarListaProcesos(listaListos);// Si es eliminado
-        //eliminar de lista de listos
-        eliminarProcesoEsperando(listaListos,nodoProceso);
+            //mostrarListaProcesos(listaListos);// Si es eliminado
 
-        //Descontar tiempo de espera de los procesos en lista espera de E/S
-        continuarProcesosEspera(listaEspera,listaListos, nodoProceso->id);
+            //Descontar tiempo de espera de los procesos en lista espera de E/S
+            continuarProcesosEspera(listaEspera,listaListos, nodoProceso->id);
 
-        //mostrar procesos restantes en lista de listos
-        printf("\n\nProcesos restantes en la lista de listos!");
-        mostrarListaProcesos(listaListos);
+            //mostrar procesos restantes en lista de listos
+            printf("\n\nProcesos restantes en la lista de listos!");
+            mostrarListaProcesos(listaListos);
 
-        printf("\nProcesos restantes en la lista de E/S!");
-        mostrarListaProcesos(listaEspera);
+            printf("\nProcesos restantes en la lista de E/S!");
+            mostrarListaProcesos(listaEspera);
 
-        if(nodoProceso->id==5){
-        //if( listaPeticion->primero == NULL){
-            printf("\n¡Condicion de finalizacion!");
-            //si el mae llega aqui es porque ya se aseguro de que sea el turno correspondiente
+            if(nodoProceso->id==5){
+                //if( listaPeticion->primero == NULL){
+                printf("\n¡Condicion de finalizacion!");
+                //si el mae llega aqui es porque ya se aseguro de que sea el turno correspondiente
 
-            // Se establece la variable 'bandera finalizacioede poner, tampoco comer!!!!\n' en 1 para indicar que la simulacion ha terminado
-            banderaFinalizacion = 1;
-            // Se establece 'turno_actual' en -1 para detener el juego y evitar que se sigan ejecutando turnos adicionales
-            ordenEjecucion = -1;
-            // Se utiliza 'pthread_cond_broadcast(&cond_turno)' para notificar a todos los hilos
-            // que el juego ha terminado y que deben terminar su ejecución
+                // Se establece la variable 'bandera finalizacioede poner, tampoco comer!!!!\n' en 1 para indicar que la simulacion ha terminado
+                banderaFinalizacion = 1;
+                // Se establece 'turno_actual' en -1 para detener el juego y evitar que se sigan ejecutando turnos adicionales
+                ordenEjecucion = -1;
+                // Se utiliza 'pthread_cond_broadcast(&cond_turno)' para notificar a todos los hilos
+                // que el juego ha terminado y que deben terminar su ejecución
+                pthread_cond_broadcast(&cond_turno);
+                // Se libera el mutex
+                pthread_mutex_unlock(&mutex_turno);
+                // Se sale del ciclo 'while' usando 'break' ya que no hay más movimientos posibles
+                break;
+
+            }
+
+
+            //si sale un hilo se mete otro en listaContenedor
+            //ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
+            ordenEjecucion = listaListos->primero->id;
+            printf("\nEl proceso siguiente es: ------------------ %d",ordenEjecucion);
             pthread_cond_broadcast(&cond_turno);
-            // Se libera el mutex
             pthread_mutex_unlock(&mutex_turno);
-            // Se sale del ciclo 'while' usando 'break' ya que no hay más movimientos posibles
-            break;
-
         }
 
-
-        //si sale un hilo se mete otro en listaContenedor
-        //ordenEjecucion = identificarOrden(listaListos, ordenEjecucion);
-        ordenEjecucion = listaListos->primero->id;
-        pthread_cond_broadcast(&cond_turno);
-        pthread_mutex_unlock(&mutex_turno);
     }
     return NULL;
 }

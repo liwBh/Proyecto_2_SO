@@ -87,9 +87,14 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
 //
 //    printf("\n------------------------------------------------");
 //    printf("\nAntes del metodo");
-//    mostrarListaProcesos(listaListos);
+    mostrarListaProcesos(listaListos);
 //    printf("\n------------------------------------------------");
-
+    if(listaListos->ultimo->id == id){
+        printf("\nEntro en el bug");
+        eliminarProcesoEsperando(listaListos,listaListos->ultimo);
+    }else{
+        printf("\nNo entro ID: %d", listaListos->ultimo->id );
+    }
 
     //validar que lista de espera no este vacia
     if(!listaVacia(listaEspera)){
@@ -114,15 +119,23 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
                 int nuevoTiempo = (rand() % 3) + 1;
                 aux->tiempoE_S = nuevoTiempo;
                 //moverlo a lista de listos
-                insertar(listaListos,aux);
+                NodoProceso *nodoClon = clonarNodo(aux);
+                insertar(listaListos,nodoClon);
                 //sacarlo de lista de espera
-                eliminarProcesoEsperando(listaEspera,aux);
-
+                eliminarProcesoEsperando(listaEspera,nodoClon);
+                break;
             }
 
             //pasarlo a lista de listos
             aux = aux->siguiente;
         }
+    }
+
+    if(listaListos->ultimo->id == id){
+        printf("\nEntro en el bug");
+        eliminarProcesoEsperando(listaListos,listaListos->ultimo);
+    }else{
+        printf("\nNo entro ID: %d", listaListos->ultimo->id );
     }
 
 //    printf("\n------------------------------------------------");
