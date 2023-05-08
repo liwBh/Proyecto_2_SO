@@ -45,6 +45,7 @@ NodoProceso *crearNodoProceso(int id, char *nombre, int peso, int nIteraciones, 
 
 NodoProceso *clonarNodo(NodoProceso *nodo){
     NodoProceso *nodoClonado = crearNodoProceso(nodo->id,nodo->nombre,nodo->peso,nodo->nIteraciones,nodo->ejecucion,nodo->nombreE_S,nodo->tiempoE_S);
+    nodoClonado->listaPosicion = nodo->listaPosicion;
     return nodoClonado;
 }
 

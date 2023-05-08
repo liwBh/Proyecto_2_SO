@@ -44,7 +44,8 @@ void asignarEspacioDisponible(struct Bloque matriz[8][8], NodoProceso *nodo){
     // determinar el numero de bloques del proceso
     int nBloques = encontrarCantidadDeBloques(nodo->peso);
 
-    printf("\nEl numero de bloques: %d para el proceso: %d", nBloques, nodo->id);
+    printf("\nIngresando un proceso a contexto de ejecucion");
+    printf("\nEl numero de bloques: %d para el proceso con el ID: %d\n", nBloques, nodo->id);
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if(matriz[i][j].disponible == 0){
@@ -82,19 +83,33 @@ void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
     }
 }
 
-void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaListos){
+void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaListos, int id){
+//
+//    printf("\n------------------------------------------------");
+//    printf("\nAntes del metodo");
+//    mostrarListaProcesos(listaListos);
+//    printf("\n------------------------------------------------");
+
+
     //validar que lista de espera no este vacia
     if(!listaVacia(listaEspera)){
+
+        printf("\nEl proceso en ejecucion es ID: %d", id);
 
         //recorre toda la lista de espera
         NodoProceso *aux = listaEspera->primero;
         while(aux != NULL){
 
-            //El tiempo de espera restarle 1
-            aux->tiempoE_S = aux->tiempoE_S - 1;
+            //si no es el mismo proceso que estaba en ejecucion
+            if(aux->id != id){
+                printf("\nEntrooooooooo!  proceso id: %d", aux->id);
+                //El tiempo de espera restarle 1
+                aux->tiempoE_S = aux->tiempoE_S - 1;
+            }
 
             //cuando sale de tiempo de espera llego a 0
-            if(aux->tiempoE_S == 0){
+            if(aux->tiempoE_S == 0 && aux->id != id){
+                printf("\nEntrooooooooo! pasar a listos proceso id: %d", aux->id);
                 //se debe generar otro aleatorio de espera
                 int nuevoTiempo = (rand() % 3) + 1;
                 aux->tiempoE_S = nuevoTiempo;
@@ -108,6 +123,31 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
             //pasarlo a lista de listos
             aux = aux->siguiente;
         }
+    }
+
+//    printf("\n------------------------------------------------");
+//    printf("\nDespues del metodo");
+//    mostrarListaProcesos(listaListos);
+//    printf("\n------------------------------------------------");
+}
+
+void pasarProcesoDePeticionListos(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor, ListaProcesos *listaListos, struct Bloque matriz[8][8]){
+    if(!listaVacia(listaPeticion)){
+        //Crea un nodo con el primero de la lista de peticion
+        NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
+        //Cambia la referencia del primero de lista de peticion, se elimina
+        listaPeticion->primero = listaPeticion->primero->siguiente;
+
+        //Inserta el nodo en la lista contenedor
+        insertar(listaContenedor,almacenarProceso);
+        insertar(listaListos,almacenarProceso);
+        asignarEspacioDisponible(matriz,almacenarProceso);
+
+
+        //Elimina el nodo de la lista de espera
+        eliminarProcesoEsperando(listaPeticion,almacenarProceso);
+    }else{
+        printf("Ya no hay mas procesos");
     }
 }
 
