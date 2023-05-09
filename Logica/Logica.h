@@ -144,27 +144,4 @@ void salirContextoEjecucion(ListaProcesos *listaContenedor, ListaProcesos *lista
     free(nodoEliminar);
 }
 
-void pasarProcesoDePeticionListos(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor, ListaProcesos *listaListos){
-    if(!listaVacia(listaPeticion)){
-        //Crea un nodo con el primero de la lista de peticion
-       NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
-
-
-        //Inserta el nodo en la lista contenedor
-        insertar(listaContenedor,almacenarProceso);
-        insertar(listaListos,almacenarProceso);
-//        insertar(listaContenedor,listaPeticion->primero);
-//        insertar(listaListos,listaPeticion->primero);
-        //asignarEspacioDisponible(matriz,almacenarProceso);
-
-        //Cambia la referencia del primero de lista de peticion, se elimina
-        listaPeticion->primero = listaPeticion->primero->siguiente;
-
-        //Elimina el nodo de la lista de espera
-        //eliminarProcesoEsperando(listaPeticion,almacenarProceso);
-    }else{
-        printf("Ya no hay mas procesos");
-    }
-}
-
 #endif //QUIZ_SO_LOGICA_H

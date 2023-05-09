@@ -7,16 +7,12 @@
 #include "MatrizMemoria/Matriz.h"
 #include "Logica/Logica.h"
 
-pthread_mutex_t mutex_turno = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t cond_turno = PTHREAD_COND_INITIALIZER;
-int ordenEjecucion = 0;
 struct Bloque matriz[8][8];
 //bandera para la finalizacion de la simulacion
 int banderaFinalizacion = 0;
 //numero de procesos
 int nProcesos = 0;
 //hilo planificador - hilo administrador 2
-pthread_t administrador;
 pthread_t planificador;
 pthread_t proceso;
 
@@ -157,8 +153,6 @@ void *administrarProcesos(void *args){
     printf("\nDatos del proceso: ID %d, Nombre %s\n",nodoProceso->id, nodoProceso->nombre);
 
     // eliminar nodo de listos
-   // NodoProceso *nodoEliminar = clonarNodo(nodoProceso);
-    //eliminarProcesoEsperando(listaListos,nodoEliminar);
     eliminarNodo(listaListos,nodoProceso->id);
 
     //tiempo en ejecucion
@@ -223,22 +217,16 @@ void *administrarProcesos(void *args){
 void *iniciarPlanificador(void *args) {
 
     //recorrer la lista de listos - serian los procesos listos en el contexto de ejecucion
-
     NodoProceso *aux = listaListos->primero;
     while (banderaFinalizacion==0) {
 
-        // verificar si el hilo fue iniciado
-        //if (aux->contexto == false) {
 
+        if (pthread_create(&(proceso), NULL, &administrarProcesos, (void *) listaListos->primero) != 0) {
+            printf("Error al crear hilo para el proceso ID: %d\n", aux->id);
+            break;
+        }
+        pthread_join(proceso, NULL);
 
-            if (pthread_create(&(proceso), NULL, &administrarProcesos, (void *) listaListos->primero) != 0) {
-                printf("Error al crear hilo para el proceso ID: %d\n", aux->id);
-                break;
-            }
-            pthread_join(proceso, NULL);
-
-           // aux->contexto = true;
-       // }
 
         // Avanzamos al siguiente nodo
         aux = aux->siguiente;
