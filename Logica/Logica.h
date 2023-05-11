@@ -24,7 +24,7 @@ void pasarProcesoContenedor(ListaProcesos *listaPeticion, ListaProcesos *listaCo
         //Inserta el nodo en la lista contenedor
         insertarUnProceso(listaContenedor,almacenarProceso);
         //Elimina el nodo de la lista de espera
-        eliminarProcesoEsperando(listaPeticion,almacenarProceso);
+        eliminarNodo(listaPeticion,almacenarProceso->id);
     }else{
         printf("Ya no hay mas procesos");
     }
@@ -44,7 +44,8 @@ void asignarEspacioDisponible(struct Bloque matriz[8][8], NodoProceso *nodo){
     // determinar el numero de bloques del proceso
     int nBloques = encontrarCantidadDeBloques(nodo->peso);
 
-    printf("\nEl numero de bloques: %d para el proceso: %d", nBloques, nodo->id);
+    printf("\nIngresando un proceso a contexto de ejecucion");
+    printf("\nEl numero de bloques: %d para el proceso con el ID: %d\n", nBloques, nodo->id);
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if(matriz[i][j].disponible == 0){
@@ -69,17 +70,78 @@ void asignarEspacioDisponible(struct Bloque matriz[8][8], NodoProceso *nodo){
 }
 
 //Metodo para liberar memoria de la matriz segun las posiciones en que se ubica el proceso, con la lista de posiciones
-void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
-    NodoPosicion *aux = nodo->listaPosicion->primero;
-    while (aux != NULL){ //Se recorre la lista de posiciones del proceso
+//void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
+//    NodoPosicion *aux = nodo->listaPosicion->primero;
+//    while (aux != NULL){ //Se recorre la lista de posiciones del proceso
+//
+//        matriz[aux->i][aux->j].disponible = 0; //Y se libera la disponibilidad en memoria
+//        matriz[aux->i][aux->j].idProceso = 0; //Se libera el id del proceso en memoria
+//
+//        //printf("Eliminando pos i:%d j:%d ",);
+//
+//        aux = aux->siguiente;
+//    }
+//}
 
-        matriz[aux->i][aux->j].disponible = 0; //Y se libera la disponibilidad en memoria
-        matriz[aux->i][aux->j].idProceso = 0; //Se libera el id del proceso en memoria
+void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaListos, int id){
+    //validar que lista de espera no este vacia
+    if(!listaVacia(listaEspera)){
 
-        //printf("Eliminando pos i:%d j:%d ",);
+        //recorre toda la lista de espera
+        NodoProceso *aux = listaEspera->primero;
+        while(aux != NULL){
 
-        aux = aux->siguiente;
+            //si no es el mismo proceso que estaba en ejecucion
+            if(aux->id != id){
+                //El tiempo de espera restarle 1
+                aux->tiempoE_S = aux->tiempoE_S - 1;
+            }
+
+            //cuando sale de tiempo de espera llego a 0
+            if(aux->tiempoE_S == 0 && aux->id != id){
+                //se debe generar otro aleatorio de espera
+                int nuevoTiempo = (rand() % 3) + 1;
+                aux->tiempoE_S = nuevoTiempo;
+                //moverlo a lista de listos
+                NodoProceso *nodoClon = clonarNodo(aux);
+                insertar(listaListos,nodoClon);
+                //sacarlo de lista de espera
+                eliminarNodo(listaEspera,aux->id);
+                break;
+            }
+
+            //pasarlo a lista de listos
+            aux = aux->siguiente;
+        }
     }
+}
+
+
+void entrarContextoEjecucion(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor, ListaProcesos *listaListos){
+    if(listaVacia(listaPeticion)){
+        printf("\nNo hay pocesos en lista de peticion para ejecutar!\n");
+        return;
+    }
+
+    NodoProceso *nodoInsertar1= clonarNodo(listaPeticion->primero);
+    NodoProceso *nodoInsertar2= clonarNodo(listaPeticion->primero);
+    insertar(listaContenedor,nodoInsertar1);
+    insertar(listaListos,nodoInsertar2);
+
+    //Cambia la referencia del primero de lista de peticion, se elimina
+    listaPeticion->primero = listaPeticion->primero->siguiente;
+}
+
+void salirContextoEjecucion(ListaProcesos *listaContenedor, ListaProcesos *listaListos, NodoProceso *nodoEliminar){
+    if(listaVacia(listaContenedor)){
+        printf("\nNo hay pocesos en lista de contexto para ejecutar!\n");
+        return;
+    }
+    int idNodoEliminar = nodoEliminar->id;
+    eliminarNodo(listaContenedor, idNodoEliminar);
+    eliminarNodo(listaListos, idNodoEliminar);
+
+    free(nodoEliminar);
 }
 
 #endif //QUIZ_SO_LOGICA_H
