@@ -174,17 +174,17 @@ void llenarMemoriaInicio(){
 void *administrarProcesos(void *args){
     //recibir parametro de nodo
     NodoProceso *nodoProceso = (NodoProceso *) args;
-  /*  desperdicioInternoTotal = calcularDesperdicioInternoTotal(listaContenedor);
+  /* */ desperdicioInternoTotal = calcularDesperdicioInternoTotal(listaContenedor);
     desperdicioExterno = calcularDesperdicioExternoVector(matriz);
     printf("\n ----> cantidad de procesos en contexto de ejecucion : %d  <----", listaContenedor->tamanio);
     printf("\n----> desperdicio interno total : %d", desperdicioInternoTotal);
-    printf("\n----> desperdicio externo total : %d ", desperdicioExterno);*/
+    printf("\n----> desperdicio externo total : %d ", desperdicioExterno);
 
-    printf("\033[0;32m*************** Enviando proceso a Ejecucion *******************\n");
+    printf("\033[0;32m\n*************** Enviando proceso a Ejecucion *******************\n");
     printf("\nDatos del proceso: ID %d, Nombre %s\n",nodoProceso->id, nodoProceso->nombre);
 
-   /* printf("\n----> bloques utilizados %d desperdicio Interno del proceso en el contexto: %d",
-           encontrarCantidadDeBloques(nodoProceso->peso),+ calcularDesperdicioInterno(nodoProceso));*/
+   /**/ printf("\n----> bloques utilizados %d desperdicio Interno del proceso en el contexto: %d",
+           encontrarCantidadDeBloques(nodoProceso->peso), calcularDesperdicioInterno(nodoProceso));
 
     // eliminar nodo de listos
     eliminarNodo(listaListos,nodoProceso->id);

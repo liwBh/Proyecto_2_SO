@@ -8,10 +8,8 @@
 #include "stdbool.h"
 #include "string.h"
 
-extern pthread_mutex_t mutex_turno;
-extern pthread_cond_t cond_turno;
-
 typedef struct NodoProceso{
+    int numBloques;
     int id;
     char nombre[50];
     int peso;
@@ -24,8 +22,6 @@ typedef struct NodoProceso{
 //    char inicio[50];
 //    char finalizacion[50];
     ListaPosicion *listaPosicion;
-    pthread_mutex_t mutex;
-    pthread_cond_t cond;
     struct NodoProceso *anterior;
     struct NodoProceso *siguiente;
 }NodoProceso;
@@ -42,23 +38,31 @@ NodoProceso *crearNodoProceso(int id, char *nombre, int peso, int nIteraciones, 
     nodo->listaPosicion = crearListaPosicion();
     nodo->contexto = false;
     nodo->listaPFVT = 0;
+    nodo->numBloques = 0;
     nodo->siguiente = NULL;
     nodo->anterior = NULL;
     return nodo;
 }
 
-NodoProceso *clonarNodo(NodoProceso *nodo){
+NodoProceso *clonarNodo(NodoProceso *nodo){//la inf
+    printf(" \n el nodo traer este numero de bloques: %d \n", nodo->numBloques);
+    printf(" \n entro al clonar NODO \n");
     NodoProceso *nodoClonado = crearNodoProceso(nodo->id,nodo->nombre,nodo->peso,nodo->nIteraciones,nodo->ejecucion,nodo->nombreE_S,nodo->tiempoE_S);
+    printf(" \n entro al clonar 50 \n");
     nodoClonado->listaPosicion = nodo->listaPosicion;
+    printf(" \n entro al clonar 52 \n");
     nodoClonado->listaPFVT = nodo->listaPFVT;
+    printf(" \n entro al clonar 54 \n");
+    nodoClonado->numBloques = nodo->numBloques;
+    printf(" \n num bloques nodo clonado: %d", nodoClonado->numBloques);
 //    strcpy(nodoClonado->inicio,nodo->inicio);
 //    strcpy(nodoClonado->finalizacion,nodo->finalizacion);
     return nodoClonado;
 }
+
 //
 void mostrarNodoProceso(NodoProceso *nodoProceso){
     printf("\033[0;34mId: %d, Nombre: %s, Peso: %d, Iteraciones: %d, Ejecucion: %d, Dispositivo E/S: %s, Tiempo E/S: %d \n\033[0m",nodoProceso->id,nodoProceso->nombre,nodoProceso->peso,nodoProceso->nIteraciones,nodoProceso->ejecucion,nodoProceso->nombreE_S,nodoProceso->tiempoE_S);
-
 }
 
 #endif //PROYECTO_2_SO_NODO_H

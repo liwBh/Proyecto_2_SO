@@ -240,9 +240,7 @@ void mostrarPFVT(ListaProcesos *listaContenedor){
     int indice = 4;
 
     for (int i = 0; i < 4; ++i) {
-
         mostrarListaProcesosPFVT(listaContenedor, indice);
-
         indice *= 2;
     }
 }
@@ -305,27 +303,36 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
     if(nBloques == 1){//4bits - 1 bloques
         //insertar en listaPFVT_4
         nodo->listaPFVT = 4;
+        nodo->numBloques = 1;
         //printf("\nlistaPFVT_4 %d\n", nodo->listaPFVT);
 
     }else if(nBloques == 2){//8bits - 2 bloques
         //insertar en listaPFVT_8
         nodo->listaPFVT = 8;
+        nodo->numBloques = 2;
         //printf("\nlistaPFVT_8 %d\n", nodo->listaPFVT);
 
     }else if(nBloques > 2 && nBloques <= 4){//16bits - 4 bloques
         //insertar en listaPFVT_16
         nodo->listaPFVT = 16;
+        nodo->numBloques = 4;
+
         //printf("\nlistaPFVT_16 %d\n", nodo->listaPFVT);
 
     }else if(nBloques > 4 && nBloques <= 8){//32bits - 8 bloques
         //insertar en listaPFVT_32
         nodo->listaPFVT = 32;
+        nodo->numBloques = 8;
         //printf("\nlistaPFVT_32 %d\n", nodo->listaPFVT);
     }
+
+  //  printf("\nNumero de bloques: %d\n", nodo->numBloquesJeff);
 }
 
 int calcularDesperdicioInterno(NodoProceso *procesoEvaluar){
-    return (encontrarCantidadDeBloques(procesoEvaluar->peso)*4)-procesoEvaluar->peso;
+   // return (encontrarCantidadDeBloques(procesoEvaluar->peso)*4)-procesoEvaluar->peso;
+
+    return (procesoEvaluar->numBloques * 4) - procesoEvaluar->peso;
 }
 
 int calcularDesperdicioInternoTotal(ListaProcesos *listaContenedor){
@@ -339,10 +346,12 @@ int calcularDesperdicioInternoTotal(ListaProcesos *listaContenedor){
     }
     return desperdicioInternoTotal;
 }
-int calcularDesperdicioExternoVector(struct Bloque matriz[8][8]){
+
+int calcularDesperdicioExternoVector(struct Bloque matriz[8][8]) {
     int desperdicioExterno = 0;
     int vector[64];
     int contador = 0;
+    int cerosDesocupados = 0;
 
     // Convertir matriz en vector
     for (int i = 0; i < 8; i++) {
@@ -357,13 +366,17 @@ int calcularDesperdicioExternoVector(struct Bloque matriz[8][8]){
         if (vector[i] == 1) {
             int j = i + 1;
             while (j < 64 && vector[j] == 0) {
-                desperdicioExterno++;
+                cerosDesocupados++;
                 j++;
             }
+            if (cerosDesocupados < 8) {
+                desperdicioExterno += cerosDesocupados;
+            }
             i = j - 1;
+            cerosDesocupados = 0;
         }
     }
-
     return desperdicioExterno;
 }
+
 #endif //QUIZ_SO_LOGICA_H
