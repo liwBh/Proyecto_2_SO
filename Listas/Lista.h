@@ -111,13 +111,14 @@ void mostrarListaProcesos(ListaProcesos *lista){
 }
 
 //Se recorre la lista para mostrar los procesos
-void mostrarListaProcesosPFVT(ListaProcesos *lista){
+void mostrarListaProcesosPFVT(ListaProcesos *lista, int listaPFVT){
     NodoProceso *aux = lista->primero;
     printf("\n\n");
-    printf("\nLista de Particion fija de tamaño: %d\n", lista->tam);
-
+    printf("\nLista de Particion fija de tamaño: %d kb, numero de bloques: %d\n", listaPFVT, listaPFVT/4);
     while(aux != NULL){
-        mostrarNodoProceso(aux);
+        if(aux->listaPFVT == listaPFVT){
+            mostrarNodoProceso(aux);
+        }
         // sleep(1);
         aux = aux->siguiente;
     }

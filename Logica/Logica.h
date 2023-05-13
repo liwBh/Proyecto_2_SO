@@ -188,6 +188,14 @@ void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaConten
 
 void buscarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) {
     int nBloques = encontrarCantidadDeBloques(nodo->peso);
+
+    if(nBloques > 2 && nBloques <= 4){//16bits - 4 bloques
+        nBloques = 4;
+    }else if(nBloques > 4 && nBloques <= 8){//32bits - 8 bloques
+        nBloques = 8;
+    }
+
+
     printf("\nEl numero de bloques: %d para el proceso: %d", nBloques, nodo->id);
 
     //insertar en la lista las posciones, si en algun momento no puede insertar se resetea la lista
@@ -204,6 +212,11 @@ void buscarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) 
                 nodo->listaPosicion->primero = NULL;
                 nodo->listaPosicion->ultimo = NULL;
                 nBloques =  encontrarCantidadDeBloques(nodo->peso);
+                if(nBloques > 2 && nBloques <= 4){//16bits - 4 bloques
+                    nBloques = 4;
+                }else if(nBloques > 4 && nBloques <= 8){//32bits - 8 bloques
+                    nBloques = 8;
+                }
             }
             //detener ciclo, por que ya se asignaron bloques
             if (nBloques == 0) {
@@ -213,6 +226,18 @@ void buscarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) 
         }
     }
 
+}
+
+//Metodo para mostrar listas de particiones fijas
+void mostrarPFVT(ListaProcesos *listaContenedor){
+    int indice = 4;
+
+    for (int i = 0; i < 4; ++i) {
+
+        mostrarListaProcesosPFVT(listaContenedor, indice);
+
+        indice *= 2;
+    }
 }
 
 //Metodo que recorra matriz y busque el primer espacio disponible, devuelve i y j
@@ -259,6 +284,7 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
 
         //hacer una solicitud de cambio de politica de administracion de memoria
     }
+
     /*
          Maximo de memoria 256
          listaPFVT_4 maximo nodos = 64, cantidad de bloques a utilizar = 1
@@ -272,16 +298,23 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
 
     if(nBloques == 1){//4bits - 1 bloques
         //insertar en listaPFVT_4
+        nodo->listaPFVT = 4;
+        //printf("\nlistaPFVT_4 %d\n", nodo->listaPFVT);
 
     }else if(nBloques == 2){//8bits - 2 bloques
         //insertar en listaPFVT_8
+        nodo->listaPFVT = 8;
+        //printf("\nlistaPFVT_8 %d\n", nodo->listaPFVT);
 
     }else if(nBloques > 2 && nBloques <= 4){//16bits - 4 bloques
         //insertar en listaPFVT_16
+        nodo->listaPFVT = 16;
+        //printf("\nlistaPFVT_16 %d\n", nodo->listaPFVT);
 
     }else if(nBloques > 4 && nBloques <= 8){//32bits - 8 bloques
         //insertar en listaPFVT_32
-
+        nodo->listaPFVT = 32;
+        //printf("\nlistaPFVT_32 %d\n", nodo->listaPFVT);
     }
 }
 #endif //QUIZ_SO_LOGICA_H

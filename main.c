@@ -53,6 +53,10 @@ int main() {
     //Imprimir matriz
     mostrarMatriz( matriz );
 
+    //Tiempo de inicio simulacion
+    time_t startTime = time(NULL);
+    printf("\nEl tiempo de inicio del programa es: %s\n", ctime(&startTime));
+
     //llenar lista de contenedor -> en base a la capacidad de la memoria
     printf("\nLlenando memoria aplicando politica de particiones fijas de varios tamaños\n");
     llenarMemoriaInicio();
@@ -60,6 +64,9 @@ int main() {
     //Imprimir matriz
     printf("\nProcesos actuales en memoria\n");
     mostrarMatriz( matriz );
+
+    //mostrar las listas aplicando politica PFVT
+    mostrarPFVT(listaContenedor);
 
     //mostra listas
     printf("\nProcesos restantes en la lista de solicitudes\n");
@@ -76,7 +83,12 @@ int main() {
     pthread_join(planificador, NULL);
 
 
+    //Tiempo de finalizacion simulacion
+    time_t endTime = time(NULL);
+    printf("El tiempo de finalizacion del programa es de: %s\n", ctime(&endTime));
+
     printf("\n--------{El programa ha Finalizado su Ejecucion!}---------\n");
+
     return 0;
 }
 
@@ -241,6 +253,4 @@ void *iniciarPlanificador(void *args) {
         }
 
     }
-
-
 }

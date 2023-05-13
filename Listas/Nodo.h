@@ -21,6 +21,8 @@ typedef struct NodoProceso{
     int tiempoE_S;
     bool contexto;
     int listaPFVT;
+//    char inicio[50];
+//    char finalizacion[50];
     ListaPosicion *listaPosicion;
     pthread_mutex_t mutex;
     pthread_cond_t cond;
@@ -48,9 +50,12 @@ NodoProceso *crearNodoProceso(int id, char *nombre, int peso, int nIteraciones, 
 NodoProceso *clonarNodo(NodoProceso *nodo){
     NodoProceso *nodoClonado = crearNodoProceso(nodo->id,nodo->nombre,nodo->peso,nodo->nIteraciones,nodo->ejecucion,nodo->nombreE_S,nodo->tiempoE_S);
     nodoClonado->listaPosicion = nodo->listaPosicion;
+    nodoClonado->listaPFVT = nodo->listaPFVT;
+//    strcpy(nodoClonado->inicio,nodo->inicio);
+//    strcpy(nodoClonado->finalizacion,nodo->finalizacion);
     return nodoClonado;
 }
-
+//
 void mostrarNodoProceso(NodoProceso *nodoProceso){
     printf("Id: %d, Nombre: %s, Peso: %d, Iteraciones: %d, Ejecucion: %d, Dispositivo E/S: %s, Tiempo E/S: %d \n",nodoProceso->id,nodoProceso->nombre,nodoProceso->peso,nodoProceso->nIteraciones,nodoProceso->ejecucion,nodoProceso->nombreE_S,nodoProceso->tiempoE_S);
 }
