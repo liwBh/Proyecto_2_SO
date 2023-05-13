@@ -1,3 +1,3 @@
-/home/liwbh/CLionProjects/Proyecto_2_SO/cmake-build-debug/CMakeFiles/Proyecto_2_SO.dir
-/home/liwbh/CLionProjects/Proyecto_2_SO/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/liwbh/CLionProjects/Proyecto_2_SO/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/liwba/OneDrive/Escritorio/I semestre 2023/1-Sistemas operativos/Proyecto_2_SO/cmake-build-debug/CMakeFiles/Proyecto_2_SO.dir
+C:/Users/liwba/OneDrive/Escritorio/I semestre 2023/1-Sistemas operativos/Proyecto_2_SO/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/liwba/OneDrive/Escritorio/I semestre 2023/1-Sistemas operativos/Proyecto_2_SO/cmake-build-debug/CMakeFiles/rebuild_cache.dir

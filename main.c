@@ -122,15 +122,16 @@ void llenarListaProcesosEsperando(){
 }
 
 void llenarMemoriaInicio(){
-
+    //iniciaria con particion fija de varios tamaños
     int deterner = 0;
 
     while( deterner == 0) {
 
         //asignarle espacio en memoria
         asignarEspacioDisponible(matriz, listaPeticion->primero);
+        //asignarle espacio en memoria en base a PFVT
 
-        //inserta el primero en lista
+        //inserta el primero en lista de listos
         NodoProceso *nodo = clonarNodo(listaPeticion->primero);
         insertar(listaListos,nodo);
 

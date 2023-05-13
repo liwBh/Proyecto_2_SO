@@ -70,18 +70,17 @@ void asignarEspacioDisponible(struct Bloque matriz[8][8], NodoProceso *nodo){
 }
 
 //Metodo para liberar memoria de la matriz segun las posiciones en que se ubica el proceso, con la lista de posiciones
-//void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
-//    NodoPosicion *aux = nodo->listaPosicion->primero;
-//    while (aux != NULL){ //Se recorre la lista de posiciones del proceso
-//
-//        matriz[aux->i][aux->j].disponible = 0; //Y se libera la disponibilidad en memoria
-//        matriz[aux->i][aux->j].idProceso = 0; //Se libera el id del proceso en memoria
-//
-//        //printf("Eliminando pos i:%d j:%d ",);
-//
-//        aux = aux->siguiente;
-//    }
-//}
+void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
+    NodoPosicion *aux = nodo->listaPosicion->primero;
+    while (aux != NULL){ //Se recorre la lista de posiciones del proceso
+
+        matriz[aux->i][aux->j].disponible = 0; //Y se libera la disponibilidad en memoria
+        matriz[aux->i][aux->j].idProceso = 0; //Se libera el id del proceso en memoria
+
+        //printf("Eliminando pos i:%d j:%d ",);
+        aux = aux->siguiente;
+    }
+}
 
 void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaListos, int id){
     //validar que lista de espera no este vacia
@@ -144,4 +143,100 @@ void salirContextoEjecucion(ListaProcesos *listaContenedor, ListaProcesos *lista
     free(nodoEliminar);
 }
 
+void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaContenedor){
+    //limpiar posicion en matriz
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            matriz[i][j].disponible = 0;
+            matriz[i][j].idProceso = 0;
+        }
+    }
+
+    //recorrer lista
+    NodoProceso *aux = listaContenedor->primero;
+    while (aux != NULL){
+        //resetea la lista de posiciones de cada proceso
+        aux->listaPosicion = crearListaPosicion();
+        //determinar el numero de bloques
+        int nBloques = (aux->peso / 4);
+        printf("\nMoviendo el numero de bloques: %d del proceso: %d", nBloques, aux->id);
+        //colocar el numero de posciones desde la ultima posicion
+        for(int i = 7; i >= 0; i--) {
+
+            for(int j = 7; j >= 0; j--) {
+                if(matriz[i][j].disponible == 0) {
+                    NodoPosicion *nodoPosicion = crearNodoPosicion(i, j);
+                    matriz[i][j].disponible = 1;
+                    matriz[i][j].idProceso = aux->id;
+
+                    //agregar la posicion en la lista del proceso
+                    insertarNodoPosicion(aux->listaPosicion, nodoPosicion);
+                    nBloques--;
+                    if (nBloques == 0) {
+                        i = 0;
+                        break;
+                    }
+                }
+            }
+        }
+        aux = aux->siguiente;
+    }
+
+    printf("\n\nLa memoria termino de ser desfragmentada\n");
+    // mostrarMatriz(matriz);
+}
+
+//Metodo que recorra matriz y busque el primer espacio disponible, devuelve i y j
+ListaPosicion *asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) {
+
+    int nBloques = encontrarCantidadDeBloques(nodo->peso);
+    printf("El numero de bloques: %d para el proceso: %d", nBloques, nodo->id);
+    //crear una lista
+    ListaPosicion *listaPosiciones = crearListaPosicion();
+
+    //insertar en la lista las posciones, si en algun momento no puede insertar se resetea la lista
+    for (int i = 0; i < 8; ++i) {
+        for (int j = 0; j < 8; ++j) {
+            NodoPosicion *almacena = crearNodoPosicion(0, 0);
+            if (matriz[i][j].disponible == 0) {
+                almacena->i = i;
+                almacena->j = j;
+                insertarNodoPosicion(listaPosiciones, almacena);
+                nBloques--;
+            } else {
+                //resetear la lista
+                listaPosiciones->primero = NULL;
+                listaPosiciones->ultimo = NULL;
+                nBloques = (nodo->peso / 4);
+            }
+            //detener ciclo, por que ya se asignaron bloques
+            if (nBloques == 0) {
+                i = 8;
+                break;
+            }
+        }
+    }
+
+    if (!estaVacia(listaPosiciones)) {
+        //recorer la lista y asinar bloques
+        NodoPosicion *aux = listaPosiciones->primero;
+        while (aux != NULL) {
+            //Asignado en matriz
+            matriz[aux->i][aux->j].disponible = 1;
+            matriz[aux->i][aux->j].idProceso = nodo->id;
+            //Agregando direccion al metodo de los bloques en memoria
+            insertarNodoPosicion(nodo->listaPosicion, aux);
+            aux = aux->siguiente;
+        }
+    } else {
+        //liberar un proceso para evitar saturacion de memoria
+//        NodoProceso *nodoEliminar = seleccionarNodoAleatorio(listaContenedor); // Almacenar nodo a eliminar
+//        printf("\nLiberando de memoria %d bloques del proceso: %d",(nodoEliminar->peso/4), nodoEliminar->id);
+//        liberarMemoria(nodoEliminar,matriz); //Libera la memoria por medio de la lista de posiciones que tiene el procesoodoEl
+
+        //defragmentar
+        //printf("\n\n*****Es necesario desfragmentar memoria*****\n");
+        //desfragmentarMemoria(matriz, listaContenedor);
+    }
+}
 #endif //QUIZ_SO_LOGICA_H

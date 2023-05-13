@@ -12,6 +12,7 @@
 
 //Una lista que contiene los procesos
 typedef struct ListaProcesos{
+    int tam;
     NodoProceso *primero;
     NodoProceso *ultimo;
 }ListaProcesos;
@@ -19,6 +20,7 @@ typedef struct ListaProcesos{
 //Crea y reserva espacio en memoria de la lista
 ListaProcesos *crearListaProcesos(){
     ListaProcesos *lista = (ListaProcesos*) malloc(sizeof(ListaProcesos));
+    lista->tam = 0;
     lista->primero = NULL;
     lista->ultimo = NULL;
     return lista;
@@ -106,6 +108,19 @@ void mostrarListaProcesos(ListaProcesos *lista){
     while(aux != NULL){
         mostrarNodoProceso(aux);
        // sleep(1);
+        aux = aux->siguiente;
+    }
+}
+
+//Se recorre la lista para mostrar los procesos
+void mostrarListaProcesosPFVT(ListaProcesos *lista){
+    NodoProceso *aux = lista->primero;
+    printf("\n\n");
+    printf("\nLista de Particion fija de tamaño: %d\n", lista->tam);
+
+    while(aux != NULL){
+        mostrarNodoProceso(aux);
+        // sleep(1);
         aux = aux->siguiente;
     }
 }
