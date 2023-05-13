@@ -186,13 +186,9 @@ void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaConten
     // mostrarMatriz(matriz);
 }
 
-//Metodo que recorra matriz y busque el primer espacio disponible, devuelve i y j
-ListaPosicion *asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) {
-
+void buscarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) {
     int nBloques = encontrarCantidadDeBloques(nodo->peso);
-    printf("El numero de bloques: %d para el proceso: %d", nBloques, nodo->id);
-    //crear una lista
-    ListaPosicion *listaPosiciones = crearListaPosicion();
+    printf("\nEl numero de bloques: %d para el proceso: %d", nBloques, nodo->id);
 
     //insertar en la lista las posciones, si en algun momento no puede insertar se resetea la lista
     for (int i = 0; i < 8; ++i) {
@@ -201,13 +197,13 @@ ListaPosicion *asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProc
             if (matriz[i][j].disponible == 0) {
                 almacena->i = i;
                 almacena->j = j;
-                insertarNodoPosicion(listaPosiciones, almacena);
+                insertarNodoPosicion(nodo->listaPosicion, almacena);
                 nBloques--;
             } else {
                 //resetear la lista
-                listaPosiciones->primero = NULL;
-                listaPosiciones->ultimo = NULL;
-                nBloques = (nodo->peso / 4);
+                nodo->listaPosicion->primero = NULL;
+                nodo->listaPosicion->ultimo = NULL;
+                nBloques =  encontrarCantidadDeBloques(nodo->peso);
             }
             //detener ciclo, por que ya se asignaron bloques
             if (nBloques == 0) {
@@ -217,9 +213,41 @@ ListaPosicion *asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProc
         }
     }
 
-    if (!estaVacia(listaPosiciones)) {
-        //recorer la lista y asinar bloques
-        NodoPosicion *aux = listaPosiciones->primero;
+}
+
+//Metodo que recorra matriz y busque el primer espacio disponible, devuelve i y j
+void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo, ListaProcesos *listaContenedor) {
+
+    buscarEspacioDisponiblePFVT(matriz, nodo);
+    //printf("\nPosiciones en memoria asiganas al proceso:");
+    //mostrarListaPosiciones(nodo->listaPosicion);
+
+
+    //si tiene hueco en memoria para el proceso
+    if (!estaVacia(nodo->listaPosicion)) {
+
+        //recorer la lista y asinar bloques en la memoria
+        NodoPosicion *aux = nodo->listaPosicion->primero;
+        while (aux != NULL) {
+            //Asignado en matriz
+            matriz[aux->i][aux->j].disponible = 1;
+            matriz[aux->i][aux->j].idProceso = nodo->id;
+
+            aux = aux->siguiente;
+        }
+
+        mostrarMatriz(matriz);
+
+
+    } else {
+        //defragmentar
+        printf("\n\n*****Es necesario desfragmentar memoria*****\n");
+        desfragmentarMemoria(matriz, listaContenedor);
+
+        //Meterlo en memoria
+        buscarEspacioDisponiblePFVT(matriz, nodo);
+        //recorer la lista y asinar bloques en la memoria
+        NodoPosicion *aux = nodo->listaPosicion->primero;
         while (aux != NULL) {
             //Asignado en matriz
             matriz[aux->i][aux->j].disponible = 1;
@@ -228,15 +256,32 @@ ListaPosicion *asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProc
             insertarNodoPosicion(nodo->listaPosicion, aux);
             aux = aux->siguiente;
         }
-    } else {
-        //liberar un proceso para evitar saturacion de memoria
-//        NodoProceso *nodoEliminar = seleccionarNodoAleatorio(listaContenedor); // Almacenar nodo a eliminar
-//        printf("\nLiberando de memoria %d bloques del proceso: %d",(nodoEliminar->peso/4), nodoEliminar->id);
-//        liberarMemoria(nodoEliminar,matriz); //Libera la memoria por medio de la lista de posiciones que tiene el procesoodoEl
 
-        //defragmentar
-        //printf("\n\n*****Es necesario desfragmentar memoria*****\n");
-        //desfragmentarMemoria(matriz, listaContenedor);
+        //hacer una solicitud de cambio de politica de administracion de memoria
+    }
+    /*
+         Maximo de memoria 256
+         listaPFVT_4 maximo nodos = 64, cantidad de bloques a utilizar = 1
+         listaPFVT_8 maximo nodos = 32, cantidad de bloques a utilizar = 2
+         listaPFVT_16 maximo nodos = 16, cantidad de bloques a utilizar = 4
+         listaPFVT_32 maximo nodos = 8, cantidad de bloques a utilizar = 8
+    */
+
+    //asignarlo a una lista de particiones de tamaño variado
+    int nBloques = encontrarCantidadDeBloques(nodo->peso);
+
+    if(nBloques == 1){//4bits - 1 bloques
+        //insertar en listaPFVT_4
+
+    }else if(nBloques == 2){//8bits - 2 bloques
+        //insertar en listaPFVT_8
+
+    }else if(nBloques > 2 && nBloques <= 4){//16bits - 4 bloques
+        //insertar en listaPFVT_16
+
+    }else if(nBloques > 4 && nBloques <= 8){//32bits - 8 bloques
+        //insertar en listaPFVT_32
+
     }
 }
 #endif //QUIZ_SO_LOGICA_H

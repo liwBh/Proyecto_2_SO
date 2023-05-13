@@ -20,6 +20,7 @@ typedef struct NodoProceso{
     char nombreE_S[50];
     int tiempoE_S;
     bool contexto;
+    int listaPFVT;
     ListaPosicion *listaPosicion;
     pthread_mutex_t mutex;
     pthread_cond_t cond;
@@ -38,6 +39,7 @@ NodoProceso *crearNodoProceso(int id, char *nombre, int peso, int nIteraciones, 
     nodo->tiempoE_S = tiempoE_S;
     nodo->listaPosicion = crearListaPosicion();
     nodo->contexto = false;
+    nodo->listaPFVT = 0;
     nodo->siguiente = NULL;
     nodo->anterior = NULL;
     return nodo;

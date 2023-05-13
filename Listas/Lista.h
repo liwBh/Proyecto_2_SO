@@ -12,7 +12,6 @@
 
 //Una lista que contiene los procesos
 typedef struct ListaProcesos{
-    int tam;
     NodoProceso *primero;
     NodoProceso *ultimo;
 }ListaProcesos;
@@ -20,7 +19,6 @@ typedef struct ListaProcesos{
 //Crea y reserva espacio en memoria de la lista
 ListaProcesos *crearListaProcesos(){
     ListaProcesos *lista = (ListaProcesos*) malloc(sizeof(ListaProcesos));
-    lista->tam = 0;
     lista->primero = NULL;
     lista->ultimo = NULL;
     return lista;

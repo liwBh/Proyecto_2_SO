@@ -48,16 +48,18 @@ int main() {
 
     printf("\nInicializando estructura de Memoria\n");
     //crear aquitectura de memoria
-    //llenarMatriz( matriz);
+    llenarMatriz( matriz);
 
     //Imprimir matriz
-    //mostrarMatriz( matriz );
+    mostrarMatriz( matriz );
 
     //llenar lista de contenedor -> en base a la capacidad de la memoria
+    printf("\nLlenando memoria aplicando politica de particiones fijas de varios tamaños\n");
     llenarMemoriaInicio();
 
     //Imprimir matriz
-    //mostrarMatriz( matriz );
+    printf("\nProcesos actuales en memoria\n");
+    mostrarMatriz( matriz );
 
     //mostra listas
     printf("\nProcesos restantes en la lista de solicitudes\n");
@@ -128,8 +130,9 @@ void llenarMemoriaInicio(){
     while( deterner == 0) {
 
         //asignarle espacio en memoria
-        asignarEspacioDisponible(matriz, listaPeticion->primero);
+        //asignarEspacioDisponible(matriz, listaPeticion->primero);
         //asignarle espacio en memoria en base a PFVT
+        asignarEspacioDisponiblePFVT( matriz,listaPeticion->primero, listaContenedor );
 
         //inserta el primero en lista de listos
         NodoProceso *nodo = clonarNodo(listaPeticion->primero);
