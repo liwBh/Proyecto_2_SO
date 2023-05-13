@@ -27,7 +27,8 @@ void mostrarMatriz(struct Bloque matriz[8][8]){
     printf("\n\n");
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            printf("[ %d ]", matriz[i][j].disponible );
+            printf("\033[1;34m[ %d ]\033[0m", matriz[i][j].disponible);
+
         }
         printf("\n");
     }

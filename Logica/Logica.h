@@ -26,7 +26,8 @@ void pasarProcesoContenedor(ListaProcesos *listaPeticion, ListaProcesos *listaCo
         //Elimina el nodo de la lista de espera
         eliminarNodo(listaPeticion,almacenarProceso->id);
     }else{
-        printf("Ya no hay mas procesos");
+        printf("\033[1;31mYa no hay mas procesos\033[0m");
+
     }
 }
 
@@ -44,8 +45,9 @@ void asignarEspacioDisponible(struct Bloque matriz[8][8], NodoProceso *nodo){
     // determinar el numero de bloques del proceso
     int nBloques = encontrarCantidadDeBloques(nodo->peso);
 
-    printf("\nIngresando un proceso a contexto de ejecucion");
-    printf("\nEl numero de bloques: %d para el proceso con el ID: %d\n", nBloques, nodo->id);
+    printf("\033[1;33m\nIngresando un proceso a contexto de ejecucion");
+    printf("\nEl numero de bloques: %d para el proceso con el ID: %d\n\033[0m", nBloques, nodo->id);
+
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
             if(matriz[i][j].disponible == 0){
@@ -118,7 +120,8 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
 
 void entrarContextoEjecucion(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor, ListaProcesos *listaListos){
     if(listaVacia(listaPeticion)){
-        printf("\nNo hay pocesos en lista de peticion para ejecutar!\n");
+        printf("\033[1;31mNo hay procesos en lista de peticiones para ejecutar!\n");
+
         return;
     }
 
@@ -133,7 +136,8 @@ void entrarContextoEjecucion(ListaProcesos *listaPeticion, ListaProcesos *listaC
 
 void salirContextoEjecucion(ListaProcesos *listaContenedor, ListaProcesos *listaListos, NodoProceso *nodoEliminar){
     if(listaVacia(listaContenedor)){
-        printf("\nNo hay pocesos en lista de contexto para ejecutar!\n");
+        printf("\033[1;31m\nNo hay procesos en lista de contexto para ejecutar!\n\033[0m");
+
         return;
     }
     int idNodoEliminar = nodoEliminar->id;
@@ -159,7 +163,8 @@ void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaConten
         aux->listaPosicion = crearListaPosicion();
         //determinar el numero de bloques
         int nBloques = (aux->peso / 4);
-        printf("\nMoviendo el numero de bloques: %d del proceso: %d", nBloques, aux->id);
+        printf("\033[38;5;214m\nMoviendo el numero de bloques: %d del proceso: %d\033[0m", nBloques, aux->id);
+
         //colocar el numero de posciones desde la ultima posicion
         for(int i = 7; i >= 0; i--) {
 
@@ -182,7 +187,8 @@ void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaConten
         aux = aux->siguiente;
     }
 
-    printf("\n\nLa memoria termino de ser desfragmentada\n");
+    printf("\033[0;32m%s\033[0m", "\n\nLa memoria terminó de ser desfragmentada\n");
+
     // mostrarMatriz(matriz);
 }
 
@@ -196,7 +202,8 @@ void buscarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) 
     }
 
 
-    printf("\nEl numero de bloques: %d para el proceso: %d", nBloques, nodo->id);
+    printf("\033[0;32mEl numero de bloques: %d para el proceso: %d\033[0m", nBloques, nodo->id);
+
 
     //insertar en la lista las posciones, si en algun momento no puede insertar se resetea la lista
     for (int i = 0; i < 8; ++i) {
@@ -247,7 +254,6 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
     //printf("\nPosiciones en memoria asiganas al proceso:");
     //mostrarListaPosiciones(nodo->listaPosicion);
 
-
     //si tiene hueco en memoria para el proceso
     if (!estaVacia(nodo->listaPosicion)) {
 
@@ -263,10 +269,10 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
 
         mostrarMatriz(matriz);
 
-
     } else {
         //defragmentar
-        printf("\n\n*****Es necesario desfragmentar memoria*****\n");
+        printf("\033[1;31m\n\n*****Es necesario desfragmentar memoria*****\n\033[0m");
+
         desfragmentarMemoria(matriz, listaContenedor);
 
         //Meterlo en memoria
@@ -316,5 +322,48 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
         nodo->listaPFVT = 32;
         //printf("\nlistaPFVT_32 %d\n", nodo->listaPFVT);
     }
+}
+
+int calcularDesperdicioInterno(NodoProceso *procesoEvaluar){
+    return (encontrarCantidadDeBloques(procesoEvaluar->peso)*4)-procesoEvaluar->peso;
+}
+
+int calcularDesperdicioInternoTotal(ListaProcesos *listaContenedor){
+    int desperdicioInternoTotal = 0;
+    NodoProceso *aux = listaContenedor->primero;
+    printf("\n\n");
+    while(aux != NULL){
+        desperdicioInternoTotal+= calcularDesperdicioInterno(aux);
+        // sleep(1);
+        aux = aux->siguiente;
+    }
+    return desperdicioInternoTotal;
+}
+int calcularDesperdicioExternoVector(struct Bloque matriz[8][8]){
+    int desperdicioExterno = 0;
+    int vector[64];
+    int contador = 0;
+
+    // Convertir matriz en vector
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            vector[contador] = matriz[i][j].disponible;
+            contador++;
+        }
+    }
+
+    // Hacer el cálculo de desperdicio externo en el vector
+    for (int i = 0; i < 64; i++) {
+        if (vector[i] == 1) {
+            int j = i + 1;
+            while (j < 64 && vector[j] == 0) {
+                desperdicioExterno++;
+                j++;
+            }
+            i = j - 1;
+        }
+    }
+
+    return desperdicioExterno;
 }
 #endif //QUIZ_SO_LOGICA_H

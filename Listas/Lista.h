@@ -14,6 +14,7 @@
 typedef struct ListaProcesos{
     NodoProceso *primero;
     NodoProceso *ultimo;
+    int tamanio;
 }ListaProcesos;
 
 //Crea y reserva espacio en memoria de la lista
@@ -21,6 +22,7 @@ ListaProcesos *crearListaProcesos(){
     ListaProcesos *lista = (ListaProcesos*) malloc(sizeof(ListaProcesos));
     lista->primero = NULL;
     lista->ultimo = NULL;
+    lista->tamanio = 0;
     return lista;
 }
 
@@ -43,6 +45,7 @@ void insertar(ListaProcesos *lista, NodoProceso *nodo){
         nodo->anterior = lista->ultimo;
         lista->ultimo = nodo;
     }
+    lista->tamanio+=1;
 }
 
 void eliminarNodo(ListaProcesos *lista, int idNodoEliminar){ //ELimina un nodo (ficha) de una lista
@@ -96,7 +99,7 @@ void eliminarNodo(ListaProcesos *lista, int idNodoEliminar){ //ELimina un nodo (
 
         aux1 = aux1->siguiente;
     }
-
+    lista->tamanio-=1;
 }
 
 //Se recorre la lista para mostrar los procesos
@@ -114,7 +117,9 @@ void mostrarListaProcesos(ListaProcesos *lista){
 void mostrarListaProcesosPFVT(ListaProcesos *lista, int listaPFVT){
     NodoProceso *aux = lista->primero;
     printf("\n\n");
-    printf("\nLista de Particion fija de tamaño: %d kb, numero de bloques: %d\n", listaPFVT, listaPFVT/4);
+    printf("\033[0;33mista de Particion fija de tamaño: %d kb, numero de bloques: %d!\033[0m\n", listaPFVT, listaPFVT/4);
+
+//    printf("\nLista de Particion fija de tamaño: %d kb, numero de bloques: %d\n", listaPFVT, listaPFVT/4);
     while(aux != NULL){
         if(aux->listaPFVT == listaPFVT){
             mostrarNodoProceso(aux);

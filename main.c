@@ -13,6 +13,11 @@ int banderaFinalizacion = 0;
 //numero de procesos
 int nProcesos = 0;
 //hilo planificador - hilo administrador 2
+//variable para evaluar desperdicio interno de cada proceso
+int desperdicioInternoTotal = 0;
+//variable para evaluar desperdicio externo dentro del algoritmo de planificacion
+int desperdicioExterno= 0;
+
 pthread_t planificador;
 pthread_t proceso;
 
@@ -35,7 +40,7 @@ void *iniciarPlanificador(void *args);
 
 int main() {
 
-    printf("------------- Emulador de memoria Particiones Fijas y Variables ------------\n");
+    printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
 
     printf("\nTamaño de memoria = 256kb\n");
     printf("Tamaño del bloque = 4kb\n");
@@ -46,7 +51,8 @@ int main() {
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
 
-    printf("\nInicializando estructura de Memoria\n");
+    printf("\033[1;33mInicializando estructura de Memoria\033[0m\n");
+
     //crear aquitectura de memoria
     llenarMatriz( matriz);
 
@@ -55,10 +61,12 @@ int main() {
 
     //Tiempo de inicio simulacion
     time_t startTime = time(NULL);
-    printf("\nEl tiempo de inicio del programa es: %s\n", ctime(&startTime));
+    printf("\033[1;32m\nEl tiempo de inicio del programa es: %s\033[0m\n", ctime(&startTime));
+
 
     //llenar lista de contenedor -> en base a la capacidad de la memoria
-    printf("\nLlenando memoria aplicando politica de particiones fijas de varios tamaños\n");
+    printf("\033[1;33m\nLlenando memoria aplicando politica de particiones fijas de varios tamaños\n\033[0m");
+
     llenarMemoriaInicio();
 
     //Imprimir matriz
@@ -69,11 +77,14 @@ int main() {
     mostrarPFVT(listaContenedor);
 
     //mostra listas
-    printf("\nProcesos restantes en la lista de solicitudes\n");
+    printf("\033[0;32m\nProcesos restantes en la lista de solicitudes\n\033[0m");
+
     mostrarListaProcesos(listaPeticion);
-    printf("\nProcesos agregados en la lista de contexto de ejecucion\n");
+    printf("\033[1;32m\nProcesos agregados en la lista de contexto de ejecucion\n\033[0m");
+
     mostrarListaProcesos(listaContenedor);
-    printf("\nProcesos agregados en la lista de listos\n");
+    printf("\033[0;32m\nProcesos agregados en la lista de listos\n\033[0m");
+
     mostrarListaProcesos(listaListos);
 
     //Iniciar planificador
@@ -87,8 +98,7 @@ int main() {
     time_t endTime = time(NULL);
     printf("El tiempo de finalizacion del programa es de: %s\n", ctime(&endTime));
 
-    printf("\n--------{El programa ha Finalizado su Ejecucion!}---------\n");
-
+    printf("\033[1;31m--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
     return 0;
 }
 
@@ -164,16 +174,25 @@ void llenarMemoriaInicio(){
 void *administrarProcesos(void *args){
     //recibir parametro de nodo
     NodoProceso *nodoProceso = (NodoProceso *) args;
+  /*  desperdicioInternoTotal = calcularDesperdicioInternoTotal(listaContenedor);
+    desperdicioExterno = calcularDesperdicioExternoVector(matriz);
+    printf("\n ----> cantidad de procesos en contexto de ejecucion : %d  <----", listaContenedor->tamanio);
+    printf("\n----> desperdicio interno total : %d", desperdicioInternoTotal);
+    printf("\n----> desperdicio externo total : %d ", desperdicioExterno);*/
 
-    printf("\n*************** Enviando proceso a Ejecucion *******************\n");
+    printf("\033[0;32m*************** Enviando proceso a Ejecucion *******************\n");
     printf("\nDatos del proceso: ID %d, Nombre %s\n",nodoProceso->id, nodoProceso->nombre);
+
+   /* printf("\n----> bloques utilizados %d desperdicio Interno del proceso en el contexto: %d",
+           encontrarCantidadDeBloques(nodoProceso->peso),+ calcularDesperdicioInterno(nodoProceso));*/
 
     // eliminar nodo de listos
     eliminarNodo(listaListos,nodoProceso->id);
 
     //tiempo en ejecucion
     int tiempoEjecucion = (rand() % 3) + 1;
-    printf("\nTiempo de Ejecucion %d segundos", tiempoEjecucion);
+    printf("\033[0;32m\nTiempo de Ejecucion %d segundos\033[0m", tiempoEjecucion);
+
     sleep(tiempoEjecucion);
 
     //restar una iteraciones
@@ -184,26 +203,34 @@ void *administrarProcesos(void *args){
 
     //veificar si el proceso aun tiene iteraciones
     if(nodoProceso->nIteraciones == 0){
-        printf("\n------{ El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------",nodoProceso->id, nodoProceso->nombre);
-        //librerar bloques de memoria
-        //liberarMemoria(nodoProceso,matriz);
-        //printf("\nLiberando Memoria utilizada por el proceso");
-        //mostrarMatriz(matriz);
+        printf("\033[1;33m\n------{ El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------\033[0m",nodoProceso->id, nodoProceso->nombre);
 
-        //printf("\nDireciones de Memoria a Liberar:  ");
-        //mostrarListaPosiciones(nodoProceso->listaPosicion);
-        //printf("\n");
+        //librerar bloques de memoria
+        liberarMemoria(nodoProceso,matriz);
+        //printf("\nLiberando Memoria utilizada por el proceso");
+        mostrarMatriz(matriz);
+
+        printf("\033[1;33mDirecciones de Memoria a Liberar:  \033[0m");
+
+        mostrarListaPosiciones(nodoProceso->listaPosicion);
+        printf("\n");
+
+        //asignarle espacio en memoria en base a PFVT, al proceso entrante al contexto de ejecucion
+         asignarEspacioDisponiblePFVT(matriz,listaPeticion->primero,listaContenedor);
 
         //agregar un proceso nuevo a contexto de ejecucion
         entrarContextoEjecucion(listaPeticion,listaContenedor,listaListos);
-
-        //sacar de contexto un proceso sin iteraciones
+        
+        //sacar de contexto un proceso sin iteraciones del contexto de ejecucion
         salirContextoEjecucion(listaContenedor,listaListos,nodoProceso);
 
-        printf("\nProcesos restantes en la lista de Peticiones!");
+        //mostrar las listas de procesos en el contexto de ejecucion
+        printf("\033[1;33m\nProcesos restantes en la lista de Peticiones!\n\033[0m");
+
         mostrarListaProcesos(listaPeticion);
 
-        printf("\nProcesos restantes en la lista de Contenedor!");
+        printf("\033[0;32m%s\033[0m", "Procesos restantes en la lista de Contenedor!");
+
         mostrarListaProcesos(listaContenedor);
 
     }else{
