@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "/home/liwbh/CLionProjects/Proyecto_2_SO/cmake-build-debug",
-		"source" : "/home/liwbh/CLionProjects/Proyecto_2_SO"
+		"build" : "/home/jurguen/Documentos/GitHub/Proyecto_2_SO/cmake-build-debug",
+		"source" : "/home/jurguen/Documentos/GitHub/Proyecto_2_SO"
 	},
 	"version" : 
 	{

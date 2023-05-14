@@ -316,13 +316,9 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
 }
 
 int calcularDesperdicioInterno(NodoProceso *procesoEvaluar){
-
-    printf("\ncalcularDesperdicioInterno!!!!!!!!!!\n");
     int nbloques = procesoEvaluar->numBloques;
     int peso = procesoEvaluar->peso;
     int resultado = (nbloques * 4) - peso;
-
-    printf("\nfin calcularDesperdicioInterno!!!!!!!!!!\n");
     return resultado;
 }
 

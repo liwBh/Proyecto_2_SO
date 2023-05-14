@@ -58,14 +58,11 @@ NodoProceso *crearNodoProcesoDos(int id, char *nombre, int peso, int nIteracione
     nodo->anterior = NULL;
     return nodo;
 }
-NodoProceso *clonarNodo(NodoProceso *nodo){//la inf
-    printf("\nclonarNodo!!!!!!!!!!\n");
+NodoProceso *clonarNodo(NodoProceso *nodo){
     NodoProceso *nodoClonado = crearNodoProcesoDos(nodo->id,nodo->nombre,nodo->peso,nodo->nIteraciones,nodo->ejecucion,nodo->nombreE_S,nodo->tiempoE_S, nodo->numBloques);
     nodoClonado->listaPosicion = nodo->listaPosicion;
     nodoClonado->listaPFVT = nodo->listaPFVT;
-    printf("\nnumBloques!!!!!!!!!!\n");
     nodoClonado->numBloques = nodo->numBloques;
-    printf("\nclonarNodo Termino!!!!!!!!!!\n");
 
     return nodoClonado;
 
