@@ -96,7 +96,8 @@ int main() {
 
     //Tiempo de finalizacion simulacion
     time_t endTime = time(NULL);
-    printf("El tiempo de finalizacion del programa es de: %s\n", ctime(&endTime));
+    printf("\033[32mEl tiempo de finalizacion del programa es de: %s\033[0m\n", ctime(&endTime));
+
 
     printf("\033[1;31m--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
     return 0;
@@ -114,7 +115,8 @@ void crearListas(){
 
 void llenarListaProcesosEsperando(){
 
-    printf("\n---------Creando procesos ---------\n");
+    printf("\033[33m\n---------Creando procesos ---------\n\033[0m");
+
 
     srand(time(NULL));
     nProcesos = rand() % (30 - 25 + 1) + 25;
@@ -176,22 +178,24 @@ void *administrarProcesos(void *args){
     NodoProceso *nodoProceso = (NodoProceso *) args;
   /* */ desperdicioInternoTotal = calcularDesperdicioInternoTotal(listaContenedor);
     desperdicioExterno = calcularDesperdicioExternoVector(matriz);
-    printf("\n ----> cantidad de procesos en contexto de ejecucion : %d  <----", listaContenedor->tamanio);
-    printf("\n----> desperdicio interno total : %d", desperdicioInternoTotal);
-    printf("\n----> desperdicio externo total : %d ", desperdicioExterno);
 
-    printf("\033[0;32m\n*************** Enviando proceso a Ejecucion *******************\n");
+    printf("\033[33m\nInformacion de rendimiento de memoria\n\033[0m");
+    printf("\nCantidad de procesos en contexto de ejecucion : %d", listaContenedor->tamanio);
+    printf("\nDesperdicio interno total : %d kb", desperdicioInternoTotal);
+    printf("\nDesperdicio externo total : %d kb\n", desperdicioExterno);
+
+    printf("\033[0;32m\n*************** Enviando proceso a Ejecucion *******************\n\033[0m");
+
     printf("\nDatos del proceso: ID %d, Nombre %s\n",nodoProceso->id, nodoProceso->nombre);
 
-   /**/ printf("\n----> bloques utilizados %d desperdicio Interno del proceso en el contexto: %d",
-           encontrarCantidadDeBloques(nodoProceso->peso), calcularDesperdicioInterno(nodoProceso));
+    printf("\nBloques utilizados %d, desperdicio Interno del proceso: %d kb",nodoProceso->numBloques, calcularDesperdicioInterno(nodoProceso));
 
     // eliminar nodo de listos
     eliminarNodo(listaListos,nodoProceso->id);
 
     //tiempo en ejecucion
     int tiempoEjecucion = (rand() % 3) + 1;
-    printf("\033[0;32m\nTiempo de Ejecucion %d segundos\033[0m", tiempoEjecucion);
+    printf("\nTiempo de Ejecucion %d segundos", tiempoEjecucion);
 
     sleep(tiempoEjecucion);
 
@@ -225,11 +229,11 @@ void *administrarProcesos(void *args){
         salirContextoEjecucion(listaContenedor,listaListos,nodoProceso);
 
         //mostrar las listas de procesos en el contexto de ejecucion
-        printf("\033[1;33m\nProcesos restantes en la lista de Peticiones!\n\033[0m");
+        printf("\033[1;33m\nProcesos restantes en la lista de Peticiones!\033[0m");
 
         mostrarListaProcesos(listaPeticion);
 
-        printf("\033[0;32m%s\033[0m", "Procesos restantes en la lista de Contenedor!");
+        printf("\033[1;33m\nProcesos restantes en la lista de Contenedor!\033[0m");
 
         mostrarListaProcesos(listaContenedor);
 
@@ -242,14 +246,14 @@ void *administrarProcesos(void *args){
     continuarProcesosEspera(listaEspera,listaListos, nodoProceso->id);
 
     //mostrar procesos restantes en lista de listos
-    printf("\n\nProcesos restantes en la lista de listos!");
+    printf("\033[1;33m\nProcesos restantes en la lista de listos!\033[0m");
     mostrarListaProcesos(listaListos);
 
-    printf("\nProcesos restantes en la lista de E/S!");
+    printf("\033[1;33m\nProcesos restantes en la lista de E/S!\033[0m");
     mostrarListaProcesos(listaEspera);
 
     if( listaPeticion->primero == NULL || listaListos->primero == NULL){
-        printf("\n¡Condicion de finalizacion!");
+        //printf("\n¡Condicion de finalizacion!");
         //indicar que la simulacion ha terminado
         banderaFinalizacion = 1;
     }
@@ -265,7 +269,8 @@ void *iniciarPlanificador(void *args) {
 
 
         if (pthread_create(&(proceso), NULL, &administrarProcesos, (void *) listaListos->primero) != 0) {
-            printf("Error al crear hilo para el proceso ID: %d\n", aux->id);
+            printf("\033[31mError al crear hilo para el proceso ID: %d\033[0m\n", aux->id);
+
             break;
         }
         pthread_join(proceso, NULL);

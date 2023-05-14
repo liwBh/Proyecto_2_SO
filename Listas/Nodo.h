@@ -19,8 +19,6 @@ typedef struct NodoProceso{
     int tiempoE_S;
     bool contexto;
     int listaPFVT;
-//    char inicio[50];
-//    char finalizacion[50];
     ListaPosicion *listaPosicion;
     struct NodoProceso *anterior;
     struct NodoProceso *siguiente;
@@ -61,18 +59,14 @@ NodoProceso *crearNodoProcesoDos(int id, char *nombre, int peso, int nIteracione
     return nodo;
 }
 NodoProceso *clonarNodo(NodoProceso *nodo){//la inf
-    printf(" \n el nodo traer este numero de bloques: %d \n", nodo->numBloques);
-    printf(" \n entro al clonar NODO \n");
+    printf("\nclonarNodo!!!!!!!!!!\n");
     NodoProceso *nodoClonado = crearNodoProcesoDos(nodo->id,nodo->nombre,nodo->peso,nodo->nIteraciones,nodo->ejecucion,nodo->nombreE_S,nodo->tiempoE_S, nodo->numBloques);
-    printf(" \n entro al clonar 50 \n");
     nodoClonado->listaPosicion = nodo->listaPosicion;
-    printf(" \n entro al clonar 52 \n");
     nodoClonado->listaPFVT = nodo->listaPFVT;
-    printf(" \n entro al clonar 54 \n");
-   /* nodoClonado->numBloques = nodo->numBloques;
-    printf(" \n num bloques nodo clonado: %d", nodoClonado->numBloques);*/
-//    strcpy(nodoClonado->inicio,nodo->inicio);
-//    strcpy(nodoClonado->finalizacion,nodo->finalizacion);
+    printf("\nnumBloques!!!!!!!!!!\n");
+    nodoClonado->numBloques = nodo->numBloques;
+    printf("\nclonarNodo Termino!!!!!!!!!!\n");
+
     return nodoClonado;
 
 }

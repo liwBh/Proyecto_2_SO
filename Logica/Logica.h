@@ -46,7 +46,7 @@ void asignarEspacioDisponible(struct Bloque matriz[8][8], NodoProceso *nodo){
     int nBloques = encontrarCantidadDeBloques(nodo->peso);
 
     printf("\033[1;33m\nIngresando un proceso a contexto de ejecucion");
-    printf("\nEl numero de bloques: %d para el proceso con el ID: %d\n\033[0m", nBloques, nodo->id);
+    printf("\nEl numero de bloques: %d para el proceso con el ID: %d\n", nBloques, nodo->id);
 
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
@@ -289,14 +289,6 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
         //hacer una solicitud de cambio de politica de administracion de memoria
     }
 
-    /*
-         Maximo de memoria 256
-         listaPFVT_4 maximo nodos = 64, cantidad de bloques a utilizar = 1
-         listaPFVT_8 maximo nodos = 32, cantidad de bloques a utilizar = 2
-         listaPFVT_16 maximo nodos = 16, cantidad de bloques a utilizar = 4
-         listaPFVT_32 maximo nodos = 8, cantidad de bloques a utilizar = 8
-    */
-
     //asignarlo a una lista de particiones de tamaño variado
     int nBloques = encontrarCantidadDeBloques(nodo->peso);
 
@@ -304,38 +296,34 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
         //insertar en listaPFVT_4
         nodo->listaPFVT = 4;
         nodo->numBloques = 1;
-        //printf("\nlistaPFVT_4 %d\n", nodo->listaPFVT);
 
     }else if(nBloques == 2){//8bits - 2 bloques
         //insertar en listaPFVT_8
         nodo->listaPFVT = 8;
         nodo->numBloques = 2;
-        //printf("\nlistaPFVT_8 %d\n", nodo->listaPFVT);
 
     }else if(nBloques > 2 && nBloques <= 4){//16bits - 4 bloques
         //insertar en listaPFVT_16
         nodo->listaPFVT = 16;
         nodo->numBloques = 4;
 
-        //printf("\nlistaPFVT_16 %d\n", nodo->listaPFVT);
-
     }else if(nBloques > 4 && nBloques <= 8){//32bits - 8 bloques
         //insertar en listaPFVT_32
         nodo->listaPFVT = 32;
         nodo->numBloques = 8;
-        //printf("\nlistaPFVT_32 %d\n", nodo->listaPFVT);
     }
 
-  //  printf("\nNumero de bloques: %d\n", nodo->numBloquesJeff);
 }
 
 int calcularDesperdicioInterno(NodoProceso *procesoEvaluar){
-    //return (encontrarCantidadDeBloques(procesoEvaluar->peso)*4)-procesoEvaluar->peso;
 
+    printf("\ncalcularDesperdicioInterno!!!!!!!!!!\n");
     int nbloques = procesoEvaluar->numBloques;
     int peso = procesoEvaluar->peso;
-    //return (procesoEvaluar->numBloques * 4) - procesoEvaluar->peso;
-    return (nbloques * 4) - peso;
+    int resultado = (nbloques * 4) - peso;
+
+    printf("\nfin calcularDesperdicioInterno!!!!!!!!!!\n");
+    return resultado;
 }
 
 int calcularDesperdicioInternoTotal(ListaProcesos *listaContenedor){
