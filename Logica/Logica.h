@@ -103,6 +103,8 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
                 //se debe generar otro aleatorio de espera
                 int nuevoTiempo = (rand() % 3) + 1;
                 aux->tiempoE_S = nuevoTiempo;
+                aux->sumTiempoES += (0.000010 * nuevoTiempo);
+
                 //moverlo a lista de listos
                 NodoProceso *nodoClon = clonarNodo(aux);
                 insertar(listaListos,nodoClon);
@@ -363,7 +365,19 @@ int calcularDesperdicioExternoVector(struct Bloque matriz[8][8]) {
             cerosDesocupados = 0;
         }
     }
-    return desperdicioExterno;
+    return desperdicioExterno * 4;
+}
+
+void sumatoriaTiempoEjecucionProceso(ListaProcesos *lista){
+    NodoProceso *aux = lista->primero;
+    double calculo = 0;
+    while (aux!=NULL){
+        printf("Proceso: %s\n",aux->nombre);
+        calculo = aux->sumTiempoEj / aux->nEjecucion;
+        printf("Tiempo promedio de ejecucion: %f\n",calculo);
+        calculo = 0;
+        aux = aux->siguiente;
+    }
 }
 
 #endif //QUIZ_SO_LOGICA_H

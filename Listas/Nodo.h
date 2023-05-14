@@ -9,63 +9,103 @@
 #include "string.h"
 
 typedef struct NodoProceso{
-    int numBloques;
+    //variables para FCFS
     int id;
     char nombre[50];
+    char nombreE_S[50];
     int peso;
     int nIteraciones;
-    bool ejecucion;
-    char nombreE_S[50];
     int tiempoE_S;
-    bool contexto;
-    int listaPFVT;
     ListaPosicion *listaPosicion;
+
+    //variables sin uso
+    bool contexto;
+    bool ejecucion;
+
+    //variables de politica de administracio
+    int listaPFVT;
+    int nEjecucion;//para calcular tiempo promedio en ejecucion
+    double sumTiempoEj;//para calcular tiempo promedio en ejecucion
+    int nEspera;//para calcular tiempo promedio en espera
+    double sumTiempoES;//para calcular tiempo promedio en espera
+
+    //variables administracion memoria
+    int numBloques;
+
+    //variables manejo de lista
     struct NodoProceso *anterior;
     struct NodoProceso *siguiente;
 }NodoProceso;
 
 NodoProceso *crearNodoProceso(int id, char *nombre, int peso, int nIteraciones, bool ejecucion, char *nombreE_S, int tiempoE_S){
     NodoProceso *nodo = malloc(sizeof(NodoProceso));
+    //variables para FCFS
+    nodo->id = id;
     strcpy(nodo->nombre,nombre);
     strcpy(nodo->nombreE_S,nombreE_S);
-    nodo->id = id;
     nodo->peso = peso;
     nodo->nIteraciones = nIteraciones;
-    nodo->ejecucion = ejecucion;
     nodo->tiempoE_S = tiempoE_S;
     nodo->listaPosicion = crearListaPosicion();
-    nodo->contexto = false;
-    nodo->listaPFVT = 0;
+
+    //variables sin uso
+    nodo->ejecucion = ejecucion;//no en uso
+    nodo->contexto = false;//no en uso
+
+    //variables de politica de administracion
+    nodo->listaPFVT = 0;//particiones fijas tamaño variable
+    nodo->nEjecucion = 0;
+    nodo->sumTiempoEj = 0.0;
+    nodo->nEspera = 0;
+    nodo->sumTiempoES = 0.0;
+
+    //variables administracion memoria
     nodo->numBloques = 0;
+
+    //variables manejo de lista
     nodo->siguiente = NULL;
     nodo->anterior = NULL;
     return nodo;
 }
-NodoProceso *crearNodoProcesoDos(int id, char *nombre, int peso, int nIteraciones, bool ejecucion, char *nombreE_S, int tiempoE_S, int numBloques){
-    NodoProceso *nodo = malloc(sizeof(NodoProceso));
-    strcpy(nodo->nombre,nombre);
-    strcpy(nodo->nombreE_S,nombreE_S);
-    nodo->id = id;
-    nodo->peso = peso;
-    nodo->nIteraciones = nIteraciones;
-    nodo->ejecucion = ejecucion;
-    nodo->tiempoE_S = tiempoE_S;
-    nodo->listaPosicion = crearListaPosicion();
-    nodo->contexto = false;
-    nodo->listaPFVT = 0;
-    nodo->numBloques = numBloques;
-    nodo->siguiente = NULL;
-    nodo->anterior = NULL;
-    return nodo;
-}
+
+//NodoProceso *crearNodoProcesoDos(int id, char *nombre, int peso, int nIteraciones, bool ejecucion, char *nombreE_S, int tiempoE_S, int numBloques){
+//    NodoProceso *nodo = malloc(sizeof(NodoProceso));
+//    //variables para FCFS
+//    nodo->id = id;
+//    strcpy(nodo->nombre,nombre);
+//    strcpy(nodo->nombreE_S,nombreE_S);
+//    nodo->peso = peso;
+//    nodo->nIteraciones = nIteraciones;
+//    nodo->tiempoE_S = tiempoE_S;
+//    nodo->listaPosicion = crearListaPosicion();
+//
+//    //variables sin uso
+//    nodo->contexto = false;
+//    nodo->ejecucion = ejecucion;
+//
+//    //variables de politica de administracion
+//    nodo->listaPFVT = 0;
+//
+//    //variables administracion memoria
+//    nodo->numBloques = numBloques;
+//
+//
+//    //variables manejo de lista
+//    nodo->siguiente = NULL;
+//    nodo->anterior = NULL;
+//    return nodo;
+//}
+
 NodoProceso *clonarNodo(NodoProceso *nodo){
-    NodoProceso *nodoClonado = crearNodoProcesoDos(nodo->id,nodo->nombre,nodo->peso,nodo->nIteraciones,nodo->ejecucion,nodo->nombreE_S,nodo->tiempoE_S, nodo->numBloques);
+    NodoProceso *nodoClonado = crearNodoProceso(nodo->id, nodo->nombre, nodo->peso, nodo->nIteraciones, nodo->ejecucion, nodo->nombreE_S, nodo->tiempoE_S);
     nodoClonado->listaPosicion = nodo->listaPosicion;
     nodoClonado->listaPFVT = nodo->listaPFVT;
     nodoClonado->numBloques = nodo->numBloques;
-
+    nodoClonado->nEjecucion = nodo->nEjecucion;
+    nodoClonado->sumTiempoEj = nodo->sumTiempoEj;
+    nodoClonado->nEspera = nodo->nEspera;
+    nodoClonado->sumTiempoES = nodo->sumTiempoES;
     return nodoClonado;
-
 }
 
 //

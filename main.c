@@ -10,6 +10,8 @@
 struct Bloque matriz[8][8];
 //bandera para la finalizacion de la simulacion
 int banderaFinalizacion = 0;
+//politica de administracion de memoria
+
 //numero de procesos
 int nProcesos = 0;
 //hilo planificador - hilo administrador 2
@@ -17,6 +19,11 @@ int nProcesos = 0;
 int desperdicioInternoTotal = 0;
 //variable para evaluar desperdicio externo dentro del algoritmo de planificacion
 int desperdicioExterno= 0;
+//variables para llevar control del promedio de procesos finalizados desde que se inicio el programa
+float promedio = 0.0;
+time_t inicioPrograma;
+int procesosFinalizados =0;
+
 
 pthread_t planificador;
 pthread_t proceso;
@@ -39,14 +46,13 @@ void *administrarProcesos(void *args);
 void *iniciarPlanificador(void *args);
 
 int main() {
-
+    //se toma el tiempo de inicio del programa
+    inicioPrograma = time(NULL);
     printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
+
 
     printf("\nTamaño de memoria = 256kb\n");
     printf("Tamaño del bloque = 4kb\n");
-
-
-    printf("Tamaño del bloque ============= 4kb\n");
 
     //creando las listas del emulador
     crearListas();
@@ -97,12 +103,21 @@ int main() {
     pthread_join(planificador, NULL);
 
 
-    //Tiempo de finalizacion simulacion
+
     time_t endTime = time(NULL);
-    printf("\033[32mEl tiempo de finalizacion del programa es de: %s\033[0m\n", ctime(&endTime));
+    printf("\033[32m\nEl tiempo de finalizacion del programa es de: %s\033[0m\n", ctime(&endTime));
+
+    //se obtiene el promedio de procesos finalizados por segundo
+    time_t fin = time(NULL); // Obtener el tiempo actual
+    float tiempo_transcurrido = difftime(fin, inicioPrograma); // Calcular el tiempo transcurrido en segundos
+    promedio = ((promedio * (procesosFinalizados - 1)) + tiempo_transcurrido) / procesosFinalizados; // Calcular el nuevo promedio
+    printf("\nTotal de procesos finalizados: %d", procesosFinalizados);
+    printf("\nTiempo total de ejecucion %f segundos", tiempo_transcurrido);
+    printf("\nPromedio de proceso finalizados por unidad de tiempo: %.2f segundos\n", promedio);
 
 
     printf("\033[1;31m--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
+
     return 0;
 }
 
@@ -131,7 +146,7 @@ void llenarListaProcesosEsperando(){
         char str[10];
         char nombre[10] = "P-";
         int peso = rand() % 30 + 1 ;
-        int iteraciones = rand() % 5 + 1;
+        int iteraciones = rand() % 5 + 2;
         int indice_aleatorio = rand() % 3;
         int tiempo = (rand() % 3) + 1;
         char *dispositivos[] = {"mouse", "teclado", "pantalla"};
@@ -141,6 +156,7 @@ void llenarListaProcesosEsperando(){
 
         //crear peticion de proceso
         NodoProceso *nodo = crearNodoProceso(i,nombre,peso,iteraciones,0,dispositivos[indice_aleatorio],tiempo);
+        nodo->sumTiempoES = (0.000010 * tiempo);
         //insertar la peticion del proceso en la lista
         insertar(listaPeticion,nodo);
 
@@ -197,10 +213,16 @@ void *administrarProcesos(void *args){
     eliminarNodo(listaListos,nodoProceso->id);
 
     //tiempo en ejecucion
+    clock_t tInicio = clock();
+
     int tiempoEjecucion = (rand() % 3) + 1;
     printf("\nTiempo de Ejecucion %d segundos", tiempoEjecucion);
 
     sleep(tiempoEjecucion);
+    clock_t tFin = clock();
+    double tiempo_total = ((double) (tFin - tInicio)) / CLOCKS_PER_SEC;
+    nodoProceso->sumTiempoEj += tiempo_total;
+    nodoProceso->nEjecucion ++;
 
     //restar una iteraciones
     nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
@@ -227,7 +249,14 @@ void *administrarProcesos(void *args){
 
         //agregar un proceso nuevo a contexto de ejecucion
         entrarContextoEjecucion(listaPeticion,listaContenedor,listaListos);
-        
+
+        double promedioEj = nodoProceso->sumTiempoEj / nodoProceso->nEjecucion;
+        double promedioEs = nodoProceso->sumTiempoES / nodoProceso->nEspera;
+        printf("\nEl promedio de ejecucion del proceso es: %f \n",promedioEj);
+        printf("\nEl promedio de espera del proceso es: %f \n",promedioEs);
+        printf("\n\n");
+
+
         //sacar de contexto un proceso sin iteraciones del contexto de ejecucion
         salirContextoEjecucion(listaContenedor,listaListos,nodoProceso);
 
@@ -239,10 +268,13 @@ void *administrarProcesos(void *args){
         printf("\033[1;33m\nProcesos restantes en la lista de Contenedor!\033[0m");
 
         mostrarListaProcesos(listaContenedor);
+        //aumentamos la cantidad de procesos finalizados
+        procesosFinalizados+=1;
 
     }else{
         //Agregar en lista espera
         insertar(listaEspera,nodoProceso);
+        nodoProceso->nEspera ++;
     }
 
     //Descontar tiempo de espera de los procesos en lista espera de E/S
@@ -263,6 +295,7 @@ void *administrarProcesos(void *args){
 
     return NULL;
 }
+
 
 void *iniciarPlanificador(void *args) {
 
