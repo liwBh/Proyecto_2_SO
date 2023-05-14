@@ -1,4 +1,4 @@
-/snap/clion/235/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" -S /home/jurguen/Documentos/GitHub/Proyecto_2_SO -B /home/jurguen/Documentos/GitHub/Proyecto_2_SO/cmake-build-debug
+/snap/clion/235/bin/cmake/linux/x64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/snap/clion/235/bin/ninja/linux/x64/ninja -G Ninja -S /home/liwbh/CLionProjects/Proyecto_2_SO -B /home/liwbh/CLionProjects/Proyecto_2_SO/cmake-build-debug
 -- The C compiler identification is GNU 11.3.0
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
@@ -7,4 +7,4 @@
 -- Detecting C compile features - done
 -- Configuring done
 -- Generating done
--- Build files have been written to: /home/jurguen/Documentos/GitHub/Proyecto_2_SO/cmake-build-debug
+-- Build files have been written to: /home/liwbh/CLionProjects/Proyecto_2_SO/cmake-build-debug
