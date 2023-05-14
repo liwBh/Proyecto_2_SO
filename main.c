@@ -45,6 +45,9 @@ int main() {
     printf("\nTamaño de memoria = 256kb\n");
     printf("Tamaño del bloque = 4kb\n");
 
+
+    printf("Tamaño del bloque ============= 4kb\n");
+
     //creando las listas del emulador
     crearListas();
 
