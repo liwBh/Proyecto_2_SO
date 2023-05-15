@@ -235,8 +235,8 @@ void *administrarProcesos(void *args){
     fflush(stdout);
 
     //******** generar crecimiento memoria *************
-    //int crecimiento = generarCreacimientoP();
-    //printf("\nEl crecimiento del proceso es: %d kb\n", crecimiento);
+    int crecimiento = generarCreacimientoP();
+    printf("\nEl crecimiento del proceso es: %d kb\n", crecimiento);
     fflush(stdout);
 
     //veificar si el proceso aun tiene iteraciones
@@ -249,7 +249,7 @@ void *administrarProcesos(void *args){
         mostrarMatriz(matriz);
         fflush(stdout);
 
-        printf("\033[1;33mDirecciones de Memoria a Liberar:  \033[0m");
+        printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
 
         mostrarListaPosiciones(nodoProceso->listaPosicion);
         fflush(stdout);

@@ -98,7 +98,7 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
             if (aux->id != id) {
 
                 aux->tiempoE_S -= 1; // Restar 1 al tiempo de espera
-                mostrarNodoProceso(aux);
+                //mostrarNodoProceso(aux);
 
                 //si el tiempo de espera se acabo
                 if (aux->tiempoE_S == 0) {
@@ -120,6 +120,15 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
             }
             aux = aux->siguiente;
         }
+    }
+
+    //evitar que no queden procesos en la lista de listos, terminacion prematura del programa
+    if (listaVacia(listaListos)) {
+        //Agregar de forma obligatoria un proceso de listaEspera a listaListo
+        NodoProceso *nodoClon = clonarNodo(listaEspera->primero);
+        insertar(listaListos, nodoClon);
+        //eliminar el nodo de la lista de espera
+        eliminarNodo(listaEspera, nodoClon->id);
     }
 }
 

@@ -57,36 +57,26 @@ void eliminarNodo(ListaProcesos *lista, int id) {
     }
 
     if( id == lista->primero->id && lista->primero->id == lista->ultimo->id ){//solo hay un nodo
-
-        printf("\n---------------------------------- eliminar primero=ultimo, id: %d\n",id );
         lista->primero = NULL;
         lista->ultimo = NULL;
-        printf("\n---------------------------------- eliminar primero=ultimo\n");
 
     }else if( id == lista->primero->id ){//se elimina el primero de la lista
         NodoProceso *actual = lista->primero;
-        printf("\n---------------------------------- eliminar primero, id: %d\n",id );
         lista->primero = actual->siguiente;
         actual->siguiente->anterior = NULL;
 
-        printf("\n---------------------------------- eliminar primero\n");
-
     }else if( id == lista->ultimo->id ){//se elimina el ultimo de la lista
         NodoProceso *actual = lista->ultimo;
-        printf("\n---------------------------------- eliminar ultimo, id: %d\n",id );
         lista->ultimo = actual->anterior;
         actual->anterior->siguiente = NULL;
-        printf("\n---------------------------------- eliminar ultimo\n");
 
     }else{ //se elimina en el medio del primero y ultimo de la lista
         NodoProceso *actual = lista->primero;
         while (actual != NULL){
 
             if(actual->id == id){
-                printf("\n---------------------------------- eliminar medio,id: %d\n",actual->id );
                 actual->anterior->siguiente = actual->siguiente;
                 actual->siguiente->anterior = actual->anterior;
-                printf("\n---------------------------------- eliminar medio\n");
                 //se rompe el ciclo nodo encontrado
                 break;
             }
