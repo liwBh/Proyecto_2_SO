@@ -218,10 +218,10 @@ void *administrarProcesos(void *args){
     clock_t tInicio = clock();
     int tiempoEjecucion = (rand() % 3) + 1;
     sleep(tiempoEjecucion);
+    nodoProceso->nEjecucion++;
     clock_t tFin = clock();
     double tiempo_total = ((double) (tFin - tInicio)) / CLOCKS_PER_SEC;
     nodoProceso->sumTiempoEj += tiempo_total;
-    nodoProceso->nEjecucion ++;
     printf("\nTiempo de Ejecucion %f segundos", tiempo_total);
 
     //restar una iteraciones
@@ -275,7 +275,7 @@ void *administrarProcesos(void *args){
         entrarContextoEjecucion(listaPeticion,listaContenedor,listaListos);
 
         double promedioEj = nodoProceso->sumTiempoEj / nodoProceso->nEjecucion;
-        double promedioEs = nodoProceso->sumTiempoES / nodoProceso->nEspera;
+        double promedioEs = nodoProceso->nEspera!=0 ? nodoProceso->sumTiempoES / nodoProceso->nEspera : 0;
         printf("\nEl promedio de ejecucion del proceso es: %f \n",promedioEj);
         printf("\nEl promedio de espera del proceso es: %f \n",promedioEs);
         printf("\n\n");
@@ -301,7 +301,6 @@ void *administrarProcesos(void *args){
         //Agregar en lista espera
         NodoProceso *nodoClon = clonarNodo(nodoProceso);
         insertar(listaEspera,nodoClon);
-        nodoProceso->nEspera ++;
     }
 
     //Descontar tiempo de espera de los procesos en lista espera de E/S

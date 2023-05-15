@@ -117,7 +117,10 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
                     eliminarNodo(listaEspera, aux->id);
                     break; // Salir del ciclo while después de procesar un nodo
                 }
+            }else{
+                aux->nEspera++;
             }
+
             aux = aux->siguiente;
         }
     }
