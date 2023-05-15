@@ -20,7 +20,7 @@ void pasarProcesoContenedor(ListaProcesos *listaPeticion, ListaProcesos *listaCo
         //Crea un nodo con el primero de la lista de espera
         NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
         //Cambia la referencia del primero de lista
-        listaPeticion->primero = listaPeticion->primero->siguiente;
+        //listaPeticion->primero = listaPeticion->primero->siguiente;
         //Inserta el nodo en la lista contenedor
         insertarUnProceso(listaContenedor,almacenarProceso);
         //Elimina el nodo de la lista de espera
@@ -84,41 +84,44 @@ void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
     }
 }
 
-void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaListos, int id){
+//Metodo que trabaja los procesos que estan en la lista de espera
+void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaListos, int id) {
+
     //validar que lista de espera no este vacia
-    if(!listaVacia(listaEspera)){
+    if (!listaVacia(listaEspera)) {
 
         //recorre toda la lista de espera
         NodoProceso *aux = listaEspera->primero;
-        while(aux != NULL){
+        while (aux != NULL) {
 
             //si no es el mismo proceso que estaba en ejecucion
-            if(aux->id != id){
-                //El tiempo de espera restarle 1
-                aux->tiempoE_S = aux->tiempoE_S - 1;
+            if (aux->id != id) {
+
+                aux->tiempoE_S -= 1; // Restar 1 al tiempo de espera
+                mostrarNodoProceso(aux);
+
+                //si el tiempo de espera se acabo
+                if (aux->tiempoE_S == 0) {
+
+                    //generar un nuevo tiempo de espera
+                    int nuevoTiempo = (rand() % 3) + 1;
+                    aux->tiempoE_S = nuevoTiempo;
+                    //aumentar el tiempo que debera permanecer en espera
+                    aux->sumTiempoES += (0.000010 * nuevoTiempo);
+
+                    //pasar el nodo a la lista listo
+                    NodoProceso *nodoClon = clonarNodo(aux);
+                    insertar(listaListos, nodoClon);
+
+                    //eliminar el nodo de la lista de espera
+                    eliminarNodo(listaEspera, aux->id);
+                    break; // Salir del ciclo while después de procesar un nodo
+                }
             }
-
-            //cuando sale de tiempo de espera llego a 0
-            if(aux->tiempoE_S == 0 && aux->id != id){
-                //se debe generar otro aleatorio de espera
-                int nuevoTiempo = (rand() % 3) + 1;
-                aux->tiempoE_S = nuevoTiempo;
-                aux->sumTiempoES += (0.000010 * nuevoTiempo);
-
-                //moverlo a lista de listos
-                NodoProceso *nodoClon = clonarNodo(aux);
-                insertar(listaListos,nodoClon);
-                //sacarlo de lista de espera
-                eliminarNodo(listaEspera,aux->id);
-                break;
-            }
-
-            //pasarlo a lista de listos
             aux = aux->siguiente;
         }
     }
 }
-
 
 void entrarContextoEjecucion(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor, ListaProcesos *listaListos){
     if(listaVacia(listaPeticion)){
@@ -368,16 +371,22 @@ int calcularDesperdicioExternoVector(struct Bloque matriz[8][8]) {
     return desperdicioExterno * 4;
 }
 
-void sumatoriaTiempoEjecucionProceso(ListaProcesos *lista){
-    NodoProceso *aux = lista->primero;
-    double calculo = 0;
-    while (aux!=NULL){
-        printf("Proceso: %s\n",aux->nombre);
-        calculo = aux->sumTiempoEj / aux->nEjecucion;
-        printf("Tiempo promedio de ejecucion: %f\n",calculo);
-        calculo = 0;
-        aux = aux->siguiente;
+int generarCreacimientoP(){
+    int crecimientoP[20];
+
+    // Llenar el array con 15 ceros
+    for (int i = 0; i < 20; i++) {
+        crecimientoP[i] = 0;
     }
+
+    for (int i = 0; i < 5; i++) {
+        int pos = rand() % 20;
+        crecimientoP[pos] = (rand() % 5) + 1;
+    }
+
+    int posAleatoria = rand() % 20;
+
+    return  crecimientoP[posAleatoria];
 }
 
 #endif //QUIZ_SO_LOGICA_H
