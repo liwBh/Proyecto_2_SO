@@ -2,8 +2,8 @@
 // Created by jurguen on 18/04/23.
 //
 
-#ifndef QUIZ_SO_LOGICA_H
-#define QUIZ_SO_LOGICA_H
+#ifndef PROYECTO_2_SO_LOGICA_H
+#define PROYECTO_2_SO_LOGICA_H
 
 #include <ctype.h>
 #include "../Listas/Lista.h"
@@ -345,7 +345,6 @@ int calcularDesperdicioInternoTotal(ListaProcesos *listaContenedor){
     printf("\n\n");
     while(aux != NULL){
         desperdicioInternoTotal+= calcularDesperdicioInterno(aux);
-        // sleep(1);
         aux = aux->siguiente;
     }
     return desperdicioInternoTotal;
@@ -393,7 +392,7 @@ int generarCreacimientoP(){
 
     for (int i = 0; i < 5; i++) {
         int pos = rand() % 20;
-        crecimientoP[pos] = (rand() % 5) + 1;
+        crecimientoP[pos] = (rand() % 50) + 1;
     }
 
     int posAleatoria = rand() % 20;
@@ -401,4 +400,30 @@ int generarCreacimientoP(){
     return  crecimientoP[posAleatoria];
 }
 
-#endif //QUIZ_SO_LOGICA_H
+void reasignacionMemoriaXpolitica(int tipoPolitica, struct Bloque matriz[8][8], NodoProceso *nodoProceso, ListaProcesos *listaContenedor){
+
+    switch (tipoPolitica) {
+        case 1:
+            printf("\033[1;31m\n----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------\n\n\033[0m");
+            //asignarle espacio en memoria en base a PFVT, al proceso entrante al contexto de ejecucion
+            asignarEspacioDisponiblePFVT(matriz,nodoProceso,listaContenedor);
+            //condicional para aplicar cambio de politica
+
+            break;
+        case 2:
+            //asignarle espacio en memoria en base a mapa de bits, al proceso entrante al contexto de ejecucion
+            printf("\033[1;31m\n----------MAPA DE BITS----------\n\n\033[0m");
+            //condicional para aplicar cambio de politica
+
+            break;
+
+        default:
+            printf("\033[1;31m\nOcurrio un error al aplicar politica\n\033[0m");
+            //banderaFinalizacion = 1;
+            break;
+    }
+
+}
+
+
+#endif //PROYECTO_2_SO_LOGICA_H

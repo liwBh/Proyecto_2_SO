@@ -12,7 +12,8 @@ struct Bloque matriz[8][8];
 int banderaFinalizacion = 0;
 //politica de administracion de memoria
 int tipoPolitica = 1;
-bool etiquetaC =  false; //etiqueta para habilitar aleatorio de crecimiento
+//etiqueta para habilitar aleatorio de crecimiento
+bool etiquetaC =  false;
 
 //numero de procesos
 int nProcesos = 0;
@@ -64,14 +65,12 @@ int main() {
     llenarListaProcesosEsperando();
 
     printf("\033[1;33mInicializando estructura de Memoria\033[0m\n");
-    fflush(stdout);
 
     //crear aquitectura de memoria
     llenarMatriz( matriz);
 
     //Imprimir matriz
     mostrarMatriz( matriz );
-    fflush(stdout);
 
     //Tiempo de inicio simulacion
     time_t startTime = time(NULL);
@@ -85,24 +84,19 @@ int main() {
     //Imprimir matriz
     printf("\nProcesos actuales en memoria\n");
     mostrarMatriz( matriz );
-    fflush(stdout);
 
     //mostrar las listas aplicando politica PFVT
     mostrarPFVT(listaContenedor);
-    fflush(stdout);
 
     //mostra listas
     printf("\033[0;32m\nProcesos restantes en la lista de solicitudes\n\033[0m");
     mostrarListaProcesos(listaPeticion);
-    fflush(stdout);
 
     printf("\033[1;32m\nProcesos agregados en la lista de contexto de ejecucion\n\033[0m");
     mostrarListaProcesos(listaContenedor);
-    fflush(stdout);
 
     printf("\033[0;32m\nProcesos agregados en la lista de listos\n\033[0m");
     mostrarListaProcesos(listaListos);
-    fflush(stdout);
 
     //Iniciar planificador
     pthread_create(&(planificador), NULL, &iniciarPlanificador, NULL);
@@ -120,10 +114,8 @@ int main() {
     printf("\nTotal de procesos finalizados: %d", procesosFinalizados);
     printf("\nTiempo total de ejecucion %f segundos", tiempo_transcurrido);
     printf("\nPromedio de proceso finalizados por unidad de tiempo: %.2f segundos\n", promedio);
-    fflush(stdout);
 
     printf("\033[1;31m\n--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
-    fflush(stdout);
 
     return 0;
 }
@@ -209,7 +201,6 @@ void *administrarProcesos(void *args){
     printf("\nDatos del proceso: ID %d, Nombre %s\n",nodoProceso->id, nodoProceso->nombre);
 
     printf("\nBloques utilizados %d, desperdicio Interno del proceso: %d kb",nodoProceso->numBloques, calcularDesperdicioInterno(nodoProceso));
-    fflush(stdout);
 
     // eliminar nodo de listos
     eliminarNodo(listaListos,nodoProceso->id);
@@ -232,42 +223,112 @@ void *administrarProcesos(void *args){
     printf("\nCantidad de procesos en contexto de ejecucion : %d", listaContenedor->tamanio);
     printf("\nDesperdicio interno total : %d kb", desperdicioInternoTotal);
     printf("\nDesperdicio externo total : %d kb\n", desperdicioExterno);
-    fflush(stdout);
 
     //******** generar crecimiento memoria *************
-    int crecimiento = generarCreacimientoP();
-    printf("\nEl crecimiento del proceso es: %d kb\n", crecimiento);
-    fflush(stdout);
+    if( etiquetaC == false ){//asignar etiqueta de crecimiento
+        int crecimiento = generarCreacimientoP();
+
+        //Ajuste para respetar particiones fijas variable tamaño
+        if(nodoProceso->peso + crecimiento > 32 && tipoPolitica == 1){
+            crecimiento = 32 - nodoProceso->peso;
+        }
+
+        if(crecimiento > 0){
+
+            printf("\033[1;31m\n-------- EL proceso tiene un crecimiento en memoria ---------\033[0m\n");
+
+            printf("\nEl crecimiento del proceso es: %d kb\n", crecimiento);
+            nodoProceso->crecimiento = true;
+            etiquetaC = true;
+
+            nodoProceso->peso += crecimiento;
+
+            //librerar bloques de memoria
+            liberarMemoria(nodoProceso,matriz);
+            printf("\nLiberando Memoria utilizada por el proceso");
+            mostrarMatriz(matriz);
+
+            printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
+            mostrarListaPosiciones(nodoProceso->listaPosicion);
+            printf("\n");
+
+            //reasignacion de memoria, en base a la politica actual
+            reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor);
+
+            //realizar un cambio de politica
+            tipoPolitica++;
+        }
+
+    }else if(etiquetaC == true && nodoProceso->crecimiento == true){
+        int crecimiento = generarCreacimientoP();
+
+        //Ajuste para respetar particiones fijas variable tamaño
+        if(nodoProceso->peso + crecimiento > 32 && tipoPolitica == 1){
+            crecimiento = 32 - nodoProceso->peso;
+        }
+
+        if(crecimiento > 0){
+
+            printf("\033[1;31m\n-------- EL proceso tiene un crecimiento en memoria ---------\033[0m\n");
+            printf("\nEl crecimiento del proceso es: %d kb\n", crecimiento);
+
+            nodoProceso->peso += crecimiento;
+
+            //librerar bloques de memoria
+            printf("\nLiberando Memoria utilizada por el proceso");
+            mostrarMatriz(matriz);
+
+            printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
+            mostrarListaPosiciones(nodoProceso->listaPosicion);
+            printf("\n");
+
+            //reasignacion de memoria, en base a la politica actual
+            reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor);
+
+            //realizar cambio de politica
+            tipoPolitica++;
+        }
+    }
+
 
     //veificar si el proceso aun tiene iteraciones
-    if(nodoProceso->nIteraciones == 0){
-        printf("\033[1;33m\n------{ El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------\033[0m",nodoProceso->id, nodoProceso->nombre);
+    if(nodoProceso->nIteraciones == 0){//el proceso va de salida del contexto de ejecucion
+        //liberar eiqueta de crecimiento
+        if(nodoProceso->crecimiento == true){
+            etiquetaC = false;
+            nodoProceso->crecimiento = false;
+        }
+
+        printf("\033[1;33m\n------ { El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------\033[0m",nodoProceso->id, nodoProceso->nombre);
 
         //librerar bloques de memoria
         liberarMemoria(nodoProceso,matriz);
-        //printf("\nLiberando Memoria utilizada por el proceso");
+        printf("\nLiberando Memoria utilizada por el proceso");
         mostrarMatriz(matriz);
-        fflush(stdout);
 
         printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
-
         mostrarListaPosiciones(nodoProceso->listaPosicion);
-        fflush(stdout);
         printf("\n");
-
+        //********************* Tentativa moverlo a un metodo en logica *****************
         //Tipo de politicia
         switch (tipoPolitica) {
             case 1:
+                printf("\033[1;31m\n----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------\n\n\033[0m");
                 //asignarle espacio en memoria en base a PFVT, al proceso entrante al contexto de ejecucion
                 asignarEspacioDisponiblePFVT(matriz,listaPeticion->primero,listaContenedor);
                 break;
             case 2:
-                //asignarle espacio en memoria en base a PFVT, al proceso entrante al contexto de ejecucion
-                printf("\nAplicar politica de Mapa de bits\n");
+                // Registrar Las listas en un archivo txt de la politica anterior!!!!!!!!!!
+                
+                //asignarle espacio en memoria en base a mapa de bits, al proceso entrante al contexto de ejecucion
+                printf("\033[1;31m\n----------MAPA DE BITS----------\n\n\033[0m");
+                //condicional para aplicar cambio de politica
+                banderaFinalizacion = 1;//-------------------->temporal
                 break;
 
             default:
-                printf("\033[1;31m\nOcurrio un error al aplicar politica\n033[0m");
+                printf("\033[1;31m\nOcurrio un error al aplicar politica\n\033[0m");
+                banderaFinalizacion = 1;
                 break;
         }
 
@@ -279,7 +340,6 @@ void *administrarProcesos(void *args){
         printf("\nEl promedio de ejecucion del proceso es: %f \n",promedioEj);
         printf("\nEl promedio de espera del proceso es: %f \n",promedioEs);
         printf("\n\n");
-        fflush(stdout);
 
         //sacar de contexto un proceso sin iteraciones del contexto de ejecucion
         salirContextoEjecucion(listaContenedor,listaListos,nodoProceso);
@@ -288,12 +348,9 @@ void *administrarProcesos(void *args){
         printf("\033[1;33m\nProcesos restantes en la lista de Peticiones!\033[0m");
 
         mostrarListaProcesos(listaPeticion);
-        fflush(stdout);
 
         printf("\033[1;33m\nProcesos restantes en la lista de Contenedor!\033[0m");
-
         mostrarListaProcesos(listaContenedor);
-        fflush(stdout);
         //aumentamos la cantidad de procesos finalizados
         procesosFinalizados+=1;
 
@@ -309,11 +366,9 @@ void *administrarProcesos(void *args){
     //mostrar procesos restantes en lista de listos
     printf("\033[1;33m\nProcesos restantes en la lista de listos!\033[0m");
     mostrarListaProcesos(listaListos);
-    fflush(stdout);
 
     printf("\033[1;33m\nProcesos restantes en la lista de E/S!\033[0m");
     mostrarListaProcesos(listaEspera);
-    fflush(stdout);
 
     if( listaPeticion->primero == NULL || listaListos->primero == NULL){
         //printf("\n¡Condicion de finalizacion!");

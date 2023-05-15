@@ -1,7 +1,7 @@
 
 
-#ifndef QUIZ_SO_MATRIZ_H
-#define QUIZ_SO_MATRIZ_H
+#ifndef PROYECTO_2_SO_MATRIZ_H
+#define PROYECTO_2_SO_MATRIZ_H
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -64,4 +64,4 @@ void liberarProceso(int idProceso, struct Bloque matriz[8][8]) {
 }
 
 
-#endif //QUIZ_SO_MATRIZ_H
+#endif //PROYECTO_2_SO_MATRIZ_H
