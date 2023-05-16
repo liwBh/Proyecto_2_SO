@@ -17,17 +17,17 @@ bool etiquetaC =  false;
 
 //numero de procesos
 int nProcesos = 0;
-//hilo planificador - hilo administrador 2
-//variable para evaluar desperdicio interno de cada proceso
+//variables para evaluar desperdicio interno de cada proceso
 int desperdicioInternoTotal = 0;
 //variable para evaluar desperdicio externo dentro del algoritmo de planificacion
 int desperdicioExterno= 0;
+
 //variables para llevar control del promedio de procesos finalizados desde que se inicio el programa
 float promedio = 0.0;
 time_t inicioPrograma;
 int procesosFinalizados =0;
 
-
+//hilos
 pthread_t planificador;
 pthread_t proceso;
 
@@ -172,7 +172,7 @@ void llenarMemoriaInicio(){
     while( deterner == 0) {
 
         //asignarle espacio en memoria en base a PFVT
-        asignarEspacioDisponiblePFVT( matriz,listaPeticion->primero, listaContenedor );
+        asignarEspacioDisponiblePFVT( matriz,listaPeticion->primero, listaContenedor,listaListos, listaPeticion);
 
         //inserta el primero en lista de listos
         NodoProceso *nodo = clonarNodo(listaPeticion->primero);
@@ -253,10 +253,10 @@ void *administrarProcesos(void *args){
             printf("\n");
 
             //reasignacion de memoria, en base a la politica actual
-            reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor);
+            banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor,listaListos, listaPeticion);
 
             //realizar un cambio de politica
-            tipoPolitica++;
+            //tipoPolitica++;
         }
 
     }else if(etiquetaC == true && nodoProceso->crecimiento == true){
@@ -283,10 +283,10 @@ void *administrarProcesos(void *args){
             printf("\n");
 
             //reasignacion de memoria, en base a la politica actual
-            reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor);
+            banderaFinalizacion =  reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor,listaListos, listaPeticion);
 
             //realizar cambio de politica
-            tipoPolitica++;
+           // tipoPolitica++;
         }
     }
 
@@ -297,6 +297,8 @@ void *administrarProcesos(void *args){
         if(nodoProceso->crecimiento == true){
             etiquetaC = false;
             nodoProceso->crecimiento = false;
+            //realizar cambio de politica
+            tipoPolitica++;
         }
 
         printf("\033[1;33m\n------ { El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------\033[0m",nodoProceso->id, nodoProceso->nombre);
@@ -310,27 +312,31 @@ void *administrarProcesos(void *args){
         mostrarListaPosiciones(nodoProceso->listaPosicion);
         printf("\n");
         //********************* Tentativa moverlo a un metodo en logica *****************
-        //Tipo de politicia
-        switch (tipoPolitica) {
-            case 1:
-                printf("\033[1;31m\n----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------\n\n\033[0m");
-                //asignarle espacio en memoria en base a PFVT, al proceso entrante al contexto de ejecucion
-                asignarEspacioDisponiblePFVT(matriz,listaPeticion->primero,listaContenedor);
-                break;
-            case 2:
-                // Registrar Las listas en un archivo txt de la politica anterior!!!!!!!!!!
-                
-                //asignarle espacio en memoria en base a mapa de bits, al proceso entrante al contexto de ejecucion
-                printf("\033[1;31m\n----------MAPA DE BITS----------\n\n\033[0m");
-                //condicional para aplicar cambio de politica
-                banderaFinalizacion = 1;//-------------------->temporal
-                break;
 
-            default:
-                printf("\033[1;31m\nOcurrio un error al aplicar politica\n\033[0m");
-                banderaFinalizacion = 1;
-                break;
-        }
+        //reasignacion de memoria, en base a la politica actual
+       banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor,listaListos, listaPeticion);
+
+        //Tipo de politicia
+//        switch (tipoPolitica) {
+//            case 1:
+//                printf("\033[1;31m\n----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------\n\n\033[0m");
+//                //asignarle espacio en memoria en base a PFVT, al proceso entrante al contexto de ejecucion
+//                asignarEspacioDisponiblePFVT(matriz,listaPeticion->primero,listaContenedor,listaListos, listaPeticion);
+//                break;
+//            case 2:
+//                // Registrar Las listas en un archivo txt de la politica anterior!!!!!!!!!!
+//
+//                //asignarle espacio en memoria en base a mapa de bits, al proceso entrante al contexto de ejecucion
+//                printf("\033[1;31m\n----------MAPA DE BITS----------\n\n\033[0m");
+//                //condicional para aplicar cambio de politica
+//                banderaFinalizacion = 1;//-------------------->temporal
+//                break;
+//
+//            default:
+//                printf("\033[1;31m\nOcurrio un error al aplicar politica\n\033[0m");
+//                banderaFinalizacion = 1;
+//                break;
+//        }
 
         //agregar un proceso nuevo a contexto de ejecucion
         entrarContextoEjecucion(listaPeticion,listaContenedor,listaListos);
@@ -371,7 +377,6 @@ void *administrarProcesos(void *args){
     mostrarListaProcesos(listaEspera);
 
     if( listaPeticion->primero == NULL || listaListos->primero == NULL){
-        //printf("\n¡Condicion de finalizacion!");
         //indicar que la simulacion ha terminado
         banderaFinalizacion = 1;
     }
