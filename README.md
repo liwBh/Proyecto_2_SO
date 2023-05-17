@@ -1,13 +1,24 @@
-### Bug
+# GNU Debugger
 
-* Bug-1 -> corregido
+El GNU Debugger (gdb) es una herramienta de depuración poderosa que puede ayudarte a encontrar la línea específica 
+que provoca el error de Segmentation Fault. Aquí tienes una guía básica sobre cómo utilizar gdb para depurar tu 
+programa y encontrar la causa del error:
 
-    - Los procesos entran en lista de contenedor.
-    - Nunca entran en lista listo.
-    - Ocurre luego que sale un proceso.
-* Bug-2
-    - Ocurre en el metodo continuarProcesosEspera
-    - Inserta todos los procesos en lista de espera, en listos
-    - Incluso un proceso que tiene mucho tiempo en E/S
-    - Incluye al proceso en ejecucion 
-    - Es el metodo de eliminar? el nodo se bugea
+* Compila tu programa con la opción de depuración: ``gcc -g programa.c -o programa``
+* Inicia gdb con tu programa: ``gdb programa``
+* Ejecuta tu programa en gdb: ``run``
+* Encuentra la línea que causa el Segmentation Fault:
+
+    - ``backtrace`` o ``bt`` para mostrar las llamadas de funciones y las líneas de código donde se origina el error    .
+    - ``list`` para mostrar el código fuente alrededor de la línea problemática.
+  
+* Establecer un punto de interrupción en una línea de código: 
+    - por funcion: ``break nombre_funcion``
+    - por linea de codigo: ``break archivo.c:10`` 10 numero de linea de codigo
+  
+* Examina los valores de las variables: ``print`` o ``p``
+* Continuar la ejecución después de recibir una señal de error:  ``continue `` o   ``c ``
+* Para terminar gdb ``quit`` o ``q`` y luego del mensaje ¿Salir de cualquier modo? (y or n) ``y``
+
+
+
