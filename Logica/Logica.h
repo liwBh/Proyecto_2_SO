@@ -42,6 +42,11 @@ void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
         //printf("Eliminando pos i:%d j:%d ",);
         aux = aux->siguiente;
     }
+
+    //resetear la lista
+    nodo->listaPosicion->primero = NULL;
+    nodo->listaPosicion->ultimo = NULL;
+
 }
 
 //Metodo que trabaja los procesos que estan en la lista de espera
@@ -138,6 +143,7 @@ int calcularDesperdicioInterno(NodoProceso *procesoEvaluar){
     int nbloques = procesoEvaluar->numBloques;
     int peso = procesoEvaluar->peso;
     int resultado = (nbloques * 4) - peso;
+
     return resultado;
 }
 
@@ -156,7 +162,6 @@ int calcularDesperdicioExternoVector(struct Bloque matriz[8][8]) {
     int desperdicioExterno = 0;
     int vector[64];
     int contador = 0;
-    int cerosDesocupados = 0;
 
     // Convertir matriz en vector
     for (int i = 0; i < 8; i++) {
@@ -168,19 +173,11 @@ int calcularDesperdicioExternoVector(struct Bloque matriz[8][8]) {
 
     // Hacer el cálculo de desperdicio externo en el vector
     for (int i = 0; i < 64; i++) {
-        if (vector[i] == 1) {
-            int j = i + 1;
-            while (j < 64 && vector[j] == 0) {
-                cerosDesocupados++;
-                j++;
-            }
-            if (cerosDesocupados < 8) {
-                desperdicioExterno += cerosDesocupados;
-            }
-            i = j - 1;
-            cerosDesocupados = 0;
+        if (vector[i] == 0) {
+            desperdicioExterno++;
         }
     }
+
     return desperdicioExterno * 4;
 }
 
@@ -194,7 +191,7 @@ int generarCreacimientoP(){
 
     for (int i = 0; i < 5; i++) {
         int pos = rand() % 20;
-        crecimientoP[pos] = (rand() % 50) + 1;
+        crecimientoP[pos] = (rand() % 10) + 1;
     }
 
     int posAleatoria = rand() % 20;
@@ -216,6 +213,7 @@ void asignarEspacioMemoria(struct Bloque matriz[8][8], NodoProceso *nodo){
     }
 
     mostrarMatriz(matriz);
+    printf("\033[0;32mEl numero de bloques: %d para el proceso: %d\n\033[0m", nodo->numBloques, nodo->id);
 }
 
 void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaContenedor){
@@ -273,8 +271,6 @@ void buscarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) 
         nBloques = 8;
     }
 
-    printf("\033[0;32mEl numero de bloques: %d para el proceso: %d\033[0m", nBloques, nodo->id);
-
     //insertar en la lista las posciones, si en algun momento no puede insertar se resetea la lista
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
@@ -308,8 +304,6 @@ void buscarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo) 
 //metodo que llena la lista de posiciones en memoria de un nodo, si estan contiguos -> Generico, no modificar
 void buscarEspacioDisponible(struct Bloque matriz[8][8], NodoProceso *nodo) {
     int nBloques = encontrarCantidadDeBloques(nodo->peso);
-
-    printf("\033[0;32mEl numero de bloques: %d para el proceso: %d\033[0m", nBloques, nodo->id);
 
     //insertar en la lista las posciones, si en algun momento no puede insertar se resetea la lista
     for (int i = 0; i < 8; ++i) {
@@ -350,9 +344,31 @@ void mostrarPFVT(ListaProcesos *listaContenedor){
 //Metodo que administra memoria aplicando politica de particiones fijas de tamaño variable
 void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo, ListaProcesos *listaContenedor,ListaProcesos *listaListos, ListaProcesos *listaPeticion) {
 
+    //asignarlo a una lista de particiones de tamaño variado
+    int nBloques = encontrarCantidadDeBloques(nodo->peso);
+
+    if(nBloques == 1){//4bits - 1 bloques
+        //insertar en listaPFVT_4
+        nodo->listaPFVT = 4;
+        nodo->numBloques = 1;
+
+    }else if(nBloques == 2){//8bits - 2 bloques
+        //insertar en listaPFVT_8
+        nodo->listaPFVT = 8;
+        nodo->numBloques = 2;
+
+    }else if(nBloques > 2 && nBloques <= 4){//16bits - 4 bloques
+        //insertar en listaPFVT_16
+        nodo->listaPFVT = 16;
+        nodo->numBloques = 4;
+
+    }else if(nBloques > 4 && nBloques <= 8){//32bits - 8 bloques
+        //insertar en listaPFVT_32
+        nodo->listaPFVT = 32;
+        nodo->numBloques = 8;
+    }
+
     buscarEspacioDisponiblePFVT(matriz, nodo);
-    //printf("\nPosiciones en memoria asiganas al proceso:");
-    //mostrarListaPosiciones(nodo->listaPosicion);
 
     //si tiene hueco en memoria para el proceso
     if (!estaVacia(nodo->listaPosicion)) {
@@ -378,38 +394,14 @@ void asignarEspacioDisponiblePFVT(struct Bloque matriz[8][8], NodoProceso *nodo,
         }
     }
 
-    //asignarlo a una lista de particiones de tamaño variado
-    int nBloques = encontrarCantidadDeBloques(nodo->peso);
-
-    if(nBloques == 1){//4bits - 1 bloques
-        //insertar en listaPFVT_4
-        nodo->listaPFVT = 4;
-        nodo->numBloques = 1;
-
-    }else if(nBloques == 2){//8bits - 2 bloques
-        //insertar en listaPFVT_8
-        nodo->listaPFVT = 8;
-        nodo->numBloques = 2;
-
-    }else if(nBloques > 2 && nBloques <= 4){//16bits - 4 bloques
-        //insertar en listaPFVT_16
-        nodo->listaPFVT = 16;
-        nodo->numBloques = 4;
-
-    }else if(nBloques > 4 && nBloques <= 8){//32bits - 8 bloques
-        //insertar en listaPFVT_32
-        nodo->listaPFVT = 32;
-        nodo->numBloques = 8;
-    }
-
 }
 
 //Metodo que administra memoria aplicando politica mapa de bits
 void asignarEspacioDisponibleMB(struct Bloque matriz[8][8], NodoProceso *nodo, ListaProcesos *listaContenedor,ListaProcesos *listaListos, ListaProcesos *listaPeticion){
+    //definir el numero de bloques
+    nodo->numBloques = encontrarCantidadDeBloques(nodo->peso);
 
     buscarEspacioDisponible(matriz, nodo);
-    //printf("\nPosiciones en memoria asiganas al proceso:");
-    //mostrarListaPosiciones(nodo->listaPosicion);
 
     //si tiene hueco en memoria para el proceso
     if (!estaVacia(nodo->listaPosicion)) {
@@ -445,7 +437,6 @@ int reasignacionMemoriaXpolitica(int tipoPolitica, struct Bloque matriz[8][8], N
             //asignarle espacio en memoria en base a PFVT, al proceso entrante al contexto de ejecucion
             printf("\033[1;31m\n----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------\n\n\033[0m");
             asignarEspacioDisponiblePFVT(matriz,nodoProceso,listaContenedor,listaListos, listaPeticion);
-
 
             break;
         case 2:

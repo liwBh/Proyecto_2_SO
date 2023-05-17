@@ -64,13 +64,15 @@ int main() {
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
 
-    printf("\033[1;33mInicializando estructura de Memoria\033[0m\n");
+    printf("\033[1;33m\nInicializando estructura de Memoria\033[0m\n");
 
     //crear aquitectura de memoria
     llenarMatriz( matriz);
+    fflush(stdout);
 
     //Imprimir matriz
     mostrarMatriz( matriz );
+    fflush(stdout);
 
     //Tiempo de inicio simulacion
     time_t startTime = time(NULL);
@@ -82,8 +84,9 @@ int main() {
     llenarMemoriaInicio();
 
     //Imprimir matriz
-    printf("\nProcesos actuales en memoria\n");
+    printf("\033[0;33m\n\n------------------Procesos actuales en memoria------------------\n\033[0m");
     mostrarMatriz( matriz );
+    fflush(stdout);
 
     //mostrar las listas aplicando politica PFVT
     mostrarPFVT(listaContenedor);
@@ -171,15 +174,12 @@ void llenarMemoriaInicio(){
 
     while( deterner == 0) {
 
-        //asignarle espacio en memoria en base a PFVT
-        asignarEspacioDisponiblePFVT( matriz,listaPeticion->primero, listaContenedor,listaListos, listaPeticion);
+        //reasignacion de memoria, en base a la politica actual
+        banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, listaPeticion->primero, listaContenedor,listaListos, listaPeticion);
 
-        //inserta el primero en lista de listos
-        NodoProceso *nodo = clonarNodo(listaPeticion->primero);
-        insertar(listaListos,nodo);
-
-        //mover un proceso de lista peticion a lista contenedor y asinale un espacio en memoria
-        pasarProcesoContenedor(listaPeticion, listaContenedor);
+        //agregar un proceso nuevo a contexto de ejecucion
+        entrarContextoEjecucion(listaPeticion,listaContenedor,listaListos);
+        fflush(stdout);
 
         //mientras la matriz no se llene mas del 60%
         if( validarLlenado(matriz) ) {
@@ -218,8 +218,12 @@ void *administrarProcesos(void *args){
     //restar una iteraciones
     nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
     printf("\nIteraciones restantes: %d\n",nodoProceso->nIteraciones );
+    printf("\033[1;33m\nDirecciones de Memoria del proceso:  \033[0m");
+    mostrarListaPosiciones(nodoProceso->listaPosicion);
+    printf("\n");
 
-    printf("\033[33m\nInformacion de rendimiento de memoria\n\033[0m");
+
+    printf("\033[1;33m\nInformacion de rendimiento de memoria\n\033[0m");
     printf("\nCantidad de procesos en contexto de ejecucion : %d", listaContenedor->tamanio);
     printf("\nDesperdicio interno total : %d kb", desperdicioInternoTotal);
     printf("\nDesperdicio externo total : %d kb\n", desperdicioExterno);
@@ -228,7 +232,7 @@ void *administrarProcesos(void *args){
     if( etiquetaC == false ){//asignar etiqueta de crecimiento
         int crecimiento = generarCreacimientoP();
 
-        //Ajuste para respetar particiones fijas variable tamaño
+        //Ajuste para respetar tamaño memoria
         if(nodoProceso->peso + crecimiento > 32 && tipoPolitica == 1){
             crecimiento = 32 - nodoProceso->peso;
         }
@@ -243,26 +247,24 @@ void *administrarProcesos(void *args){
 
             nodoProceso->peso += crecimiento;
 
+            printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
+            mostrarListaPosiciones(nodoProceso->listaPosicion);
+            printf("\n");
+
             //librerar bloques de memoria
             liberarMemoria(nodoProceso,matriz);
             printf("\nLiberando Memoria utilizada por el proceso");
             mostrarMatriz(matriz);
 
-            printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
-            mostrarListaPosiciones(nodoProceso->listaPosicion);
-            printf("\n");
-
             //reasignacion de memoria, en base a la politica actual
             banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor,listaListos, listaPeticion);
 
-            //realizar un cambio de politica
-            //tipoPolitica++;
         }
 
     }else if(etiquetaC == true && nodoProceso->crecimiento == true){
         int crecimiento = generarCreacimientoP();
 
-        //Ajuste para respetar particiones fijas variable tamaño
+        //Ajuste para respetar tamaño memoria
         if(nodoProceso->peso + crecimiento > 32 && tipoPolitica == 1){
             crecimiento = 32 - nodoProceso->peso;
         }
@@ -274,19 +276,18 @@ void *administrarProcesos(void *args){
 
             nodoProceso->peso += crecimiento;
 
-            //librerar bloques de memoria
-            printf("\nLiberando Memoria utilizada por el proceso");
-            mostrarMatriz(matriz);
-
             printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
             mostrarListaPosiciones(nodoProceso->listaPosicion);
             printf("\n");
 
+            //librerar bloques de memoria
+            liberarMemoria(nodoProceso,matriz);
+            printf("\nLiberando Memoria utilizada por el proceso");
+            mostrarMatriz(matriz);
+
             //reasignacion de memoria, en base a la politica actual
             banderaFinalizacion =  reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor,listaListos, listaPeticion);
 
-            //realizar cambio de politica
-           // tipoPolitica++;
         }
     }
 
@@ -297,55 +298,34 @@ void *administrarProcesos(void *args){
         if(nodoProceso->crecimiento == true){
             etiquetaC = false;
             nodoProceso->crecimiento = false;
+
             //realizar cambio de politica
+            printf("\033[1;31m\n====================={ Aplicar cambio de politica }=====================\n\033[0m");
             tipoPolitica++;
         }
 
-        printf("\033[1;33m\n------ { El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------\033[0m",nodoProceso->id, nodoProceso->nombre);
+        printf("\033[1;31m\n------ { El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------\n\033[0m",nodoProceso->id, nodoProceso->nombre);
+
+        printf("\033[1;33m\nInformacion de rendimiento de memoria\n\033[0m");
+        double promedioEj = nodoProceso->sumTiempoEj / nodoProceso->nEjecucion;
+        double promedioEs = nodoProceso->nEspera!=0 ? nodoProceso->sumTiempoES / nodoProceso->nEspera : 0;
+        printf("\nEl promedio de ejecucion del proceso es: %f \n",promedioEj);
+        printf("El promedio de espera del proceso es: %f \n",promedioEs);
+
+        printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
+        mostrarListaPosiciones(nodoProceso->listaPosicion);
+        printf("\n");
 
         //librerar bloques de memoria
         liberarMemoria(nodoProceso,matriz);
         printf("\nLiberando Memoria utilizada por el proceso");
         mostrarMatriz(matriz);
 
-        printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
-        mostrarListaPosiciones(nodoProceso->listaPosicion);
-        printf("\n");
-        //********************* Tentativa moverlo a un metodo en logica *****************
-
         //reasignacion de memoria, en base a la politica actual
-       banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor,listaListos, listaPeticion);
-
-        //Tipo de politicia
-//        switch (tipoPolitica) {
-//            case 1:
-//                printf("\033[1;31m\n----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------\n\n\033[0m");
-//                //asignarle espacio en memoria en base a PFVT, al proceso entrante al contexto de ejecucion
-//                asignarEspacioDisponiblePFVT(matriz,listaPeticion->primero,listaContenedor,listaListos, listaPeticion);
-//                break;
-//            case 2:
-//                // Registrar Las listas en un archivo txt de la politica anterior!!!!!!!!!!
-//
-//                //asignarle espacio en memoria en base a mapa de bits, al proceso entrante al contexto de ejecucion
-//                printf("\033[1;31m\n----------MAPA DE BITS----------\n\n\033[0m");
-//                //condicional para aplicar cambio de politica
-//                banderaFinalizacion = 1;//-------------------->temporal
-//                break;
-//
-//            default:
-//                printf("\033[1;31m\nOcurrio un error al aplicar politica\n\033[0m");
-//                banderaFinalizacion = 1;
-//                break;
-//        }
+        banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, listaPeticion->primero, listaContenedor,listaListos, listaPeticion);
 
         //agregar un proceso nuevo a contexto de ejecucion
         entrarContextoEjecucion(listaPeticion,listaContenedor,listaListos);
-
-        double promedioEj = nodoProceso->sumTiempoEj / nodoProceso->nEjecucion;
-        double promedioEs = nodoProceso->nEspera!=0 ? nodoProceso->sumTiempoES / nodoProceso->nEspera : 0;
-        printf("\nEl promedio de ejecucion del proceso es: %f \n",promedioEj);
-        printf("\nEl promedio de espera del proceso es: %f \n",promedioEs);
-        printf("\n\n");
 
         //sacar de contexto un proceso sin iteraciones del contexto de ejecucion
         salirContextoEjecucion(listaContenedor,listaListos,nodoProceso);
@@ -375,6 +355,10 @@ void *administrarProcesos(void *args){
 
     printf("\033[1;33m\nProcesos restantes en la lista de E/S!\033[0m");
     mostrarListaProcesos(listaEspera);
+
+    //Imprimir matriz
+    printf("\033[0;33m\n\n------------------Condicion actual de memoria------------------\n\033[0m");
+    mostrarMatriz( matriz );
 
     if( listaPeticion->primero == NULL || listaListos->primero == NULL){
         //indicar que la simulacion ha terminado
