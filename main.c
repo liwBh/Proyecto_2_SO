@@ -41,6 +41,13 @@ ListaProcesos *listaContenedor;
 ListaProcesos *listaEspera;
 //lista de listos
 ListaProcesos *listaListos;
+//variables interfaz
+GtkWidget *button;
+GtkWidget *button2;
+GtkWidget *button3;
+GtkWidget *button4;
+GtkWidget *button5;
+GtkWidget *button6;
 
 void crearListas();
 void llenarListaProcesosEsperando();
@@ -149,7 +156,7 @@ void leerArchivo(GtkTextBuffer *buffer, const char *prueba) {
 }
 
 
-void crearVentana(GtkWidget *widget, gpointer data) {
+void crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
     // Crear la ventana principal
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     gtk_window_set_title(GTK_WINDOW(window), "Archivo de texto");
@@ -168,7 +175,7 @@ void crearVentana(GtkWidget *widget, gpointer data) {
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
 
     // Leer el archivo de texto y mostrarlo en el widget
-    leerArchivo(buffer, "/home/elmer/CLionProjects/LeerTxtVentana/prueba.txt");
+    leerArchivo(buffer, ruta);
 
 
 
@@ -214,9 +221,21 @@ void establecerEstiloBoton(GtkWidget *button) {
                                    GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
 
-
-void on_button_clicked(GtkWidget *widget, gpointer data) {
-    g_print("Botón clickeado\n");
+//Menu de opciones, captura el click y dependiendo del boton se abre una ventana con el txt
+void on_button_clicked(GtkWidget *widget, gpointer data){
+    if (widget == button) {
+        crearVentana(widget, data, "/home/elmer/Documentos/GitHub/Proyecto_2_SO/prueba.txt");
+    } else if (widget == button2) {
+        crearVentana(widget, data, "/home/elmer/Documentos/GitHub/Proyecto_2_SO/prueba2.txt");
+    } else if (widget == button3) {
+        crearVentana(widget, data, "/home/elmer/Documentos/GitHub/Proyecto_2_SO/prueba3.txt");
+    } else if (widget == button4) {
+        crearVentana(widget, data, "/home/elmer/Documentos/GitHub/Proyecto_2_SO/prueba4.txt");
+    } else if (widget == button5) {
+        crearVentana(widget, data, "/home/elmer/Documentos/GitHub/Proyecto_2_SO/prueba5.txt");
+    } else if (widget == button6) {
+        crearVentana(widget, data, "/home/elmer/Documentos/GitHub/Proyecto_2_SO/prueba6.txt");
+    }
 }
 
 void mostrarVentana() {
@@ -224,7 +243,7 @@ void mostrarVentana() {
     gtk_init(NULL, NULL);
 
     // Crear la ventana principal
-    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);//con esto se crea la ventana
     gtk_window_set_title(GTK_WINDOW(window), "Como Arroz!!!!!");
     gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 
@@ -232,12 +251,12 @@ void mostrarVentana() {
     gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
 
     // Crear un grid para organizar los widgets
-    GtkWidget *grid = gtk_grid_new();
-    gtk_container_add(GTK_CONTAINER(window), grid);
+    GtkWidget *grid = gtk_grid_new();//esto es como un contenedor que organiza la matriz bidimensional
+    gtk_container_add(GTK_CONTAINER(window), grid);//se le asigna el widget
 
     // Establecer el estilo CSS para la imagen de fondo
     const char* css = "window {"
-                      "  background-image: url('/home/elmer/Descargas/prueba2.jpeg');"
+                      "  background-image: url('/home/elmer/Documentos/GitHub/Proyecto_2_SO/prueba2.jpeg');"
                       "  background-repeat: no-repeat;"
                       "  background-size: cover;"
                       "}";
@@ -271,7 +290,7 @@ void mostrarVentana() {
 //    gtk_grid_attach(GTK_GRID(grid), spacer, 0, 1, 1, 1);
 
     // Crear un botón para abrir la ventana
-    GtkWidget *button = gtk_button_new_with_label("Mapa de bits");
+    button = gtk_button_new_with_label("Mapa de bits");
     g_signal_connect(button, "clicked", G_CALLBACK(on_button_clicked), NULL);
     establecerEstiloBoton(button);
 
@@ -290,16 +309,17 @@ void mostrarVentana() {
 
 
     // Crear botones adicionales
-    GtkWidget *button2 = gtk_button_new_with_label("Particiones fijas");
+    button2 = gtk_button_new_with_label("Particiones fijas");
     g_signal_connect(button2, "clicked", G_CALLBACK(on_button_clicked), NULL);
     establecerEstiloBoton(button2);
     gtk_widget_set_halign(button2, GTK_ALIGN_CENTER);
     gtk_widget_set_margin_top(button2, 20);
     gtk_grid_attach(GTK_GRID(grid), button2, 0, 3, 1, 1);
+    //esto captura cuando esta el cursor encima y cuando no o "entra y sale"
     g_signal_connect(button2, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
     g_signal_connect(button2, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
-    GtkWidget *button3 = gtk_button_new_with_label("Primer ajuste");
+    button3 = gtk_button_new_with_label("Primer ajuste");
     g_signal_connect(button3, "clicked", G_CALLBACK(on_button_clicked), NULL);
     establecerEstiloBoton(button3);
     gtk_widget_set_halign(button3, GTK_ALIGN_CENTER);
@@ -308,7 +328,7 @@ void mostrarVentana() {
     g_signal_connect(button3, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
     g_signal_connect(button3, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
-    GtkWidget *button4 = gtk_button_new_with_label("Peor ajuste");
+    button4 = gtk_button_new_with_label("Peor ajuste");
     g_signal_connect(button4, "clicked", G_CALLBACK(on_button_clicked), NULL);
     establecerEstiloBoton(button4);
     gtk_widget_set_halign(button4, GTK_ALIGN_CENTER);
@@ -317,7 +337,7 @@ void mostrarVentana() {
     g_signal_connect(button4, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
     g_signal_connect(button4, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
-    GtkWidget *button5 = gtk_button_new_with_label("Mejor ajuste");
+    button5 = gtk_button_new_with_label("Mejor ajuste");
     g_signal_connect(button5, "clicked", G_CALLBACK(on_button_clicked), NULL);
     establecerEstiloBoton(button5);
     gtk_widget_set_halign(button5, GTK_ALIGN_CENTER);
@@ -326,7 +346,7 @@ void mostrarVentana() {
     g_signal_connect(button5, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
     g_signal_connect(button5, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
-    GtkWidget *button6 = gtk_button_new_with_label("Ajuste mas rapido");
+    button6 = gtk_button_new_with_label("Ajuste mas rapido");
     g_signal_connect(button6, "clicked", G_CALLBACK(on_button_clicked), NULL);
     establecerEstiloBoton(button6);
     gtk_widget_set_halign(button6, GTK_ALIGN_CENTER);
