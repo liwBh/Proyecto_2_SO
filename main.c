@@ -175,6 +175,25 @@ void crearVentana(GtkWidget *widget, gpointer data) {
 //    // Mostrar la ventana y sus contenidos
     gtk_widget_show_all(window);
 }
+// Función para manejar el evento de ingreso al botón
+gboolean on_button_enter(GtkWidget *widget, GdkEvent *event, gpointer data)
+{
+    GdkWindow *window = gtk_widget_get_window(widget);
+    GdkCursor *hand_cursor = gdk_cursor_new(GDK_HAND1);
+    gdk_window_set_cursor(window, hand_cursor);
+    g_object_unref(hand_cursor);
+    return TRUE;
+}
+
+// Función para manejar el evento de salida del botón
+gboolean on_button_leave(GtkWidget *widget, GdkEvent *event, gpointer data)
+{
+    GdkWindow *window = gtk_widget_get_window(widget);
+    GdkCursor *default_cursor = gdk_cursor_new(GDK_LEFT_PTR);
+    gdk_window_set_cursor(window, default_cursor);
+    g_object_unref(default_cursor);
+    return TRUE;
+}
 void establecerEstiloLabel(GtkWidget *label) {
     const gchar *css_label = "label { color: white; font-size: 30px; }";
     GtkCssProvider *provider_label = gtk_css_provider_new();
@@ -186,7 +205,7 @@ void establecerEstiloLabel(GtkWidget *label) {
 }
 
 void establecerEstiloBoton(GtkWidget *button) {
-    const gchar *css_button = "button { color: black; }";
+    const gchar *css_button = "button { color: black;   }";
     GtkCssProvider *provider_button = gtk_css_provider_new();
     gtk_css_provider_load_from_data(provider_button, css_button, -1, NULL);
     GtkStyleContext *context_button = gtk_widget_get_style_context(button);
@@ -264,6 +283,10 @@ void mostrarVentana() {
 
     // Establecer el margen superior para el botón
     gtk_widget_set_margin_top(button, 20);
+    // Conectar los eventos enter-notify-event y leave-notify-event
+    g_signal_connect(button, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
+    g_signal_connect(button, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
+
 
 
     // Crear botones adicionales
@@ -273,7 +296,8 @@ void mostrarVentana() {
     gtk_widget_set_halign(button2, GTK_ALIGN_CENTER);
     gtk_widget_set_margin_top(button2, 20);
     gtk_grid_attach(GTK_GRID(grid), button2, 0, 3, 1, 1);
-
+    g_signal_connect(button2, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
+    g_signal_connect(button2, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
     GtkWidget *button3 = gtk_button_new_with_label("Primer ajuste");
     g_signal_connect(button3, "clicked", G_CALLBACK(on_button_clicked), NULL);
@@ -281,6 +305,8 @@ void mostrarVentana() {
     gtk_widget_set_halign(button3, GTK_ALIGN_CENTER);
     gtk_widget_set_margin_top(button3, 20);
     gtk_grid_attach(GTK_GRID(grid), button3, 0, 4, 1, 1);
+    g_signal_connect(button3, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
+    g_signal_connect(button3, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
     GtkWidget *button4 = gtk_button_new_with_label("Peor ajuste");
     g_signal_connect(button4, "clicked", G_CALLBACK(on_button_clicked), NULL);
@@ -288,6 +314,8 @@ void mostrarVentana() {
     gtk_widget_set_halign(button4, GTK_ALIGN_CENTER);
     gtk_widget_set_margin_top(button4, 20);
     gtk_grid_attach(GTK_GRID(grid), button4, 0, 5, 1, 1);
+    g_signal_connect(button4, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
+    g_signal_connect(button4, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
     GtkWidget *button5 = gtk_button_new_with_label("Mejor ajuste");
     g_signal_connect(button5, "clicked", G_CALLBACK(on_button_clicked), NULL);
@@ -295,6 +323,8 @@ void mostrarVentana() {
     gtk_widget_set_halign(button5, GTK_ALIGN_CENTER);
     gtk_widget_set_margin_top(button5, 20);
     gtk_grid_attach(GTK_GRID(grid), button5, 0, 6, 1, 1);
+    g_signal_connect(button5, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
+    g_signal_connect(button5, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
     GtkWidget *button6 = gtk_button_new_with_label("Ajuste mas rapido");
     g_signal_connect(button6, "clicked", G_CALLBACK(on_button_clicked), NULL);
@@ -302,6 +332,8 @@ void mostrarVentana() {
     gtk_widget_set_halign(button6, GTK_ALIGN_CENTER);
     gtk_widget_set_margin_top(button6, 20);
     gtk_grid_attach(GTK_GRID(grid), button6, 0, 7, 1, 1);
+    g_signal_connect(button6, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
+    g_signal_connect(button6, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
 
     // Mostrar la ventana principal
     gtk_widget_show_all(window);
