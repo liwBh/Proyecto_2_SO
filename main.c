@@ -6,7 +6,7 @@
 #include "Listas/Lista.h"
 #include "MatrizMemoria/Matriz.h"
 #include "Logica/Logica.h"
-
+#include <gtk/gtk.h>
 struct Bloque matriz[8][8];
 //bandera para la finalizacion de la simulacion
 int banderaFinalizacion = 0;
@@ -47,9 +47,10 @@ void llenarListaProcesosEsperando();
 void llenarMemoriaInicio();
 void *administrarProcesos(void *args);
 void *iniciarPlanificador(void *args);
-
+void mostrarVentana();
 
 int main() {
+    mostrarVentana();
     //se toma el tiempo de inicio del programa
     inicioPrograma = time(NULL);
     printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
@@ -119,9 +120,219 @@ int main() {
     printf("\nPromedio de proceso finalizados por unidad de tiempo: %.2f segundos\n", promedio);
 
     printf("\033[1;31m\n--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
-
+//    mostrarVentana();
     return 0;
 }
+
+
+
+// Función para leer el archivo de texto
+void leerArchivo(GtkTextBuffer *buffer, const char *prueba) {
+    FILE *archivo;
+    char linea[256];
+
+    // Abrir el archivo en modo lectura
+    archivo = fopen(prueba, "r");
+    if (archivo == NULL) {
+        g_print("Error al abrir el archivo.\n");
+        return;
+    }
+
+    // Leer el archivo línea por línea
+    while (fgets(linea, sizeof(linea), archivo) != NULL) {
+        // Agregar la línea al buffer de texto de GTK
+        gtk_text_buffer_insert_at_cursor(buffer, linea, -1);
+    }
+
+    // Cerrar el archivo
+    fclose(archivo);
+}
+
+
+void crearVentana(GtkWidget *widget, gpointer data) {
+    // Crear la ventana principal
+    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window), "Archivo de texto");
+    gtk_window_maximize(GTK_WINDOW(window));  // Maximizar la ventana
+    gtk_window_set_decorated(GTK_WINDOW(window), TRUE);  // Mostrar los botones de la barra de título
+
+    // Crear un overlay para contener los widgets
+    GtkWidget *overlay = gtk_overlay_new();
+    gtk_container_add(GTK_CONTAINER(window), overlay);
+
+    // Crear el widget de texto
+    GtkWidget *textview = gtk_text_view_new();
+    gtk_container_add(GTK_CONTAINER(overlay), textview);
+
+    // Obtener el buffer de texto
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
+
+    // Leer el archivo de texto y mostrarlo en el widget
+    leerArchivo(buffer, "/home/elmer/CLionProjects/LeerTxtVentana/prueba.txt");
+
+
+
+//    // Mostrar la ventana y sus contenidos
+    gtk_widget_show_all(window);
+}
+
+void mostrarVentana() {
+    // Inicializar GTK
+    gtk_init(NULL, NULL);
+
+    // Crear la ventana principal
+    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    gtk_window_set_title(GTK_WINDOW(window), "Lectura de archivo");
+    gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
+
+    // Centrar la ventana en la pantalla
+    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+
+    // Crear un grid para organizar los widgets
+    GtkWidget *grid = gtk_grid_new();
+    gtk_container_add(GTK_CONTAINER(window), grid);
+
+    // Establecer el estilo CSS para la imagen de fondo
+    const char* css = "window {"
+                      "  background-image: url('/home/elmer/Descargas/prueba2.jpeg');"
+                      "  background-repeat: no-repeat;"
+                      "  background-size: cover;"
+                      "}";
+    GtkCssProvider *provider = gtk_css_provider_new();
+    GError *error = NULL;
+    gtk_css_provider_load_from_data(provider, css, -1, &error);
+    if (error != NULL) {
+        g_print("Error loading CSS: %s\n", error->message);
+        g_error_free(error);
+    }
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                              GTK_STYLE_PROVIDER(provider),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    g_object_unref(provider);
+
+    // Crear los labels con información
+    GtkWidget *label1 = gtk_label_new("Bienvenido al registro del Administrador de Memoria");
+
+    // Establecer el color del texto del label a blanco
+    const gchar *css_label = "label { color: #0000FF; }";
+    GtkCssProvider *provider_label = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider_label, css_label, -1,&error);
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                              GTK_STYLE_PROVIDER(provider_label),
+                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+    // Permitir que los labels se expandan horizontalmente
+    gtk_widget_set_hexpand(label1, TRUE);
+
+    // Centrar los labels verticalmente dentro del grid
+    gtk_widget_set_valign(label1, GTK_ALIGN_CENTER);
+
+    // Agregar los labels al grid
+    gtk_grid_attach(GTK_GRID(grid), label1, 0, 0, 1, 1);
+
+    // Agregar un widget "espaciador" en la fila intermedia
+    GtkWidget *spacer = gtk_label_new(NULL);
+    gtk_widget_set_hexpand(spacer, TRUE);
+    gtk_widget_set_vexpand(spacer, TRUE);
+    gtk_grid_attach(GTK_GRID(grid), spacer, 0, 1, 1, 1);
+
+    // Crear un botón para abrir la ventana
+    GtkWidget *button = gtk_button_new_with_label("Abrir archivo");
+    g_signal_connect(button, "clicked", G_CALLBACK(crearVentana), NULL);
+    // Establecer el color del texto del botón a negro
+    const gchar *css_button = "button { color: #000000; }";
+    GtkCssProvider *provider_button = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider_button, css_button, -1,&error);
+    gtk_style_context_add_provider(gtk_widget_get_style_context(button),
+                                   GTK_STYLE_PROVIDER(provider_button),
+                                   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+    // Centrar el botón dentro del grid
+    gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
+
+    // Agregar el botón al grid en la última fila
+    gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
+
+    // Establecer el margen superior para el botón
+    gtk_widget_set_margin_top(button, 20);
+
+    // Mostrar la ventana principal
+    gtk_widget_show_all(window);
+
+    // Iniciar el bucle principal de GTK
+    gtk_main();
+}
+
+
+
+
+//void mostrarVentana() {
+//    // Inicializar GTK
+//    gtk_init(NULL, NULL);
+//
+//    // Crear la ventana principal
+//    GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+//    gtk_window_set_title(GTK_WINDOW(window), "Lectura de archivo");
+//    gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
+//
+//    // Centrar la ventana en la pantalla
+//    gtk_window_set_position(GTK_WINDOW(window), GTK_WIN_POS_CENTER);
+//
+//    // Crear un grid para organizar los widgets
+//    GtkWidget *grid = gtk_grid_new();
+//    gtk_container_add(GTK_CONTAINER(window), grid);
+//
+//    // Establecer el estilo CSS para la imagen de fondo
+//    const char* css = "window {"
+//                      "  background-image: url('/home/elmer/Descargas/prueba2.jpeg');"
+//                      "  background-repeat: no-repeat;"
+//                      "  background-size: cover;"
+//                      "}";
+//    GtkCssProvider *provider = gtk_css_provider_new();
+//    GError *error = NULL;  // Agregar esta línea
+//    gtk_css_provider_load_from_data(provider, css, -1, &error);  // Modificar esta línea
+//    if (error != NULL) {
+//        g_print("Error loading CSS: %s\n", error->message);
+//        g_error_free(error);
+//    }
+//    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+//                                              GTK_STYLE_PROVIDER(provider),
+//                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+//    g_object_unref(provider);
+//
+//    // Crear los labels con información
+//    GtkWidget *label1 = gtk_label_new("Bienvenido al registro del Administrador de Memoria");
+//
+//    // Crear un botón para abrir la ventana
+//    GtkWidget *button = gtk_button_new_with_label("Abrir archivo");
+//    g_signal_connect(button, "clicked", G_CALLBACK(crearVentana), NULL);
+//// Centrar el botón dentro del grid
+//    gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
+//
+//    // Agregar el botón al grid en la última fila
+//    gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
+//
+//    // Establecer el margen superior para el botón
+//    gtk_widget_set_margin_top(button, 200);
+//    // Agregar los labels al grid
+//    gtk_grid_attach(GTK_GRID(grid), label1, 0, 0, 1, 1);
+//    gtk_grid_attach(GTK_GRID(grid), button, 0, 1, 1, 1);
+//
+//    // Mostrar la ventana principal
+//    gtk_widget_show_all(window);
+//
+//    // Iniciar el bucle principal de GTK
+//    gtk_main();
+//}
+
+
+
+
+
+
+
+
+
 
 void crearListas(){
     //Listas del emulador
