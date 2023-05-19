@@ -175,6 +175,30 @@ void crearVentana(GtkWidget *widget, gpointer data) {
 //    // Mostrar la ventana y sus contenidos
     gtk_widget_show_all(window);
 }
+void establecerEstiloLabel(GtkWidget *label) {
+    const gchar *css_label = "label { color: white; font-size: 30px; }";
+    GtkCssProvider *provider_label = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider_label, css_label, -1, NULL);
+    GtkStyleContext *context_label = gtk_widget_get_style_context(label);
+    gtk_style_context_add_provider(context_label,
+                                   GTK_STYLE_PROVIDER(provider_label),
+                                   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+}
+
+void establecerEstiloBoton(GtkWidget *button) {
+    const gchar *css_button = "button { color: black; }";
+    GtkCssProvider *provider_button = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider_button, css_button, -1, NULL);
+    GtkStyleContext *context_button = gtk_widget_get_style_context(button);
+    gtk_style_context_add_provider(context_button,
+                                   GTK_STYLE_PROVIDER(provider_button),
+                                   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+}
+
+
+void on_button_clicked(GtkWidget *widget, gpointer data) {
+    g_print("Botón clickeado\n");
+}
 
 void mostrarVentana() {
     // Inicializar GTK
@@ -182,7 +206,7 @@ void mostrarVentana() {
 
     // Crear la ventana principal
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Lectura de archivo");
+    gtk_window_set_title(GTK_WINDOW(window), "Como Arroz!!!!!");
     gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 
     // Centrar la ventana en la pantalla
@@ -199,12 +223,7 @@ void mostrarVentana() {
                       "  background-size: cover;"
                       "}";
     GtkCssProvider *provider = gtk_css_provider_new();
-    GError *error = NULL;
-    gtk_css_provider_load_from_data(provider, css, -1, &error);
-    if (error != NULL) {
-        g_print("Error loading CSS: %s\n", error->message);
-        g_error_free(error);
-    }
+    gtk_css_provider_load_from_data(provider, css, -1, NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
                                               GTK_STYLE_PROVIDER(provider),
                                               GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -212,14 +231,10 @@ void mostrarVentana() {
 
     // Crear los labels con información
     GtkWidget *label1 = gtk_label_new("Bienvenido al registro del Administrador de Memoria");
+    gtk_widget_set_margin_top(label1, 20);
+    gtk_widget_set_margin_bottom(label1, 20);
+    establecerEstiloLabel(label1);
 
-    // Establecer el color del texto del label a blanco
-    const gchar *css_label = "label { color: #0000FF; }";
-    GtkCssProvider *provider_label = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(provider_label, css_label, -1,&error);
-    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
-                                              GTK_STYLE_PROVIDER(provider_label),
-                                              GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 
     // Permitir que los labels se expandan horizontalmente
     gtk_widget_set_hexpand(label1, TRUE);
@@ -230,22 +245,16 @@ void mostrarVentana() {
     // Agregar los labels al grid
     gtk_grid_attach(GTK_GRID(grid), label1, 0, 0, 1, 1);
 
-    // Agregar un widget "espaciador" en la fila intermedia
-    GtkWidget *spacer = gtk_label_new(NULL);
-    gtk_widget_set_hexpand(spacer, TRUE);
-    gtk_widget_set_vexpand(spacer, TRUE);
-    gtk_grid_attach(GTK_GRID(grid), spacer, 0, 1, 1, 1);
+//    // Agregar un widget "espaciador" en la fila intermedia
+//    GtkWidget *spacer = gtk_label_new(NULL);
+//    gtk_widget_set_hexpand(spacer, TRUE);
+//    gtk_widget_set_vexpand(spacer, TRUE);
+//    gtk_grid_attach(GTK_GRID(grid), spacer, 0, 1, 1, 1);
 
     // Crear un botón para abrir la ventana
-    GtkWidget *button = gtk_button_new_with_label("Abrir archivo");
-    g_signal_connect(button, "clicked", G_CALLBACK(crearVentana), NULL);
-    // Establecer el color del texto del botón a negro
-    const gchar *css_button = "button { color: #000000; }";
-    GtkCssProvider *provider_button = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(provider_button, css_button, -1,&error);
-    gtk_style_context_add_provider(gtk_widget_get_style_context(button),
-                                   GTK_STYLE_PROVIDER(provider_button),
-                                   GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+    GtkWidget *button = gtk_button_new_with_label("Mapa de bits");
+    g_signal_connect(button, "clicked", G_CALLBACK(on_button_clicked), NULL);
+    establecerEstiloBoton(button);
 
     // Centrar el botón dentro del grid
     gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
@@ -255,6 +264,44 @@ void mostrarVentana() {
 
     // Establecer el margen superior para el botón
     gtk_widget_set_margin_top(button, 20);
+
+
+    // Crear botones adicionales
+    GtkWidget *button2 = gtk_button_new_with_label("Particiones fijas");
+    g_signal_connect(button2, "clicked", G_CALLBACK(on_button_clicked), NULL);
+    establecerEstiloBoton(button2);
+    gtk_widget_set_halign(button2, GTK_ALIGN_CENTER);
+    gtk_widget_set_margin_top(button2, 20);
+    gtk_grid_attach(GTK_GRID(grid), button2, 0, 3, 1, 1);
+
+
+    GtkWidget *button3 = gtk_button_new_with_label("Primer ajuste");
+    g_signal_connect(button3, "clicked", G_CALLBACK(on_button_clicked), NULL);
+    establecerEstiloBoton(button3);
+    gtk_widget_set_halign(button3, GTK_ALIGN_CENTER);
+    gtk_widget_set_margin_top(button3, 20);
+    gtk_grid_attach(GTK_GRID(grid), button3, 0, 4, 1, 1);
+
+    GtkWidget *button4 = gtk_button_new_with_label("Peor ajuste");
+    g_signal_connect(button4, "clicked", G_CALLBACK(on_button_clicked), NULL);
+    establecerEstiloBoton(button4);
+    gtk_widget_set_halign(button4, GTK_ALIGN_CENTER);
+    gtk_widget_set_margin_top(button4, 20);
+    gtk_grid_attach(GTK_GRID(grid), button4, 0, 5, 1, 1);
+
+    GtkWidget *button5 = gtk_button_new_with_label("Mejor ajuste");
+    g_signal_connect(button5, "clicked", G_CALLBACK(on_button_clicked), NULL);
+    establecerEstiloBoton(button5);
+    gtk_widget_set_halign(button5, GTK_ALIGN_CENTER);
+    gtk_widget_set_margin_top(button5, 20);
+    gtk_grid_attach(GTK_GRID(grid), button5, 0, 6, 1, 1);
+
+    GtkWidget *button6 = gtk_button_new_with_label("Ajuste mas rapido");
+    g_signal_connect(button6, "clicked", G_CALLBACK(on_button_clicked), NULL);
+    establecerEstiloBoton(button6);
+    gtk_widget_set_halign(button6, GTK_ALIGN_CENTER);
+    gtk_widget_set_margin_top(button6, 20);
+    gtk_grid_attach(GTK_GRID(grid), button6, 0, 7, 1, 1);
 
     // Mostrar la ventana principal
     gtk_widget_show_all(window);
