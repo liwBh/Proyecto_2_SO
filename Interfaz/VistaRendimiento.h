@@ -7,6 +7,7 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include "../Archivos/Archivo.h"
+#include "../Sonidos//Sonido.h"
 #define MAX_VENTANAS 10
 GtkWidget* ventanas_abiertas[MAX_VENTANAS];
 int num_ventanas_abiertas = 0;
@@ -152,6 +153,7 @@ gboolean on_child_window_closed(GtkWidget *widget, GdkEvent *event, gpointer dat
     gtk_widget_hide(widget);
 }
 
+
 void on_button_clicked(GtkWidget *widget, gpointer data) {
     // Cerrar todas las ventanas abiertas excepto la ventana principal
     cerrarVentanas();
@@ -161,24 +163,31 @@ void on_button_clicked(GtkWidget *widget, gpointer data) {
 
     // Crear la nueva ventana y agregarla a la lista de ventanas abiertas
     if (widget == botones[0]) {
+        reproducirSonido("/Sonidos/button1.mp3");
         nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[1]) {
+        reproducirSonido("/Sonidos/button1.mp3");
         nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba2.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[2]) {
+        reproducirSonido("/Sonidos/button1.mp3");
         nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba3.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[3]) {
+        reproducirSonido("/Sonidos/button1.mp3");
         nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba4.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[4]) {
+        reproducirSonido("/Sonidos/button1.mp3");
         nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba5.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[5]) {
+        reproducirSonido("/Sonidos/button1.mp3");
         nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba6.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[6]) {
+        reproducirSonido("/Sonidos/button1.mp3");
         nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba7.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     }
