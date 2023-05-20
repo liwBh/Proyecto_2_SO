@@ -238,7 +238,10 @@ void crearBotones(GtkWidget *grid) {
     }
 
 }
-
+// Función para manejar la señal "destroy" de la ventana
+void on_window_destroy(GtkWidget *widget, gpointer data) {
+    gtk_main_quit();  // Detener el bucle principal de GTK y salir del programa
+}
 void* mostrarVentana() {
     // Inicializar GTK
     g_setenv("GTK_DEBUG", "interactive", 1);
@@ -258,6 +261,8 @@ void* mostrarVentana() {
     // Crear un grid para organizar los widgets
     GtkWidget *grid = gtk_grid_new();//esto es como un contenedor que organiza la matriz bidimensional
     gtk_container_add(GTK_CONTAINER(window), grid);//se le asigna el widget
+// Conectar la señal "destroy" de la ventana a la función "on_window_destroy"
+    g_signal_connect(window, "destroy", G_CALLBACK(on_window_destroy), NULL);
 
     const char* css = "window {"
                       "  background-image: url('";

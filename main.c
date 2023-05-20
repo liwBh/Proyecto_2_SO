@@ -50,9 +50,9 @@ void *administrarProcesos(void *args);
 void *iniciarPlanificador(void *args);
 
 int main() {
-    //crear archivo log.txt
 
 //    mostrarVentana();
+
     //se toma el tiempo de inicio del programa
     inicioPrograma = time(NULL);
     printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
