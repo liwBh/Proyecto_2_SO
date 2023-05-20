@@ -236,8 +236,11 @@ void crearBotones(GtkWidget *grid) {
 
 void* mostrarVentana() {
     // Inicializar GTK
+    g_setenv("GTK_DEBUG", "interactive", 1);
     gtk_init(NULL, NULL);
 
+
+    g_object_set(gtk_settings_get_default(), "gtk-shell-shows-menubar", FALSE, NULL);
     // Crear la ventana principal
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);//con esto se crea la ventana
 
