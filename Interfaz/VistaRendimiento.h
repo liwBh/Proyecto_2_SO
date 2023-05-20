@@ -301,7 +301,6 @@ void* mostrarVentana() {
     gtk_widget_show_all(window);
 
     // Iniciar el bucle principal de GTK
-//    return window;
     gtk_main();
 
 

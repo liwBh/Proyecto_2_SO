@@ -50,7 +50,9 @@ void *administrarProcesos(void *args);
 void *iniciarPlanificador(void *args);
 
 int main() {
-    mostrarVentana();
+    //crear archivo log.txt
+
+//    mostrarVentana();
     //se toma el tiempo de inicio del programa
     inicioPrograma = time(NULL);
     printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
@@ -60,7 +62,7 @@ int main() {
 
     //creando las listas del emulador
     crearListas();
-
+    crearArchivo("../Archivos/ParticionesFijas.txt");
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
 
@@ -319,7 +321,8 @@ void *administrarProcesos(void *args){
         //librerar bloques de memoria
         liberarMemoria(nodoProceso,matriz);
         printf("\nLiberando Memoria utilizada por el proceso");
-        escribirArchivo(nodoProceso, desperdicioInternoTotal,desperdicioExterno,"/home/elmer/Documentos/GitHub/Proyecto_2_SO/Archivos/ParticionesFijas.txt");
+
+        escribirArchivo(nodoProceso, desperdicioInternoTotal,desperdicioExterno,"../Archivos/ParticionesFijas.txt");
         mostrarMatriz(matriz);
 
         //reasignacion de memoria, en base a la politica actual

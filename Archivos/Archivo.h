@@ -9,15 +9,48 @@
 #include <gtk/gtk.h>
 #include <glib.h>
 
+int crearArchivo(char* ruta){
+    //"playbin uri=file:////home/liwbh/CLionProjects/Proyecto-01-SO/Sonidos/victoria.wav"
+    // usando el modo w crea el archivo, si ya hay uno con ese nombre lo sobre escribe "../Archivos/log.txt"
+    FILE *archivo = fopen(ruta, "w");
 
-void escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioExterno, const char *nombreArchivo) {
+    if(archivo == NULL){
+        //mensaje de error
+        printf("Ocurrio un error, el archivo no fue creado con exito!\n\n");
+
+        //cerrar el archivo
+        fclose(archivo);
+
+        //detener el metodo
+        return 0;
+    }
+
+    //mensaje de exito
+    printf("\nEl archivo a sido creado con exito!\n\n");
+
+    //cerrar el archivo
+    fclose(archivo);
+
+    return 1;
+}
+int escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioExterno, const char *nombreArchivo) {
     FILE *archivo;
+
+    //inicializar archivo, modo agregar
     archivo = fopen(nombreArchivo, "a");
 
-    if (archivo == NULL) {
-        printf("Error al abrir el archivo.\n");
-        return;
+    //validar si el archivo existe
+    if(archivo == NULL) {
+        //mensaje de error
+        printf("Ocurrio un error, el archivo no fue encontrado!\n\n");
+
+        //cerrar el archivo
+        fclose(archivo);
+
+        //detener metodo
+        return 0;
     }
+
 
     static int encabezadoEscrito = 0; // Variable de control del encabezado
 
@@ -44,67 +77,7 @@ void escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioE
     fprintf(archivo, "-------------------------------------------------------------------------------------------------------------------\n\n");
 
     fclose(archivo);
-}
-
-
-
-
-
-
-void leerArchivo() {
-    FILE *archivo;
-    NodoProceso nodo;
-    archivo = fopen("procesos.txt", "r");
-
-    if (archivo == NULL) {
-        printf("Error al abrir el archivo.\n");
-        return;
-    }
-
-    while (fscanf(archivo, "ID: %d\n", &nodo.id) != EOF) {
-        fscanf(archivo, "Nombre: %[^\n]\n", nodo.nombre);
-        fscanf(archivo, "Peso: %d\n", &nodo.peso);
-        fscanf(archivo, "Iteraciones: %d\n", &nodo.nIteraciones);
-        fscanf(archivo, "Entrada/Salida: %[^\n]\n", nodo.nombreE_S);
-        fscanf(archivo, "Tiempo de E/S: %d\n", &nodo.tiempoE_S);
-        fscanf(archivo, "Lista PFVT: %d\n", &nodo.listaPFVT);
-
-
-        // Aquí puedes hacer lo que quieras con el nodo leído
-    }
-
-    fclose(archivo);
-}
-
-void leerArchivoVista1(GtkTextBuffer *buffer, const char *prueba) {
-    FILE *archivo;
-    char linea[256];
-
-    // Abrir el archivo en modo lectura
-    archivo = fopen(prueba, "r");
-    if (archivo == NULL) {
-        g_print("Error al abrir el archivo.\n");
-        return;
-    }
-
-    // Leer el archivo línea por línea
-    while (fgets(linea, sizeof(linea), archivo) != NULL) {
-        // Aplicar formato de ancho fijo a los campos
-        int id, peso, tiempoE_S, desperdicioInterno, desperdicioExterno;
-        char nombre[50], nombreE_S[50];
-        sscanf(linea, "%d %s %d %s %d %d %d", &id, nombre, &peso, nombreE_S, &tiempoE_S, &desperdicioInterno, &desperdicioExterno);
-
-        // Crear la línea de texto con formato de ancho fijo
-        char formattedLine[256];
-        g_snprintf(formattedLine, sizeof(formattedLine), "ID: %2d\tNombre: %-10s\tPeso: %2d\tEntrada/Salida: %-10s\tTiempo de E/S: %2d\tDesperdicio Interno: %3d\tDesperdicio Externo: %3d\n",
-                   id, nombre, peso, nombreE_S, tiempoE_S, desperdicioInterno, desperdicioExterno);
-
-        // Agregar la línea al buffer de texto de GTK
-        gtk_text_buffer_insert_at_cursor(buffer, formattedLine, -1);
-    }
-
-    // Cerrar el archivo
-    fclose(archivo);
+    return 1;
 }
 
 
