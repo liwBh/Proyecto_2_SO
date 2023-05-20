@@ -7,15 +7,16 @@
 #include <gtk/gtk.h>
 #include <stdio.h>
 #include "../Archivos/Archivo.h"
+#define MAX_VENTANAS 10
+GtkWidget* ventanas_abiertas[MAX_VENTANAS];
+int num_ventanas_abiertas = 0;
 
-//variables interfaz
-GtkWidget *button;
-GtkWidget *button2;
-GtkWidget *button3;
-GtkWidget *button4;
-GtkWidget *button5;
-GtkWidget *button6;
 
+GtkWidget *botones[7];
+
+//GtkWidget[6] buttons;
+
+GtkWidget* ventana_principal = NULL;
 char *obtenerRutaRelativa(char* ruta) {
     char *currentDir = g_get_current_dir(); //ruta del proyecto
     char newFilePath[200]; //variable para depurar la ruta del proyecto
@@ -42,6 +43,12 @@ char *obtenerRutaRelativa(char* ruta) {
     return rutaAbsoluta;
 }
 
+void cerrarVentanas() {
+    for (int i = 0; i < num_ventanas_abiertas; i++) {
+        gtk_widget_destroy(ventanas_abiertas[i]);
+    }
+    num_ventanas_abiertas = 0;
+}
 
 // Función para leer el archivo de texto
 void leerArchivo1(GtkTextBuffer *buffer, const char *prueba) {
@@ -65,9 +72,14 @@ void leerArchivo1(GtkTextBuffer *buffer, const char *prueba) {
     fclose(archivo);
 }
 
-void crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
+GtkWidget* crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
     // Crear la ventana principal
+
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
+    ventana_principal = window;
+
+    //gtk_window_present(GTK_WINDOW(window));
+
     gtk_window_set_title(GTK_WINDOW(window), "Archivo de texto");
     gtk_window_maximize(GTK_WINDOW(window));  // Maximizar la ventana
     gtk_window_set_decorated(GTK_WINDOW(window), TRUE);  // Mostrar los botones de la barra de título
@@ -89,6 +101,9 @@ void crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
 
 //    // Mostrar la ventana y sus contenidos
     gtk_widget_show_all(window);
+    return window;
+
+
 }
 // Función para manejar el evento de ingreso al botón
 gboolean on_button_enter(GtkWidget *widget, GdkEvent *event, gpointer data)
@@ -114,7 +129,7 @@ gboolean on_button_leave(GtkWidget *widget, GdkEvent *event, gpointer data)
 }
 
 void establecerEstiloLabel(GtkWidget *label) {
-    const gchar *css_label = "label { color: white; font-size: 30px; }";
+    const gchar *css_label = "label { color: white; font-size: 28px; }";
     GtkCssProvider *provider_label = gtk_css_provider_new();
     gtk_css_provider_load_from_data(provider_label, css_label, -1, NULL);
     GtkStyleContext *context_label = gtk_widget_get_style_context(label);
@@ -132,32 +147,84 @@ void establecerEstiloBoton(GtkWidget *button) {
                                    GTK_STYLE_PROVIDER(provider_button),
                                    GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
 }
-
-//Menu de opciones, captura el click y dependiendo del boton se abre una ventana con el txt
-void on_button_clicked(GtkWidget *widget, gpointer data){
-
-    if (widget == button) {
-        crearVentana(widget, data, obtenerRutaRelativa("prueba.txt"));
-    } else if (widget == button2) {
-        crearVentana(widget, data, obtenerRutaRelativa("prueba2.txt"));
-    } else if (widget == button3) {
-        crearVentana(widget, data, obtenerRutaRelativa("prueba3.txt"));
-    } else if (widget == button4) {
-        crearVentana(widget, data, obtenerRutaRelativa("prueba4.txt"));
-    } else if (widget == button5) {
-        crearVentana(widget, data, obtenerRutaRelativa("prueba5.txt"));
-    } else if (widget == button6) {
-        crearVentana(widget, data, obtenerRutaRelativa("prueba6.txt"));
-    }
+gboolean on_child_window_closed(GtkWidget *widget, GdkEvent *event, gpointer data) {
+    // Ocultar la ventana secundaria en lugar de cerrarla
+    gtk_widget_hide(widget);
 }
 
-void mostrarVentana() {
+void on_button_clicked(GtkWidget *widget, gpointer data) {
+    // Cerrar todas las ventanas abiertas excepto la ventana principal
+    cerrarVentanas();
+
+    // Declarar la variable nueva_ventana fuera del bloque if
+    GtkWidget* nueva_ventana = NULL;
+
+    // Crear la nueva ventana y agregarla a la lista de ventanas abiertas
+    if (widget == botones[0]) {
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba.txt"));
+        ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
+    } else if (widget == botones[1]) {
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba2.txt"));
+        ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
+    } else if (widget == botones[2]) {
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba3.txt"));
+        ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
+    } else if (widget == botones[3]) {
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba4.txt"));
+        ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
+    } else if (widget == botones[4]) {
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba5.txt"));
+        ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
+    } else if (widget == botones[5]) {
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba6.txt"));
+        ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
+    } else if (widget == botones[6]) {
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba7.txt"));
+        ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
+    }
+
+
+}
+
+
+
+void crearBotones(GtkWidget *grid) {
+    int n = 7;
+
+    char labels[n][20]; // Arreglo de etiquetas para los botones
+
+    // Llenar las etiquetas de los botones
+    snprintf(labels[0], sizeof(labels[0]), "Mapa Bits");
+    snprintf(labels[1], sizeof(labels[1]), "Particiones Fijas");
+    snprintf(labels[2], sizeof(labels[2]), "Primer Ajuste");
+    snprintf(labels[3], sizeof(labels[3]), "Peor Ajuste");
+    snprintf(labels[4], sizeof(labels[4]), "Mejor Ajuste");
+    snprintf(labels[5], sizeof(labels[5]), "Ajuste Rapido");
+    snprintf(labels[6], sizeof(labels[6]), "Socios");
+
+    for (int i = 0; i < n; i++) {
+         botones[i] = gtk_button_new_with_label(labels[i]);
+
+        g_signal_connect(botones[i], "clicked", G_CALLBACK(on_button_clicked), NULL);
+        establecerEstiloBoton(botones[i]);
+        gtk_widget_set_halign(botones[i], GTK_ALIGN_START);
+        gtk_widget_set_margin_top(botones[i], 20);
+        gtk_widget_set_margin_start(botones[i], 20);
+        gtk_grid_attach(GTK_GRID(grid), botones[i], 0, i + 3, 1, 1);
+        g_signal_connect(botones[i], "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
+        g_signal_connect(botones[i], "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
+    }
+
+}
+
+void* mostrarVentana() {
     // Inicializar GTK
     gtk_init(NULL, NULL);
 
     // Crear la ventana principal
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);//con esto se crea la ventana
-    gtk_window_set_title(GTK_WINDOW(window), "Como Arroz!!!!!");
+
+    gtk_window_set_title(GTK_WINDOW(window), "Rendimiento Memoria");
     gtk_window_set_default_size(GTK_WINDOW(window), 800, 600);
 
     // Centrar la ventana en la pantalla
@@ -203,77 +270,16 @@ void mostrarVentana() {
     // Agregar los labels al grid
     gtk_grid_attach(GTK_GRID(grid), label1, 0, 0, 1, 1);
 
-    // Crear un botón para abrir la ventana
-    button = gtk_button_new_with_label("Mapa de bits");
-    g_signal_connect(button, "clicked", G_CALLBACK(on_button_clicked), NULL);
-    establecerEstiloBoton(button);
-
-    // Centrar el botón dentro del grid
-    gtk_widget_set_halign(button, GTK_ALIGN_CENTER);
-
-    // Agregar el botón al grid en la última fila
-    gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
-
-    // Establecer el margen superior para el botón
-    gtk_widget_set_margin_top(button, 20);
-    // Conectar los eventos enter-notify-event y leave-notify-event
-    g_signal_connect(button, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
-    g_signal_connect(button, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
-
-
-
-    // Crear botones adicionales
-    button2 = gtk_button_new_with_label("Particiones fijas");
-    g_signal_connect(button2, "clicked", G_CALLBACK(on_button_clicked), NULL);
-    establecerEstiloBoton(button2);
-    gtk_widget_set_halign(button2, GTK_ALIGN_CENTER);
-    gtk_widget_set_margin_top(button2, 20);
-    gtk_grid_attach(GTK_GRID(grid), button2, 0, 3, 1, 1);
-    //esto captura cuando esta el cursor encima y cuando no o "entra y sale"
-    g_signal_connect(button2, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
-    g_signal_connect(button2, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
-
-    button3 = gtk_button_new_with_label("Primer ajuste");
-    g_signal_connect(button3, "clicked", G_CALLBACK(on_button_clicked), NULL);
-    establecerEstiloBoton(button3);
-    gtk_widget_set_halign(button3, GTK_ALIGN_CENTER);
-    gtk_widget_set_margin_top(button3, 20);
-    gtk_grid_attach(GTK_GRID(grid), button3, 0, 4, 1, 1);
-    g_signal_connect(button3, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
-    g_signal_connect(button3, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
-
-    button4 = gtk_button_new_with_label("Peor ajuste");
-    g_signal_connect(button4, "clicked", G_CALLBACK(on_button_clicked), NULL);
-    establecerEstiloBoton(button4);
-    gtk_widget_set_halign(button4, GTK_ALIGN_CENTER);
-    gtk_widget_set_margin_top(button4, 20);
-    gtk_grid_attach(GTK_GRID(grid), button4, 0, 5, 1, 1);
-    g_signal_connect(button4, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
-    g_signal_connect(button4, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
-
-    button5 = gtk_button_new_with_label("Mejor ajuste");
-    g_signal_connect(button5, "clicked", G_CALLBACK(on_button_clicked), NULL);
-    establecerEstiloBoton(button5);
-    gtk_widget_set_halign(button5, GTK_ALIGN_CENTER);
-    gtk_widget_set_margin_top(button5, 20);
-    gtk_grid_attach(GTK_GRID(grid), button5, 0, 6, 1, 1);
-    g_signal_connect(button5, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
-    g_signal_connect(button5, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
-
-    button6 = gtk_button_new_with_label("Ajuste mas rapido");
-    g_signal_connect(button6, "clicked", G_CALLBACK(on_button_clicked), NULL);
-    establecerEstiloBoton(button6);
-    gtk_widget_set_halign(button6, GTK_ALIGN_CENTER);
-    gtk_widget_set_margin_top(button6, 20);
-    gtk_grid_attach(GTK_GRID(grid), button6, 0, 7, 1, 1);
-    g_signal_connect(button6, "enter-notify-event", G_CALLBACK(on_button_enter), NULL);
-    g_signal_connect(button6, "leave-notify-event", G_CALLBACK(on_button_leave), NULL);
+    crearBotones(grid);
 
     // Mostrar la ventana principal
     gtk_widget_show_all(window);
 
     // Iniciar el bucle principal de GTK
+//    return window;
     gtk_main();
+
+
 }
 
 
