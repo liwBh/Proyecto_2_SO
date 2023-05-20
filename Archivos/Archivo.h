@@ -6,6 +6,8 @@
 #define PROYECTO_2_SO_ARCHIVO_H
 #include <stdio.h>
 #include "../Listas/Nodo.h"
+#include <gtk/gtk.h>
+
 
 void escribirArchivo(NodoProceso *nodo) {
     FILE *archivo;
@@ -20,16 +22,13 @@ void escribirArchivo(NodoProceso *nodo) {
     fprintf(archivo, "Nombre: %s\n", nodo->nombre);
     fprintf(archivo, "Peso: %d\n", nodo->peso);
     fprintf(archivo, "Iteraciones: %d\n", nodo->nIteraciones);
-    fprintf(archivo, "Ejecución: %s\n", nodo->ejecucion ? "Sí" : "No");
     fprintf(archivo, "Entrada/Salida: %s\n", nodo->nombreE_S);
     fprintf(archivo, "Tiempo de E/S: %d\n", nodo->tiempoE_S);
-    fprintf(archivo, "Contexto: %s\n", nodo->contexto ? "Sí" : "No");
     fprintf(archivo, "Lista PFVT: %d\n", nodo->listaPFVT);
-    fprintf(archivo, "Inicio: %d\n", nodo->inicio);
-    fprintf(archivo, "Finalización: %d\n", nodo->finalizacion);
 
     fclose(archivo);
 }
+
 void leerArchivo() {
     FILE *archivo;
     NodoProceso nodo;
@@ -44,25 +43,40 @@ void leerArchivo() {
         fscanf(archivo, "Nombre: %[^\n]\n", nodo.nombre);
         fscanf(archivo, "Peso: %d\n", &nodo.peso);
         fscanf(archivo, "Iteraciones: %d\n", &nodo.nIteraciones);
-
-        char ejecucion[5];
-        fscanf(archivo, "Ejecución: %s\n", ejecucion);
-        nodo.ejecucion = (strcmp(ejecucion, "Sí") == 0);
-
         fscanf(archivo, "Entrada/Salida: %[^\n]\n", nodo.nombreE_S);
         fscanf(archivo, "Tiempo de E/S: %d\n", &nodo.tiempoE_S);
-
-        char contexto[5];
-        fscanf(archivo, "Contexto: %s\n", contexto);
-        nodo.contexto = (strcmp(contexto, "Sí") == 0);
-
         fscanf(archivo, "Lista PFVT: %d\n", &nodo.listaPFVT);
-        fscanf(archivo, "Inicio: %d\n", &nodo.inicio);
-        fscanf(archivo, "Finalización: %d\n", &nodo.finalizacion);
+
 
         // Aquí puedes hacer lo que quieras con el nodo leído
     }
 
     fclose(archivo);
 }
+
+
+// Función para leer el archivo de texto
+void leerArchivoVista(GtkTextBuffer *buffer, const char *prueba) {
+    FILE *archivo;
+    char linea[256];
+
+    // Abrir el archivo en modo lectura
+    archivo = fopen(prueba, "r");
+    if (archivo == NULL) {
+        g_print("Error al abrir el archivo.\n");
+        return;
+    }
+
+    // Leer el archivo línea por línea
+    while (fgets(linea, sizeof(linea), archivo) != NULL) {
+        // Agregar la línea al buffer de texto de GTK
+        gtk_text_buffer_insert_at_cursor(buffer, linea, -1);
+    }
+
+    // Cerrar el archivo
+    fclose(archivo);
+}
+
+
+
 #endif //PROYECTO_2_SO_ARCHIVO_H

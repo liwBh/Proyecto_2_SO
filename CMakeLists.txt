@@ -13,6 +13,6 @@ add_compile_options(${GTK3_CFLAGS_OTHER})
 include_directories(${GTK3_INCLUDE_DIRS} ${GDK_PIXBUF_INCLUDE_DIRS})
 
 # Agrega el ejecutable y enlaza las bibliotecas
-add_executable(Proyecto_2_SO main.c Listas/Lista.h Listas/Nodo.h Listas/ListaDirecionesM.h Listas/NodoDirecionesM.h MatrizMemoria/Matriz.h Logica/Logica.h Archivos/Archivo.h)
+add_executable(Proyecto_2_SO main.c Listas/Lista.h Listas/Nodo.h Listas/ListaDirecionesM.h Listas/NodoDirecionesM.h MatrizMemoria/Matriz.h Logica/Logica.h Archivos/Archivo.h Interfaz/VistaRendimiento.h)
 target_link_libraries(Proyecto_2_SO ${GTK3_LIBRARIES} ${GDK_PIXBUF_LIBRARIES})
 

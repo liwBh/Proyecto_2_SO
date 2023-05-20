@@ -20,5 +20,12 @@ programa y encontrar la causa del error:
 * Continuar la ejecución después de recibir una señal de error:  ``continue `` o   ``c ``
 * Para terminar gdb ``quit`` o ``q`` y luego del mensaje ¿Salir de cualquier modo? (y or n) ``y``
 
+# Libre Interfaz GTK
+
+### Comandos de instalacion: 
+
+* comando 1:  `sudo apt-get update`
+* comando 2:  `sudo apt-get install libgtk-3-dev`
+* comando 3:  `sudo apt-get install libgdk-pixbuf2.0-dev`
 
 
