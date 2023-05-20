@@ -32,15 +32,12 @@ char *obtenerRutaRelativa(char* ruta) {
         strcpy(newFilePath, currentDir);
     }
 
-    printf("\nEntrooooo!  %s\n", newFilePath);
-
     //armando la ruta absoluta
     char *rutaAbsoluta = malloc(strlen(newFilePath) + strlen("/Archivos/") + strlen(ruta) + 1);
     strcpy(rutaAbsoluta, newFilePath);
     strcat(rutaAbsoluta, "/Archivos/");
     strcat(rutaAbsoluta, ruta);
 
-    printf("\nEntrooooo!  %s\n", rutaAbsoluta);
 
     return rutaAbsoluta;
 }
@@ -97,21 +94,25 @@ void crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
 gboolean on_button_enter(GtkWidget *widget, GdkEvent *event, gpointer data)
 {
     GdkWindow *window = gtk_widget_get_window(widget);
-    GdkCursor *hand_cursor = gdk_cursor_new(GDK_HAND1);
+    GdkDisplay *display = gdk_window_get_display(window);
+    GdkCursor *hand_cursor = gdk_cursor_new_for_display(display, GDK_HAND1);
     gdk_window_set_cursor(window, hand_cursor);
     g_object_unref(hand_cursor);
     return TRUE;
 }
 
+
 // Función para manejar el evento de salida del botón
 gboolean on_button_leave(GtkWidget *widget, GdkEvent *event, gpointer data)
 {
     GdkWindow *window = gtk_widget_get_window(widget);
-    GdkCursor *default_cursor = gdk_cursor_new(GDK_LEFT_PTR);
+    GdkDisplay *display = gdk_window_get_display(window);
+    GdkCursor *default_cursor = gdk_cursor_new_for_display(display, GDK_LEFT_PTR);
     gdk_window_set_cursor(window, default_cursor);
     g_object_unref(default_cursor);
     return TRUE;
 }
+
 void establecerEstiloLabel(GtkWidget *label) {
     const gchar *css_label = "label { color: white; font-size: 30px; }";
     GtkCssProvider *provider_label = gtk_css_provider_new();
@@ -134,8 +135,6 @@ void establecerEstiloBoton(GtkWidget *button) {
 
 //Menu de opciones, captura el click y dependiendo del boton se abre una ventana con el txt
 void on_button_clicked(GtkWidget *widget, gpointer data){
-
-    //obtenerRutaRelativa("prueba.txt");
 
     if (widget == button) {
         crearVentana(widget, data, obtenerRutaRelativa("prueba.txt"));
@@ -168,14 +167,21 @@ void mostrarVentana() {
     GtkWidget *grid = gtk_grid_new();//esto es como un contenedor que organiza la matriz bidimensional
     gtk_container_add(GTK_CONTAINER(window), grid);//se le asigna el widget
 
-    // Establecer el estilo CSS para la imagen de fondo
     const char* css = "window {"
-                      "  background-image: url('/home/elmer/Documentos/GitHub/Proyecto_2_SO/prueba2.jpeg');"
-                      "  background-repeat: no-repeat;"
-                      "  background-size: cover;"
-                      "}";
+                      "  background-image: url('";
+    const char* ruta = obtenerRutaRelativa("prueba2.jpeg");
+    const char* cssSuffix = "');"
+                            "  background-repeat: no-repeat;"
+                            "  background-size: cover;"
+                            "}";
+
+    char* cssConRuta = malloc(strlen(css) + strlen(ruta) + strlen(cssSuffix) + 1);
+    strcpy(cssConRuta, css);
+    strcat(cssConRuta, ruta);
+    strcat(cssConRuta, cssSuffix);
+
     GtkCssProvider *provider = gtk_css_provider_new();
-    gtk_css_provider_load_from_data(provider, css, -1, NULL);
+    gtk_css_provider_load_from_data(provider, cssConRuta, -1, NULL);
     gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
                                               GTK_STYLE_PROVIDER(provider),
                                               GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
@@ -196,12 +202,6 @@ void mostrarVentana() {
 
     // Agregar los labels al grid
     gtk_grid_attach(GTK_GRID(grid), label1, 0, 0, 1, 1);
-
-//    // Agregar un widget "espaciador" en la fila intermedia
-//    GtkWidget *spacer = gtk_label_new(NULL);
-//    gtk_widget_set_hexpand(spacer, TRUE);
-//    gtk_widget_set_vexpand(spacer, TRUE);
-//    gtk_grid_attach(GTK_GRID(grid), spacer, 0, 1, 1, 1);
 
     // Crear un botón para abrir la ventana
     button = gtk_button_new_with_label("Mapa de bits");

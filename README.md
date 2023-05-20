@@ -29,3 +29,5 @@ programa y encontrar la causa del error:
 * comando 3:  `sudo apt-get install libgdk-pixbuf2.0-dev`
 
 
+### Generar un compilador
+* `gcc main.c -o ejecutable pkg-config --cflags --libs gtk+-3.0`

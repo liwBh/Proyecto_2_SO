@@ -55,9 +55,6 @@ int main() {
     inicioPrograma = time(NULL);
     printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
 
-
-    printf( "%s", obtenerRutaRelativa("prueba.txt") );
-
     mostrarVentana();
 
     exit(0);
