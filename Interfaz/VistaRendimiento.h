@@ -73,39 +73,46 @@ void leerArchivo1(GtkTextBuffer *buffer, const char *prueba) {
     fclose(archivo);
 }
 
-GtkWidget* crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
-    // Crear la ventana principal
+GtkWidget* crearVentana(GtkWidget *widget, gpointer data, const char *ruta) {
+    // Ocultar la ventana principal
+    gtk_widget_hide(widget);
 
+    // Crear la ventana principal
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     ventana_principal = window;
 
-    //gtk_window_present(GTK_WINDOW(window));
-
     gtk_window_set_title(GTK_WINDOW(window), "Archivo de texto");
-    gtk_window_maximize(GTK_WINDOW(window));  // Maximizar la ventana
-    gtk_window_set_decorated(GTK_WINDOW(window), TRUE);  // Mostrar los botones de la barra de título
+    gtk_window_set_default_size(GTK_WINDOW(window), 1200, 800);
+    gtk_window_set_decorated(GTK_WINDOW(window), TRUE);
 
-    // Crear un overlay para contener los widgets
-    GtkWidget *overlay = gtk_overlay_new();
-    gtk_container_add(GTK_CONTAINER(window), overlay);
+    // Crear un GtkScrolledWindow
+    GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
 
     // Crear el widget de texto
-    GtkWidget *textview = gtk_text_view_new();
-    gtk_container_add(GTK_CONTAINER(overlay), textview);
+    GtkWidget *text_view = gtk_text_view_new();
+    gtk_text_view_set_editable(GTK_TEXT_VIEW(text_view), FALSE);
+    gtk_container_add(GTK_CONTAINER(scrolled_window), text_view);
 
     // Obtener el buffer de texto
-    GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(text_view));
 
     // Leer el archivo de texto y mostrarlo en el widget
     leerArchivo1(buffer, ruta);
-    //leerArchivoVista(buffer, ruta);
 
-//    // Mostrar la ventana y sus contenidos
+    // Agregar el GtkScrolledWindow a la ventana
+    gtk_container_add(GTK_CONTAINER(window), scrolled_window);
+
+    // Mostrar la nueva ventana y esperar hasta que se cierre
     gtk_widget_show_all(window);
+    gtk_main();
+
+    // Mostrar nuevamente la ventana principal después de cerrar la ventana secundaria
+    gtk_widget_show_all(widget);
+
     return window;
-
-
 }
+
 // Función para manejar el evento de ingreso al botón
 gboolean on_button_enter(GtkWidget *widget, GdkEvent *event, gpointer data)
 {
