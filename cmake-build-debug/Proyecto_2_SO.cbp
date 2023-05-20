@@ -44,6 +44,7 @@
 					<Add directory="/usr/include/blkid"/>
 					<Add directory="/usr/include/glib-2.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include"/>
+					<Add directory="/usr/include/gstreamer-1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
@@ -83,6 +84,7 @@
 					<Add directory="/usr/include/blkid"/>
 					<Add directory="/usr/include/glib-2.0"/>
 					<Add directory="/usr/lib/x86_64-linux-gnu/glib-2.0/include"/>
+					<Add directory="/usr/include/gstreamer-1.0"/>
 					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/11/include"/>
 					<Add directory="/usr/local/include"/>
 					<Add directory="/usr/include/x86_64-linux-gnu"/>
@@ -117,6 +119,9 @@
 			</Target>
 		</Build>
 		<Unit filename="/home/elmer/Documentos/GitHub/Proyecto_2_SO/Archivos/Archivo.h">
+			<Option target="Proyecto_2_SO"/>
+		</Unit>
+		<Unit filename="/home/elmer/Documentos/GitHub/Proyecto_2_SO/Interfaz/VistaRendimiento.h">
 			<Option target="Proyecto_2_SO"/>
 		</Unit>
 		<Unit filename="/home/elmer/Documentos/GitHub/Proyecto_2_SO/Listas/Lista.h">
