@@ -50,14 +50,11 @@ void *administrarProcesos(void *args);
 void *iniciarPlanificador(void *args);
 
 int main() {
-    //mostrarVentana();
+    mostrarVentana();
     //se toma el tiempo de inicio del programa
     inicioPrograma = time(NULL);
     printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
 
-    mostrarVentana();
-
-    exit(0);
     printf("\nTamaño de memoria = 256kb\n");
     printf("Tamaño del bloque = 4kb\n");
 
@@ -122,7 +119,7 @@ int main() {
     printf("\nPromedio de proceso finalizados por unidad de tiempo: %.2f segundos\n", promedio);
 
     printf("\033[1;31m\n--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
-//    mostrarVentana();
+    mostrarVentana();
     return 0;
 }
 
@@ -322,6 +319,7 @@ void *administrarProcesos(void *args){
         //librerar bloques de memoria
         liberarMemoria(nodoProceso,matriz);
         printf("\nLiberando Memoria utilizada por el proceso");
+        escribirArchivo(nodoProceso, desperdicioInternoTotal,desperdicioExterno,"/home/elmer/Documentos/GitHub/Proyecto_2_SO/Archivos/ParticionesFijas.txt");
         mostrarMatriz(matriz);
 
         //reasignacion de memoria, en base a la politica actual

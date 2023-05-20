@@ -89,12 +89,17 @@ GtkWidget* crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
     GtkWidget *textview = gtk_text_view_new();
     gtk_text_view_set_editable(GTK_TEXT_VIEW(textview), FALSE);
 
-    // Obtener el buffer de texto
+// Obtener el buffer de texto
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
 
-    // Leer el archivo de texto y mostrarlo en el widget
-    leerArchivo1(buffer, ruta);
+// Aplicar fuente de ancho fijo al buffer de texto
+    PangoFontDescription *font_desc = pango_font_description_new();
+    pango_font_description_set_family(font_desc, "Monospace");
+    gtk_widget_modify_font(textview, font_desc);
+    pango_font_description_free(font_desc);
 
+// Leer el archivo de texto y mostrarlo en el widget
+    leerArchivoVista(buffer, ruta);
     // Agregar el GtkTextView al GtkScrolledWindow
     gtk_container_add(GTK_CONTAINER(scrolled_window), textview);
 
@@ -172,7 +177,7 @@ void on_button_clicked(GtkWidget *widget, gpointer data) {
     // Crear la nueva ventana y agregarla a la lista de ventanas abiertas
     if (widget == botones[0]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("ParticionesFijas.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[1]) {
         reproducirSonido("/Sonidos/button1.mp3");
@@ -240,7 +245,7 @@ void* mostrarVentana() {
     gtk_init(NULL, NULL);
 
 
-    g_object_set(gtk_settings_get_default(), "gtk-shell-shows-menubar", FALSE, NULL);
+//    g_object_set(gtk_settings_get_default(), "gtk-shell-shows-menubar", FALSE, NULL);
     // Crear la ventana principal
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);//con esto se crea la ventana
 
