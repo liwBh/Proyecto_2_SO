@@ -79,6 +79,9 @@
 		<Unit filename="/home/jurguen/Documentos/GitHub/Proyecto_2_SO/Archivos/Archivo.h">
 			<Option target="Proyecto_2_SO"/>
 		</Unit>
+		<Unit filename="/home/jurguen/Documentos/GitHub/Proyecto_2_SO/ListaLigadas/ListasLigadas.h">
+			<Option target="Proyecto_2_SO"/>
+		</Unit>
 		<Unit filename="/home/jurguen/Documentos/GitHub/Proyecto_2_SO/Listas/Lista.h">
 			<Option target="Proyecto_2_SO"/>
 		</Unit>

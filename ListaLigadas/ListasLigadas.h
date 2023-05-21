@@ -14,6 +14,7 @@ double porcentajeOcupado = 0.0;
 struct Nodo* cabeza = NULL;
 int ultimoProcesoIngresado = 0;
 int ajusteListaLigada= 1;
+int intercambios = 0;
 
 // Estructura de nodo para la lista ligada
 struct Nodo {
@@ -290,15 +291,21 @@ void liberarMemoriaLL() {
 
 // Función para imprimir el estado actual de la memoria
 void imprimir() {
+    int x = 0;
     printf("\033[0;32m\nEstado actual de la memoria:\n\033[0m");
     struct Nodo *nodoActual = cabeza;
 
     while (nodoActual != NULL) {
         if (nodoActual->asignado) {
-            printf("[Proceso %d, Inicio %d, Tamano %d]->\n", nodoActual->idProceso, nodoActual->inicio,
+            printf("[Proceso %d, Inicio %d, Tamano %d]->", nodoActual->idProceso, nodoActual->inicio,
                    nodoActual->tamano);
         } else {
-            printf("[Hueco, Inicio %d, Tamano %d]->\n", nodoActual->inicio, nodoActual->tamano);
+            printf("[Hueco, Inicio %d, Tamano %d]->", nodoActual->inicio, nodoActual->tamano);
+        }
+        x++;
+        if(x>=3) {
+            printf("\n");
+            x = 0;
         }
         nodoActual = nodoActual->siguiente;
     }
@@ -373,16 +380,16 @@ void desfragmentarMemoriaLL() {
 void imprimirAjuste(){
     switch (ajusteListaLigada) {
         case 1:
-            printf("\033[1;31m\n PEOR AJUSTE \n\n\033[0m");
+            printf("\033[1;31m\n EL AJUSTE ACTUAL EN PLANIFICACION POR LISTAS LIGADAS ES PEOR AJUSTE\n\n\033[0m");
             break;
         case 2:
-            printf("\033[1;31m\n PRIMER AJUSTE \n\n\033[0m");
+            printf("\033[1;31m\n EL AJUSTE ACTUAL EN PLANIFICACION POR LISTAS LIGADAS ES PRIMER AJUSTE\n\n\033[0m");
             break;
         case 3:
-            printf("\033[1;31m\n SIGUIENTE AJUSTE \n\n\033[0m");
+            printf("\033[1;31m\n EL AJUSTE ACTUAL EN PLANIFICACION POR LISTAS LIGADAS ES SIGUIENTE AJUSTE\n\n\033[0m");
             break;
         case 4:
-            printf("\033[1;31m\n MEJOR AJUSTE \n\n\033[0m");
+            printf("\033[1;31m\n EL AJUSTE ACTUAL EN PLANIFICACION POR LISTAS LIGADAS ES MEJOR AJUSTE\n\n\033[0m");
             break;
         default : break;
     }
@@ -411,10 +418,34 @@ void iniciarListasLigadas(ListaProcesos *listaContenedor){
     imprimir();
 }
 
-void asignarEspacioDisponibleLL(int idProceso){
-    //indicar el ajuste en utilizado
-    imprimirAjuste();
+int huecos(){
+    int huecos = 0;
+    struct Nodo* nodoActual = cabeza;
+    while(nodoActual!=NULL){
+        //si el nodo actual es un hueco y de tamano menor o igual a 5
+        if(!nodoActual->asignado){
+            huecos++;
+        }
+        nodoActual = nodoActual->siguiente;
+    }
+    return huecos;
+}
 
+void asignarEspacioDisponibleLL(int idProceso){
+    printf("\n Lista De Memoria de los procesos en contexto de ejecucion\n");
+    imprimir();
+    //validar el cambio de ajuste, si han habido mas de 5 intercambios se cambia de ajuste
+    if(intercambios>5){
+        ajusteListaLigada++;
+        intercambios= 0;
+    }
+
+    imprimirAjuste();
+    //si hay mas de 3 huecos dentro de la lista ligada se procede a desfragemtar la lista
+    if(huecos()>3){
+        desfragmentarMemoriaLL();
+        imprimir();
+    }
     switch (ajusteListaLigada) {
         case 1:
             asignarSegmentoPeorAjuste(idProceso);
@@ -430,21 +461,11 @@ void asignarEspacioDisponibleLL(int idProceso){
             break;
         default : break;
     }
-
-    //Imprimir el esta de la memoria actual
+    printf("\n Lista De Memoria de los procesos en contexto de ejecucion con el reciente proceso ingresado \n");
     imprimir();
-
     printf("\033[0;32m\nPorcentaje de memoria ocupado hasta el momento %f \n\033[0m", porcentajeOcupado*100);
-    //si el porcentaje ocupado es mayor que el 70 se desfragmenta y se cambia de ajuste
-    if(porcentajeOcupado>=0.7){
-        //se desfragmenta, una vez desfragmentada se imprime y se cambia de ajuste
-        desfragmentarMemoriaLL();
-        imprimir();
-        ajusteListaLigada++;
-        imprimirAjuste();
-    }
+    intercambios++;
     sleep(2);
 }
-
 
 #endif //PROYECTO_2_SO_LISTASLIGADAS_H

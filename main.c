@@ -160,9 +160,9 @@ void llenarListaProcesosEsperando(){
         char str[10];
         char nombre[10] = "P-";
         int peso = rand() % 30 + 1 ;
-        int iteraciones = rand() % 5 + 2;
+        int iteraciones = rand() % 3 + 1;
         int indice_aleatorio = rand() % 3;
-        int tiempo = (rand() % 3) + 1;
+        int tiempo = (rand() % 2) + 1;
         char *dispositivos[] = {"mouse", "teclado", "pantalla"};
 
         sprintf(str, "%d",i);
