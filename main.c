@@ -27,7 +27,7 @@ int desperdicioExterno= 0;
 float promedio = 0.0;
 time_t inicioPrograma;
 int procesosFinalizados =0;
-
+float tiempo_transcurrido = 0.0;
 //hilos
 pthread_t planificador;
 pthread_t proceso;
@@ -114,11 +114,12 @@ int main() {
 
     //se obtiene el promedio de procesos finalizados por segundo
     time_t fin = time(NULL); // Obtener el tiempo actual
-    float tiempo_transcurrido = difftime(fin, inicioPrograma); // Calcular el tiempo transcurrido en segundos
+    tiempo_transcurrido = difftime(fin, inicioPrograma); // Calcular el tiempo transcurrido en segundos
     promedio = ((promedio * (procesosFinalizados - 1)) + tiempo_transcurrido) / procesosFinalizados; // Calcular el nuevo promedio
     printf("\nTotal de procesos finalizados: %d", procesosFinalizados);
     printf("\nTiempo total de ejecucion %f segundos", tiempo_transcurrido);
     printf("\nPromedio de proceso finalizados por unidad de tiempo: %.2f segundos\n", promedio);
+    agregarBloqueRendimientoGeneral("../Archivos/ParticionesFijas.txt",procesosFinalizados,tiempo_transcurrido,promedio);
 
     printf("\033[1;31m\n--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
     mostrarVentana();
@@ -322,7 +323,8 @@ void *administrarProcesos(void *args){
         liberarMemoria(nodoProceso,matriz);
         printf("\nLiberando Memoria utilizada por el proceso");
 
-        escribirArchivo(nodoProceso, desperdicioInternoTotal,desperdicioExterno,"../Archivos/ParticionesFijas.txt");
+        escribirArchivo(nodoProceso, desperdicioInternoTotal,desperdicioExterno,promedioEj,promedioEs,"../Archivos/ParticionesFijas.txt");
+
         mostrarMatriz(matriz);
 
         //reasignacion de memoria, en base a la politica actual

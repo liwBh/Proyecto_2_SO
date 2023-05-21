@@ -71,14 +71,13 @@ void leerArchivo1(GtkTextBuffer *buffer, const char *prueba) {
     // Cerrar el archivo
     fclose(archivo);
 }
-
 GtkWidget* crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
     // Crear la ventana principal
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     ventana_principal = window;
 
     gtk_window_set_title(GTK_WINDOW(window), "Archivo de texto");
-    gtk_window_set_default_size(GTK_WINDOW(window), 1200, 800);
+    gtk_window_set_default_size(GTK_WINDOW(window), 1500, 800);
     gtk_window_set_decorated(GTK_WINDOW(window), TRUE);  // Mostrar los botones de la barra de título
 
     // Crear un GtkScrolledWindow
@@ -89,17 +88,31 @@ GtkWidget* crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
     GtkWidget *textview = gtk_text_view_new();
     gtk_text_view_set_editable(GTK_TEXT_VIEW(textview), FALSE);
 
-// Obtener el buffer de texto
+    // Obtener el buffer de texto
     GtkTextBuffer *buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(textview));
 
-// Aplicar fuente de ancho fijo al buffer de texto
-    PangoFontDescription *font_desc = pango_font_description_new();
-    pango_font_description_set_family(font_desc, "Monospace");
-    gtk_widget_modify_font(textview, font_desc);
-    pango_font_description_free(font_desc);
-
-// Leer el archivo de texto y mostrarlo en el widget
+    // Leer el archivo de texto y mostrarlo en el widget
     leerArchivoVista(buffer, ruta);
+
+    // Crear un CSS provider
+    GtkCssProvider *provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_data(provider, "textview { font-family: 'Monospace'; font-size: 12px; }", -1, NULL);
+
+    // Obtener la ventana del widget de texto
+    GdkWindow *textview_window = gtk_widget_get_window(textview);
+
+    // Obtener la ventana principal
+    GtkWindow *main_window = GTK_WINDOW(gtk_widget_get_toplevel(GTK_WIDGET(window)));
+
+    // Obtener la pantalla asociada a la ventana principal
+    GdkScreen *screen = gtk_window_get_screen(main_window);
+
+    // Agregar el proveedor de CSS a la pantalla
+    gtk_style_context_add_provider_for_screen(screen, GTK_STYLE_PROVIDER(provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+    // Liberar el provider de CSS
+    g_object_unref(provider);
+
     // Agregar el GtkTextView al GtkScrolledWindow
     gtk_container_add(GTK_CONTAINER(scrolled_window), textview);
 
@@ -115,8 +128,6 @@ GtkWidget* crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
 
     return window;
 }
-
-
 
 
 // Función para manejar el evento de ingreso al botón
@@ -181,7 +192,7 @@ void on_button_clicked(GtkWidget *widget, gpointer data) {
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[1]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba2.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("ParticionesFijas.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[2]) {
         reproducirSonido("/Sonidos/button1.mp3");
