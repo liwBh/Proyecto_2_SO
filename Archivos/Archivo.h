@@ -33,47 +33,22 @@ int crearArchivo(char* ruta){
 
     return 1;
 }
-int escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioExterno,double tiempoPromedioEspera, double tiempoPromedioEjecucion, const char *nombreArchivo) {
+int escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioExterno, double tiempoPromedioEspera, double tiempoPromedioEjecucion, const char *nombreArchivo, int *encabezadoEscrito) {
     FILE *archivo;
 
-    //inicializar archivo, modo agregar
     archivo = fopen(nombreArchivo, "a");
 
-    //validar si el archivo existe
-    if(archivo == NULL) {
-        //mensaje de error
-        printf("Ocurrio un error, el archivo no fue encontrado!\n\n");
-
-        //cerrar el archivo
+    if (archivo == NULL) {
+        printf("Ocurrió un error, el archivo no fue encontrado!\n\n");
         fclose(archivo);
-
-        //detener metodo
         return 0;
     }
 
-
-    static int encabezadoEscrito = 0; // Variable de control del encabezado
-
-    if (encabezadoEscrito == 0) {
-        char encabezado[] = "                                                           Analisis de Rendimiento de Registros de Particiones Fijas";
-        int longitudEncabezado = strlen(encabezado);
-        int anchoArchivo = 80; // Ancho total del archivo (ajusta este valor según tus necesidades)
-        int espacios = (anchoArchivo - longitudEncabezado) / 2;
-
-        // Escribir los espacios en blanco antes del encabezado
-        for (int i = 0; i < espacios; i++) {
-            fprintf(archivo, " ");
-        }
-
-        fprintf(archivo, "%s\n", encabezado);
-        fprintf(archivo, "-------------------------------------------------------------------------------------------------------------------\n");
+        fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
         fprintf(archivo, "ID:       Nombre:          Peso:      Entrada/Salida:  Tiempo de E/S:  Desperdicio Interno:  Desperdicio Externo:  Tiempo Promedio Espera:  Tiempo Promedio Ejecución:\n");
         fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
-        encabezadoEscrito = 1; // Actualizar el valor de la variable para indicar que el encabezado ya ha sido escrito
+        *encabezadoEscrito = 1;
 
-
-
-    }
 
     fprintf(archivo, "%-10d %-18s %-10d %-16s %-16d %-22d %-20d %-23.6lf %-25.6lf\n",
             nodo->id, nodo->nombre, nodo->peso, nodo->nombreE_S, nodo->tiempoE_S, desperdicioInterno, desperdicioExterno, tiempoPromedioEspera, tiempoPromedioEjecucion);
@@ -82,6 +57,7 @@ int escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioEx
     fclose(archivo);
     return 1;
 }
+
 
 
 void agregarBloqueRendimientoGeneral(const char *nombreArchivo, int totalProcesosFinalizados, double tiempoTotalEjecucion, double promedioProcesosFinalizados) {

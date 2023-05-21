@@ -50,39 +50,19 @@ void cerrarVentanas() {
     num_ventanas_abiertas = 0;
 }
 
-// Función para leer el archivo de texto
-void leerArchivo1(GtkTextBuffer *buffer, const char *prueba) {
-    FILE *archivo;
-    char linea[256];
-
-    // Abrir el archivo en modo lectura
-    archivo = fopen(prueba, "r");
-    if (archivo == NULL) {
-        g_print("Error al abrir el archivo.\n");
-        return;
-    }
-
-    // Leer el archivo línea por línea
-    while (fgets(linea, sizeof(linea), archivo) != NULL) {
-        // Agregar la línea al buffer de texto de GTK
-        gtk_text_buffer_insert_at_cursor(buffer, linea, -1);
-    }
-
-    // Cerrar el archivo
-    fclose(archivo);
-}
 GtkWidget* crearVentana(GtkWidget *widget, gpointer data, char *ruta) {
     // Crear la ventana principal
     GtkWidget *window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
     ventana_principal = window;
 
-    gtk_window_set_title(GTK_WINDOW(window), "Archivo de texto");
+    gtk_window_set_title(GTK_WINDOW(window), "Analisis de Rendimiento");
     gtk_window_set_default_size(GTK_WINDOW(window), 1500, 800);
     gtk_window_set_decorated(GTK_WINDOW(window), TRUE);  // Mostrar los botones de la barra de título
 
     // Crear un GtkScrolledWindow
     GtkWidget *scrolled_window = gtk_scrolled_window_new(NULL, NULL);
     gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scrolled_window), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+
 
     // Crear el widget de texto
     GtkWidget *textview = gtk_text_view_new();
@@ -188,7 +168,7 @@ void on_button_clicked(GtkWidget *widget, gpointer data) {
     // Crear la nueva ventana y agregarla a la lista de ventanas abiertas
     if (widget == botones[0]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("ParticionesFijas.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("MapaBits.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[1]) {
         reproducirSonido("/Sonidos/button1.mp3");

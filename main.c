@@ -15,7 +15,7 @@ int banderaFinalizacion = 0;
 int tipoPolitica = 1;
 //etiqueta para habilitar aleatorio de crecimiento
 bool etiquetaC =  false;
-
+int encabezadoEscrito = 0;
 //numero de procesos
 int nProcesos = 0;
 //variables para evaluar desperdicio interno de cada proceso
@@ -26,6 +26,8 @@ int desperdicioExterno= 0;
 //variables para llevar control del promedio de procesos finalizados desde que se inicio el programa
 float promedio = 0.0;
 time_t inicioPrograma;
+time_t pausaInicio;
+time_t tiempoPausado = 0;
 int procesosFinalizados =0;
 float tiempo_transcurrido = 0.0;
 //hilos
@@ -63,6 +65,7 @@ int main() {
     //creando las listas del emulador
     crearListas();
     crearArchivo("../Archivos/ParticionesFijas.txt");
+    crearArchivo("../Archivos/MapaBits.txt");
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
 
@@ -119,7 +122,6 @@ int main() {
     printf("\nTotal de procesos finalizados: %d", procesosFinalizados);
     printf("\nTiempo total de ejecucion %f segundos", tiempo_transcurrido);
     printf("\nPromedio de proceso finalizados por unidad de tiempo: %.2f segundos\n", promedio);
-    agregarBloqueRendimientoGeneral("../Archivos/ParticionesFijas.txt",procesosFinalizados,tiempo_transcurrido,promedio);
 
     printf("\033[1;31m\n--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
     mostrarVentana();
@@ -208,7 +210,6 @@ void *administrarProcesos(void *args){
     // eliminar nodo de listos
     eliminarNodo(listaListos,nodoProceso->id);
 
-    //tiempo en ejecucion
     clock_t tInicio = clock();
     int tiempoEjecucion = (rand() % 3) + 1;
     sleep(tiempoEjecucion);
@@ -301,7 +302,11 @@ void *administrarProcesos(void *args){
         if(nodoProceso->crecimiento == true){
             etiquetaC = false;
             nodoProceso->crecimiento = false;
+            time_t fin2 = time(NULL); // Obtener el tiempo actual
+            double tiempo_transcurrido = difftime(fin2, inicioPrograma); // Calcular el tiempo transcurrido en segundos
+            promedio = ((promedio * (procesosFinalizados - 1)) + tiempo_transcurrido) / procesosFinalizados; // Calcular el nuevo promedio
 
+            //tiempo en ejecucion
             //realizar cambio de politica
             printf("\033[1;31m\n====================={ Aplicar cambio de politica }=====================\n\033[0m");
             tipoPolitica++;
@@ -314,6 +319,10 @@ void *administrarProcesos(void *args){
         double promedioEs = nodoProceso->nEspera!=0 ? nodoProceso->sumTiempoES / nodoProceso->nEspera : 0;
         printf("\nEl promedio de ejecucion del proceso es: %f \n",promedioEj);
         printf("El promedio de espera del proceso es: %f \n",promedioEs);
+        agregarBloqueRendimientoGeneral("../Archivos/ParticionesFijas.txt",procesosFinalizados,tiempo_transcurrido,promedio);
+
+
+        agregarBloqueRendimientoGeneral("../Archivos/MapaBits.txt",procesosFinalizados,tiempo_transcurrido,promedio);
 
         printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
         mostrarListaPosiciones(nodoProceso->listaPosicion);
@@ -322,8 +331,19 @@ void *administrarProcesos(void *args){
         //librerar bloques de memoria
         liberarMemoria(nodoProceso,matriz);
         printf("\nLiberando Memoria utilizada por el proceso");
+        switch (tipoPolitica) {
+            case 1:
+                escribirArchivo(nodoProceso, desperdicioInternoTotal,desperdicioExterno,promedioEj,promedioEs,"../Archivos/ParticionesFijas.txt",&encabezadoEscrito);
 
-        escribirArchivo(nodoProceso, desperdicioInternoTotal,desperdicioExterno,promedioEj,promedioEs,"../Archivos/ParticionesFijas.txt");
+                break;
+            case 2:
+                escribirArchivo(nodoProceso, desperdicioInternoTotal,desperdicioExterno,promedioEj,promedioEs,"../Archivos/MapaBits.txt",&encabezadoEscrito);
+
+                break;
+
+            default:
+                break;
+        }
 
         mostrarMatriz(matriz);
 
