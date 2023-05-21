@@ -6,7 +6,7 @@
 #include "Listas/Lista.h"
 #include "MatrizMemoria/Matriz.h"
 #include "Logica/Logica.h"
-
+#include "ListaLigadas/ListasLigadas.h"
 struct Bloque matriz[8][8];
 //bandera para la finalizacion de la simulacion
 int banderaFinalizacion = 0;
@@ -14,6 +14,8 @@ int banderaFinalizacion = 0;
 int tipoPolitica = 1;
 //etiqueta para habilitar aleatorio de crecimiento
 bool etiquetaC =  false;
+//bandera para iniciar listas ligadas
+bool LLINICIADO = false;
 
 //numero de procesos
 int nProcesos = 0;
@@ -229,7 +231,7 @@ void *administrarProcesos(void *args){
     printf("\nDesperdicio externo total : %d kb\n", desperdicioExterno);
 
     //******** generar crecimiento memoria *************
-    if( etiquetaC == false ){//asignar etiqueta de crecimiento
+    if( etiquetaC == false && tipoPolitica < 3){//asignar etiqueta de crecimiento
         int crecimiento = generarCreacimientoP();
 
         //Ajuste para respetar tamaño memoria
@@ -261,7 +263,7 @@ void *administrarProcesos(void *args){
 
         }
 
-    }else if(etiquetaC == true && nodoProceso->crecimiento == true){
+    }else if(etiquetaC == true && nodoProceso->crecimiento == true && tipoPolitica < 3 ){
         int crecimiento = generarCreacimientoP();
 
         //Ajuste para respetar tamaño memoria
@@ -294,6 +296,27 @@ void *administrarProcesos(void *args){
 
     //veificar si el proceso aun tiene iteraciones
     if(nodoProceso->nIteraciones == 0){//el proceso va de salida del contexto de ejecucion
+
+        printf("\033[1;31m\n------ { El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------\n\033[0m",nodoProceso->id, nodoProceso->nombre);
+
+        printf("\033[1;33m\nInformacion de rendimiento de memoria\n\033[0m");
+        double promedioEj = nodoProceso->sumTiempoEj / nodoProceso->nEjecucion;
+        double promedioEs = nodoProceso->nEspera!=0 ? nodoProceso->sumTiempoES / nodoProceso->nEspera : 0;
+        printf("\nEl promedio de ejecucion del proceso es: %f \n",promedioEj);
+        printf("El promedio de espera del proceso es: %f \n",promedioEs);
+
+        //Aplicar solo en politicas Mapa de bits y particiones fijas
+        if(tipoPolitica < 3){
+            printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
+            mostrarListaPosiciones(nodoProceso->listaPosicion);
+            printf("\n");
+
+            //librerar bloques de memoria
+            liberarMemoria(nodoProceso,matriz);
+            printf("\nLiberando Memoria utilizada por el proceso");
+            mostrarMatriz(matriz);
+        }
+
         //liberar eiqueta de crecimiento
         if(nodoProceso->crecimiento == true){
             etiquetaC = false;
@@ -304,22 +327,19 @@ void *administrarProcesos(void *args){
             tipoPolitica++;
         }
 
-        printf("\033[1;31m\n------ { El proceso: ID %d, Nombre %s ha terminado su ejecucion! } ------\n\033[0m",nodoProceso->id, nodoProceso->nombre);
-
-        printf("\033[1;33m\nInformacion de rendimiento de memoria\n\033[0m");
-        double promedioEj = nodoProceso->sumTiempoEj / nodoProceso->nEjecucion;
-        double promedioEs = nodoProceso->nEspera!=0 ? nodoProceso->sumTiempoES / nodoProceso->nEspera : 0;
-        printf("\nEl promedio de ejecucion del proceso es: %f \n",promedioEj);
-        printf("El promedio de espera del proceso es: %f \n",promedioEs);
-
-        printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
-        mostrarListaPosiciones(nodoProceso->listaPosicion);
-        printf("\n");
-
-        //librerar bloques de memoria
-        liberarMemoria(nodoProceso,matriz);
-        printf("\nLiberando Memoria utilizada por el proceso");
-        mostrarMatriz(matriz);
+        //Aplicar politica Lista Ligadas
+        if(tipoPolitica == 3 && LLINICIADO == false){
+            // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
+            iniciarListasLigadas(listaContenedor);
+            //indicar el tipo de politica Aplicada
+            imprimirAjuste();
+            LLINICIADO = true;
+        }
+        //Eliminar proceso de listas ligadas
+        if(tipoPolitica == 3 && LLINICIADO == true){
+            //liberar de memoria un proceso
+            liberarSegmento(nodoProceso->id);
+        }
 
         //reasignacion de memoria, en base a la politica actual
         banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, listaPeticion->primero, listaContenedor,listaListos, listaPeticion);
@@ -356,9 +376,12 @@ void *administrarProcesos(void *args){
     printf("\033[1;33m\nProcesos restantes en la lista de E/S!\033[0m");
     mostrarListaProcesos(listaEspera);
 
-    //Imprimir matriz
-    printf("\033[0;33m\n\n------------------Condicion actual de memoria------------------\n\033[0m");
-    mostrarMatriz( matriz );
+    if(tipoPolitica < 3){
+        //Imprimir matriz
+        printf("\033[0;33m\n\n------------------Condicion actual de memoria------------------\n\033[0m");
+        mostrarMatriz( matriz );
+
+    }
 
     if( listaPeticion->primero == NULL || listaListos->primero == NULL){
         //indicar que la simulacion ha terminado
