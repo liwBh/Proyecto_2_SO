@@ -220,10 +220,12 @@ void *administrarProcesos(void *args){
     //restar una iteraciones
     nodoProceso->nIteraciones = nodoProceso->nIteraciones - 1;
     printf("\nIteraciones restantes: %d\n",nodoProceso->nIteraciones );
-    printf("\033[1;33m\nDirecciones de Memoria del proceso:  \033[0m");
-    mostrarListaPosiciones(nodoProceso->listaPosicion);
-    printf("\n");
 
+    if(tipoPolitica < 3){
+        printf("\033[1;33m\nDirecciones de Memoria del proceso:  \033[0m");
+        mostrarListaPosiciones(nodoProceso->listaPosicion);
+        printf("\n");
+    }
 
     printf("\033[1;33m\nInformacion de rendimiento de memoria\n\033[0m");
     printf("\nCantidad de procesos en contexto de ejecucion : %d", listaContenedor->tamanio);
@@ -335,6 +337,7 @@ void *administrarProcesos(void *args){
             imprimirAjuste();
             LLINICIADO = true;
         }
+
         //Eliminar proceso de listas ligadas
         if(tipoPolitica == 3 && LLINICIADO == true){
             //liberar de memoria un proceso

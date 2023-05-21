@@ -267,7 +267,7 @@ void liberarSegmento(int procesoID){
             }
             return;
         }else if(!nodoActual->asignado && nodoActual->idProceso == procesoID){
-            printf("el proceso %d ya ha sido liberado!!!!\n\n", procesoID);
+            printf("El proceso %d ya ha sido liberado!!!!\n\n", procesoID);
             return;
         }else{
             nodoAnterior = nodoActual;
@@ -290,15 +290,15 @@ void liberarMemoriaLL() {
 
 // Función para imprimir el estado actual de la memoria
 void imprimir() {
-    printf("Estado actual de la memoria:\n");
+    printf("\033[0;32m\nEstado actual de la memoria:\n\033[0m");
     struct Nodo *nodoActual = cabeza;
 
     while (nodoActual != NULL) {
         if (nodoActual->asignado) {
-            printf("[Proceso %d, Inicio %d, Tamano %d] -> ", nodoActual->idProceso, nodoActual->inicio,
+            printf("[Proceso %d, Inicio %d, Tamano %d]->\n", nodoActual->idProceso, nodoActual->inicio,
                    nodoActual->tamano);
         } else {
-            printf("[Hueco, Inicio %d, Tamano %d] -> ", nodoActual->inicio, nodoActual->tamano);
+            printf("[Hueco, Inicio %d, Tamano %d]->\n", nodoActual->inicio, nodoActual->tamano);
         }
         nodoActual = nodoActual->siguiente;
     }
@@ -373,24 +373,23 @@ void desfragmentarMemoriaLL() {
 void imprimirAjuste(){
     switch (ajusteListaLigada) {
         case 1:
-            printf(" \n el ajuste de asignacion de memoria es PEOR AJUSTE\n ");
+            printf("\033[1;31m\n PEOR AJUSTE \n\n\033[0m");
             break;
         case 2:
-            printf(" \n se ha cambiado el ajuste de asignacion de memoria, el ajuste sera PRIMER AJUSTE\n");
+            printf("\033[1;31m\n PRIMER AJUSTE \n\n\033[0m");
             break;
         case 3:
-            printf(" \n se ha cambiado el ajuste de asignacion de memoria, el ajuste sera SIGUIENTE AJUSTE\n");
+            printf("\033[1;31m\n SIGUIENTE AJUSTE \n\n\033[0m");
             break;
         case 4:
-            printf(" \n se ha cambiado el ajuste de asignacion de memoria, el ajuste sera MEJOR AJUSTE\n");
+            printf("\033[1;31m\n MEJOR AJUSTE \n\n\033[0m");
             break;
         default : break;
     }
 }
 
 void iniciarListasLigadas(ListaProcesos *listaContenedor){
-    //inicializa la estructura de la memoria
-    crearMemoria();
+
     //recorrer la lista e insertar proceso a proceso en la cabeza de la lista ligada
     printf("\n------->INICIANDO PROCESO DE TRASLADO LISTAS LIGADAS<------\n");
     //variables para llevar cuenta de las nuevas posiciones de inicio al insertar nuevos procesos
@@ -404,135 +403,48 @@ void iniciarListasLigadas(ListaProcesos *listaContenedor){
         //actualizo la variable inicio para que el siguiente proceso sepa donde va a iniciar
         inicio += procesoActual->peso;
         inicioHuecoFinal+=procesoActual->peso;
-        tamanioHuecoFinal+=procesoActual->peso;
         procesoActual= procesoActual->siguiente;
     }
+    tamanioHuecoFinal+=memoriaTotal-inicioHuecoFinal;
     //inserto el ultimo hueco a la lista
     insertarLL(&cabeza, inicioHuecoFinal, tamanioHuecoFinal, false,-1);
-    printf(" TRASLADO A LISTAS LIGADAS CONCRETADO .\n");
     imprimir();
 }
 
 void asignarEspacioDisponibleLL(int idProceso){
-    //cuando supere el 0.7 desfragmentar
-    //cambio de politica
-    do {
-        //politica de adminsitracion lista ligadas
-        switch (ajusteListaLigada) {
-            case 1:
-                asignarSegmentoPeorAjuste(idProceso);
-                break;
-            case 2:
-                asignarSegmentoPrimerAjuste(idProceso);
-                break;
-            case 3:
-                asignarSegmentoSiguienteAjuste(idProceso);
-                break;
-            case 4:
-                asignarSegmentoMejorAjuste(idProceso);
-                break;
-            default : break;
-        }
-
-        //Imprimir el esta de la memoria actual
-        imprimir();
-
-        /*if ((procesosAsignados % 5) == 0) {
-            for(int i = 0; i<3; i++){
-                int procesoAEliminar = (rand() % procesosAsignados) + 1;
-                liberarSegmento(procesoAEliminar);
-            }
-            imprimir();
-        }*/
-
-        //Enviar una señal para liberar memoria de proceso saliente
-
-
-        //procesosAsignados++;
-
-
-        printf("\nporcentaje de memoria ocupado hasta el momento %f \n", porcentajeOcupado*100);
-        //si el porcentaje ocupado es mayor que el 70 se desfragmenta y se cambia de ajuste
-        if(porcentajeOcupado>=0.7){
-            if(ajusteListaLigada>4){
-                return ;
-            }
-            //se desfragmenta, una vez desfragmentada se imprime y se cambia de ajuste
-            desfragmentarMemoriaLL();
-            imprimir();
-            ajusteListaLigada++;
-            imprimirAjuste();
-            //elimino procesos para seguir la simulacion
-            /*
-             for(int i = 0; i<4; i++){
-                int procesoAEliminar = (rand() % procesosAsignados) + 1;
-                liberarSegmento(procesoAEliminar);
-             }
-             */
-            //Enviar una señal para liberar memoria de proceso saliente
-        }
-
-        system("pause");
-
-    }while (porcentajeOcupado < 0.7);
-}
-
-/*int main() {
-    // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
-    crearMemoria(&cabeza, 0, 256, false,0);
-
-
-    srand(time(NULL));  // Inicializar la semilla para la generación de números aleatorios
+    //indicar el ajuste en utilizado
     imprimirAjuste();
 
+    switch (ajusteListaLigada) {
+        case 1:
+            asignarSegmentoPeorAjuste(idProceso);
+            break;
+        case 2:
+            asignarSegmentoPrimerAjuste(idProceso);
+            break;
+        case 3:
+            asignarSegmentoSiguienteAjuste(idProceso);
+            break;
+        case 4:
+            asignarSegmentoMejorAjuste(idProceso);
+            break;
+        default : break;
+    }
 
-    //cuando supere el 0.7 desfragmentar
-    //cambio de politica
-    do {
-        switch (ajusteListaLigada) {
-            case 1:
-                asignarSegmentoPeorAjuste(procesosAsignados);
-                break;
-            case 2:
-                asignarSegmentoPrimerAjuste(procesosAsignados);
-                break;
-            case 3:
-                asignarSegmentoSiguienteAjuste(procesosAsignados);
-                break;
-            case 4:
-                asignarSegmentoMejorAjuste(procesosAsignados);
-                break;
-            default : break;
-        }
+    //Imprimir el esta de la memoria actual
+    imprimir();
+
+    printf("\033[0;32m\nPorcentaje de memoria ocupado hasta el momento %f \n\033[0m", porcentajeOcupado*100);
+    //si el porcentaje ocupado es mayor que el 70 se desfragmenta y se cambia de ajuste
+    if(porcentajeOcupado>=0.7){
+        //se desfragmenta, una vez desfragmentada se imprime y se cambia de ajuste
+        desfragmentarMemoriaLL();
         imprimir();
-        if ((procesosAsignados % 5) == 0) {
-            for(int i = 0; i<3; i++){
-                int procesoAEliminar = (rand() % procesosAsignados) + 1;
-                liberarSegmento(procesoAEliminar);
-            }
-            imprimir();
-        }
-        procesosAsignados++;
-        printf("\nporcentaje de memoria ocupado hasta el momento %f \n", porcentajeOcupado*100);
-        //si el porcentaje ocupado es mayor que el 70 se desfragmenta y se cambia de ajuste
-        if(porcentajeOcupado>=0.7){
-            if(ajusteListaLigada>4){
-                return 0;
-            }
-            //se desfragmenta, una vez desfragmentada se imprime y se cambia de ajuste
-            desfragmentarMemoria();
-            imprimir();
-            ajusteListaLigada++;
-            imprimirAjuste();
-            //elimino procesos para seguir la simulacion
-            for(int i = 0; i<4; i++){
-                int procesoAEliminar = (rand() % procesosAsignados) + 1;
-                liberarSegmento(procesoAEliminar);
-            }
-        }
-        system("pause");
-    }while (porcentajeOcupado < 0.7);
+        ajusteListaLigada++;
+        imprimirAjuste();
+    }
+    sleep(2);
+}
 
-    return 0;
-}*/
+
 #endif //PROYECTO_2_SO_LISTASLIGADAS_H
