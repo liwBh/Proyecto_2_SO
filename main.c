@@ -103,6 +103,16 @@ int main() {
     printf("\033[0;32m\nProcesos agregados en la lista de listos\n\033[0m");
     mostrarListaProcesos(listaListos);
 
+    tipoPolitica = 3;
+
+    if(tipoPolitica == 3 && LLINICIADO == false){
+        // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
+        iniciarListasLigadas(listaContenedor);
+        //indicar el tipo de politica Aplicada
+        imprimirAjuste();
+        LLINICIADO = true;
+    }
+
     //Iniciar planificador
     pthread_create(&(planificador), NULL, &iniciarPlanificador, NULL);
 
@@ -195,14 +205,16 @@ void *administrarProcesos(void *args){
     //recibir parametro de nodo
     NodoProceso *nodoProceso = (NodoProceso *) args;
     int idProceso = nodoProceso->id;
-    desperdicioInternoTotal = calcularDesperdicioInternoTotal(listaContenedor);
+    desperdicioInternoTotal = tipoPolitica == 3 ? 0 : calcularDesperdicioInternoTotal(listaContenedor);
     desperdicioExterno = calcularDesperdicioExternoVector(matriz);
 
     printf("\033[0;32m\n*************** Enviando proceso a Ejecucion *******************\n\033[0m");
 
     printf("\nDatos del proceso: ID %d, Nombre %s\n",nodoProceso->id, nodoProceso->nombre);
 
-    printf("\nBloques utilizados %d, desperdicio Interno del proceso: %d kb",nodoProceso->numBloques, calcularDesperdicioInterno(nodoProceso));
+    if( tipoPolitica < 3){
+        printf("\nBloques utilizados %d, desperdicio Interno del proceso: %d kb",nodoProceso->numBloques, calcularDesperdicioInterno(nodoProceso));
+    }
 
     // eliminar nodo de listos
     eliminarNodo(listaListos,nodoProceso->id);
