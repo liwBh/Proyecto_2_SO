@@ -16,6 +16,8 @@ int tipoPolitica = 1;
 bool etiquetaC =  false;
 //bandera para iniciar listas ligadas
 bool LLINICIADO = false;
+//bandera para iniciar Socio
+bool iniciarSocio = false;
 
 //numero de procesos
 int nProcesos = 0;
@@ -103,14 +105,21 @@ int main() {
     printf("\033[0;32m\nProcesos agregados en la lista de listos\n\033[0m");
     mostrarListaProcesos(listaListos);
 
-    tipoPolitica = 3;
+    tipoPolitica = 4;
 
-    if(tipoPolitica == 3 && LLINICIADO == false){
-        // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
-        iniciarListasLigadas(listaContenedor);
-        //indicar el tipo de politica Aplicada
-        imprimirAjuste();
-        LLINICIADO = true;
+//    if(tipoPolitica == 3 && LLINICIADO == false){
+//        // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
+//        iniciarListasLigadas(listaContenedor);
+//        //indicar el tipo de politica Aplicada
+//        imprimirAjuste();
+//        LLINICIADO = true;
+//    }
+
+    //Aplicar politica socios
+    if(tipoPolitica == 4 && iniciarSocio == false){
+        iniciarSocios(listaContenedor);
+        imprimirEstadoMemoria();
+        iniciarSocio = true;
     }
 
     //Iniciar planificador
@@ -160,9 +169,9 @@ void llenarListaProcesosEsperando(){
         char str[10];
         char nombre[10] = "P-";
         int peso = rand() % 30 + 1 ;
-        int iteraciones = rand() % 5 + 2;
+        int iteraciones = rand() % 3 + 1;
         int indice_aleatorio = rand() % 3;
-        int tiempo = (rand() % 3) + 1;
+        int tiempo = (rand() % 2) + 1;
         char *dispositivos[] = {"mouse", "teclado", "pantalla"};
 
         sprintf(str, "%d",i);
@@ -205,8 +214,20 @@ void *administrarProcesos(void *args){
     //recibir parametro de nodo
     NodoProceso *nodoProceso = (NodoProceso *) args;
     int idProceso = nodoProceso->id;
-    desperdicioInternoTotal = tipoPolitica == 3 ? 0 : calcularDesperdicioInternoTotal(listaContenedor);
-    desperdicioExterno = calcularDesperdicioExternoVector(matriz);
+
+    if(tipoPolitica < 3){
+        //politica mapa de bits y particiones
+        desperdicioInternoTotal = calcularDesperdicioInternoTotal(listaContenedor);
+        desperdicioExterno = calcularDesperdicioExternoVector(matriz);
+    }else if(tipoPolitica == 3){
+        //politica listas ligadas
+        desperdicioInternoTotal = 0;
+        desperdicioExterno = calcularDesperdicioExternoVector(matriz);
+    }else if(tipoPolitica == 4){
+        //politica socios
+        desperdicioInternoTotal = calcularDesperdicioInternoTotalSocios(listaContenedor);
+        desperdicioExterno = calcularDesperdicioExternoSocios(matriz);
+    }
 
     printf("\033[0;32m\n*************** Enviando proceso a Ejecucion *******************\n\033[0m");
 
@@ -245,11 +266,11 @@ void *administrarProcesos(void *args){
     printf("\nDesperdicio externo total : %d kb\n", desperdicioExterno);
 
     //******** generar crecimiento memoria *************
-    if( etiquetaC == false && tipoPolitica < 3){//asignar etiqueta de crecimiento
+    if( etiquetaC == false && tipoPolitica < 4){//asignar etiqueta de crecimiento
         int crecimiento = generarCreacimientoP();
 
         //Ajuste para respetar tamaño memoria
-        if(nodoProceso->peso + crecimiento > 32 && tipoPolitica == 1){
+        if( nodoProceso->peso + crecimiento > 32 ){
             crecimiento = 32 - nodoProceso->peso;
         }
 
@@ -263,25 +284,31 @@ void *administrarProcesos(void *args){
 
             nodoProceso->peso += crecimiento;
 
-            printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
-            mostrarListaPosiciones(nodoProceso->listaPosicion);
-            printf("\n");
+            if(tipoPolitica < 3 ){
+                printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
+                mostrarListaPosiciones(nodoProceso->listaPosicion);
+                printf("\n");
 
-            //librerar bloques de memoria
-            liberarMemoria(nodoProceso,matriz);
-            printf("\nLiberando Memoria utilizada por el proceso");
-            mostrarMatriz(matriz);
+                //librerar bloques de memoria
+                liberarMemoria(nodoProceso,matriz);
+                printf("\nLiberando Memoria utilizada por el proceso");
+                mostrarMatriz(matriz);
+
+            }if(tipoPolitica == 3 && LLINICIADO == true){
+                //liberar de memoria un proceso
+                liberarSegmento(nodoProceso->id);
+            }
 
             //reasignacion de memoria, en base a la politica actual
             banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor,listaListos, listaPeticion);
 
         }
 
-    }else if(etiquetaC == true && nodoProceso->crecimiento == true && tipoPolitica < 3 ){
+    }else if(etiquetaC == true && nodoProceso->crecimiento == true && tipoPolitica < 4 ){//continuar con un procedimiento que tiene crecimiento
         int crecimiento = generarCreacimientoP();
 
         //Ajuste para respetar tamaño memoria
-        if(nodoProceso->peso + crecimiento > 32 && tipoPolitica == 1){
+        if(nodoProceso->peso + crecimiento > 32){
             crecimiento = 32 - nodoProceso->peso;
         }
 
@@ -292,14 +319,20 @@ void *administrarProcesos(void *args){
 
             nodoProceso->peso += crecimiento;
 
-            printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
-            mostrarListaPosiciones(nodoProceso->listaPosicion);
-            printf("\n");
+            if(tipoPolitica < 3 ){
+                printf("\033[1;33m\nDirecciones de Memoria a Liberar:  \033[0m");
+                mostrarListaPosiciones(nodoProceso->listaPosicion);
+                printf("\n");
 
-            //librerar bloques de memoria
-            liberarMemoria(nodoProceso,matriz);
-            printf("\nLiberando Memoria utilizada por el proceso");
-            mostrarMatriz(matriz);
+                //librerar bloques de memoria
+                liberarMemoria(nodoProceso,matriz);
+                printf("\nLiberando Memoria utilizada por el proceso");
+                mostrarMatriz(matriz);
+
+            }if(tipoPolitica == 3 && LLINICIADO == true){
+                //liberar de memoria un proceso
+                liberarSegmento(nodoProceso->id);
+            }
 
             //reasignacion de memoria, en base a la politica actual
             banderaFinalizacion =  reasignacionMemoriaXpolitica(tipoPolitica, matriz, nodoProceso, listaContenedor,listaListos, listaPeticion);
@@ -341,6 +374,8 @@ void *administrarProcesos(void *args){
             tipoPolitica++;
         }
 
+
+//======================================== Listas Ligadas ================================
         //Aplicar politica Lista Ligadas
         if(tipoPolitica == 3 && LLINICIADO == false){
             // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
@@ -355,6 +390,22 @@ void *administrarProcesos(void *args){
             //liberar de memoria un proceso
             liberarSegmento(nodoProceso->id);
         }
+//======================================================================================
+
+//================================== Socios ============================================
+        //Aplicar politica socios
+        if(tipoPolitica == 4 && iniciarSocio == false){
+            iniciarSocios(listaContenedor);
+            imprimirEstadoMemoria();
+            iniciarSocio=true;
+        }
+
+        //Eliminar proceso de listas ligadas
+        if(tipoPolitica == 4 && iniciarSocio == true){
+            //libera de memoria un proceso
+            liberarMemoriaSocios(nodoProceso->id);
+        }
+//======================================================================================
 
         //reasignacion de memoria, en base a la politica actual
         banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, matriz, listaPeticion->primero, listaContenedor,listaListos, listaPeticion);

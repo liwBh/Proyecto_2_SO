@@ -99,7 +99,8 @@
 				5,
 				6,
 				7,
-				8
+				8,
+				9
 			]
 		}
 	],
@@ -149,6 +150,11 @@
 		{
 			"backtrace" : 1,
 			"path" : "ListaLigadas/ListasLigadas.h",
+			"sourceGroupIndex" : 1
+		},
+		{
+			"backtrace" : 1,
+			"path" : "Socios/Socios.h",
 			"sourceGroupIndex" : 1
 		}
 	],

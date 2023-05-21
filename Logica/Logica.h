@@ -9,6 +9,7 @@
 #include "../Listas/Lista.h"
 #include "../MatrizMemoria/Matriz.h"
 #include "../ListaLigadas/ListasLigadas.h"
+#include "../Socios/Socios.h"
 #include <math.h>
 
 //============================ Administracion de procesos FCFS ============================//
@@ -447,6 +448,7 @@ int reasignacionMemoriaXpolitica(int tipoPolitica, struct Bloque matriz[8][8], N
             break;
 
         case 3:
+            //si ya se ejecutaron los cuatro ajustes en listas ligadas se cambia de politica
             if(ajusteListaLigada>4){
                 tipoPolitica++;
             }else{
@@ -455,6 +457,15 @@ int reasignacionMemoriaXpolitica(int tipoPolitica, struct Bloque matriz[8][8], N
                 nodoProceso->numBloques = encontrarCantidadDeBloques(nodoProceso->peso);
                 asignarEspacioDisponibleLL(nodoProceso->id);
             }
+            break;
+
+        case 4:
+
+            //asignarle espacio en memoria en base a Lista Ligadas, al proceso entrante al contexto de ejecucion
+            printf("\033[1;31m\n----------Socios----------\n\033[0m");
+            nodoProceso->numBloques = nuevoEspacio(nodoProceso->peso);
+            asignarEspacioDisponibleS(nodoProceso);
+
             break;
 
         default:
