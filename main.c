@@ -18,7 +18,6 @@ bool etiquetaC =  false;
 bool LLINICIADO = false;
 //bandera para iniciar Socio
 bool iniciarSocio = false;
-
 //numero de procesos
 int nProcesos = 0;
 //variables para evaluar desperdicio interno de cada proceso
@@ -105,23 +104,6 @@ int main() {
     printf("\033[0;32m\nProcesos agregados en la lista de listos\n\033[0m");
     mostrarListaProcesos(listaListos);
 
-    tipoPolitica = 4;
-
-//    if(tipoPolitica == 3 && LLINICIADO == false){
-//        // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
-//        iniciarListasLigadas(listaContenedor);
-//        //indicar el tipo de politica Aplicada
-//        imprimirAjuste();
-//        LLINICIADO = true;
-//    }
-
-    //Aplicar politica socios
-    if(tipoPolitica == 4 && iniciarSocio == false){
-        iniciarSocios(listaContenedor);
-        imprimirEstadoMemoria();
-        iniciarSocio = true;
-    }
-
     //Iniciar planificador
     pthread_create(&(planificador), NULL, &iniciarPlanificador, NULL);
 
@@ -160,7 +142,7 @@ void llenarListaProcesosEsperando(){
 
 
     srand(time(NULL));
-    nProcesos = rand() % (30 - 25 + 1) + 25;
+    nProcesos = rand() % (50 - 35 + 1) + 35;
 
     //inicializar array de procesos
     //se retorna un puntero a la primer pos del vector de procesos
@@ -189,6 +171,7 @@ void llenarListaProcesosEsperando(){
     mostrarListaProcesos(listaPeticion);
 }
 
+
 void llenarMemoriaInicio(){
     //iniciaria con particion fija de varios tamaños
     int deterner = 0;
@@ -209,6 +192,7 @@ void llenarMemoriaInicio(){
     }
 
 }
+
 
 void *administrarProcesos(void *args){
     //recibir parametro de nodo
@@ -371,7 +355,18 @@ void *administrarProcesos(void *args){
 
             //realizar cambio de politica
             printf("\033[1;31m\n====================={ Aplicar cambio de politica }=====================\n\033[0m");
-            tipoPolitica++;
+
+            if( tipoPolitica != 3){
+                tipoPolitica++;
+            }
+
+            if( tipoPolitica == 3){
+                ajusteListaLigada++;
+
+                if(ajusteListaLigada > 4){
+                    tipoPolitica++;
+                }
+            }
         }
 
 
@@ -381,7 +376,7 @@ void *administrarProcesos(void *args){
             // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
             iniciarListasLigadas(listaContenedor);
             //indicar el tipo de politica Aplicada
-            imprimirAjuste();
+         //   imprimirAjuste();
             LLINICIADO = true;
         }
 

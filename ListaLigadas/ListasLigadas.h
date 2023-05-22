@@ -1,6 +1,5 @@
 #ifndef PROYECTO_2_SO_LISTASLIGADAS_H
 #define PROYECTO_2_SO_LISTASLIGADAS_H
-
 #include <malloc.h>
 #include <stdlib.h>
 #include <limits.h>
@@ -14,7 +13,6 @@ double porcentajeOcupado = 0.0;
 struct Nodo* cabeza = NULL;
 int ultimoProcesoIngresado = 0;
 int ajusteListaLigada= 1;
-int intercambios = 0;
 
 // Estructura de nodo para la lista ligada
 struct Nodo {
@@ -24,19 +22,6 @@ struct Nodo {
     bool asignado;//si esta asignado es un proceso, si esta libre es un hueco
     struct Nodo* siguiente;
 };
-
-// Función para insertar un nodo en la lista ligada
-void crearMemoria() {
-    struct Nodo* nuevoNodo = (struct Nodo*)malloc(sizeof(struct Nodo));
-    nuevoNodo->inicio = 0;
-    nuevoNodo->tamano = memoriaTotal;
-    nuevoNodo->asignado = false;
-    nuevoNodo->idProceso= -1;
-    nuevoNodo->siguiente = NULL;
-    cabeza = nuevoNodo;
-    porcentajeOcupado=0.0;
-    printf(" ---> se ha creado la memoria tamanio %d kb <---\n\n", memoriaTotal);
-}
 
 //================================ asignacion usando el peor ajuste ================================
 void asignarSegmentoPeorAjuste(int procesoID) {
@@ -291,21 +276,15 @@ void liberarMemoriaLL() {
 
 // Función para imprimir el estado actual de la memoria
 void imprimir() {
-    int x = 0;
     printf("\033[0;32m\nEstado actual de la memoria:\n\033[0m");
     struct Nodo *nodoActual = cabeza;
 
     while (nodoActual != NULL) {
         if (nodoActual->asignado) {
-            printf("[Proceso %d, Inicio %d, Tamano %d]->", nodoActual->idProceso, nodoActual->inicio,
+            printf("[Proceso %d, Inicio %d, Tamano %d]->\n", nodoActual->idProceso, nodoActual->inicio,
                    nodoActual->tamano);
         } else {
-            printf("[Hueco, Inicio %d, Tamano %d]->", nodoActual->inicio, nodoActual->tamano);
-        }
-        x++;
-        if(x>=3) {
-            printf("\n");
-            x = 0;
+            printf("[Hueco, Inicio %d, Tamano %d]->\n", nodoActual->inicio, nodoActual->tamano);
         }
         nodoActual = nodoActual->siguiente;
     }
@@ -380,16 +359,16 @@ void desfragmentarMemoriaLL() {
 void imprimirAjuste(){
     switch (ajusteListaLigada) {
         case 1:
-            printf("\033[1;31m\n EL AJUSTE ACTUAL EN PLANIFICACION POR LISTAS LIGADAS ES PEOR AJUSTE\n\n\033[0m");
+            printf("\033[1;31m\n EL AJUSTE ACTUAL ES PEOR AJUSTE\n\n\033[0m");
             break;
         case 2:
-            printf("\033[1;31m\n EL AJUSTE ACTUAL EN PLANIFICACION POR LISTAS LIGADAS ES PRIMER AJUSTE\n\n\033[0m");
+            printf("\033[1;31m\n EL AJUSTE ACTUAL ES PRIMER AJUSTE\n\n\033[0m");
             break;
         case 3:
-            printf("\033[1;31m\n EL AJUSTE ACTUAL EN PLANIFICACION POR LISTAS LIGADAS ES SIGUIENTE AJUSTE\n\n\033[0m");
+            printf("\033[1;31m\n EL AJUSTE ACTUAL ES SIGUIENTE AJUSTE\n\n\033[0m");
             break;
         case 4:
-            printf("\033[1;31m\n EL AJUSTE ACTUAL EN PLANIFICACION POR LISTAS LIGADAS ES MEJOR AJUSTE\n\n\033[0m");
+            printf("\033[1;31m\n EL AJUSTE ACTUAL ES MEJOR AJUSTE\n\n\033[0m");
             break;
         default : break;
     }
@@ -432,15 +411,12 @@ int huecos(){
 }
 
 void asignarEspacioDisponibleLL(int idProceso){
-    printf("\n Lista De Memoria de los procesos en contexto de ejecucion\n");
-    imprimir();
-    //validar el cambio de ajuste, si han habido mas de 5 intercambios se cambia de ajuste
-    if(intercambios>5){
-        ajusteListaLigada++;
-        intercambios= 0;
-    }
 
     imprimirAjuste();
+
+    printf("\n Lista De Memoria de los procesos en contexto de ejecucion\n");
+    imprimir();
+
     //si hay mas de 3 huecos dentro de la lista ligada se procede a desfragemtar la lista
     if(huecos()>3){
         desfragmentarMemoriaLL();
@@ -465,7 +441,6 @@ void asignarEspacioDisponibleLL(int idProceso){
     printf("\n Lista De Memoria de los procesos en contexto de ejecucion con el reciente proceso ingresado \n");
     imprimir();
     printf("\033[0;32m\nPorcentaje de memoria ocupado hasta el momento %f \n\033[0m", porcentajeOcupado*100);
-    intercambios++;
     sleep(2);
 }
 

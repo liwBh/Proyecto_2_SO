@@ -448,15 +448,11 @@ int reasignacionMemoriaXpolitica(int tipoPolitica, struct Bloque matriz[8][8], N
             break;
 
         case 3:
-            //si ya se ejecutaron los cuatro ajustes en listas ligadas se cambia de politica
-            if(ajusteListaLigada>4){
-                tipoPolitica++;
-            }else{
-                //asignarle espacio en memoria en base a Lista Ligadas, al proceso entrante al contexto de ejecucion
-                printf("\033[1;31m\n----------LISTAS LIGADAS----------\n\033[0m");
-                nodoProceso->numBloques = encontrarCantidadDeBloques(nodoProceso->peso);
-                asignarEspacioDisponibleLL(nodoProceso->id);
-            }
+
+            //asignarle espacio en memoria en base a Lista Ligadas, al proceso entrante al contexto de ejecucion
+            printf("\033[1;31m\n----------LISTAS LIGADAS----------\n\033[0m");
+            nodoProceso->numBloques = encontrarCantidadDeBloques(nodoProceso->peso);
+            asignarEspacioDisponibleLL(nodoProceso->id);
             break;
 
         case 4:
