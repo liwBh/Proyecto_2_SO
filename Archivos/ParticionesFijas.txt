@@ -1,0 +1,72 @@
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 0
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 1
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 2
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 3
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 4
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 5
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 6
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 7
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+
+
+Rendimiento general:
+------------------------
+Total de procesos finalizados: 8
+Tiempo total de ejecucion: 0.000000
+Promedio de proceso finalizados por unidad de tiempo: inf
+------------------------
+

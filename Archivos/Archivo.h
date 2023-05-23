@@ -6,69 +6,104 @@
 #define PROYECTO_2_SO_ARCHIVO_H
 #include <stdio.h>
 #include "../Listas/Nodo.h"
+#include <gtk/gtk.h>
+#include <glib.h>
 
-/*
-void escribirArchivo(NodoProceso *nodo) {
+int crearArchivo(char* ruta){
+    //"playbin uri=file:////home/liwbh/CLionProjects/Proyecto-01-SO/Sonidos/victoria.wav"
+    // usando el modo w crea el archivo, si ya hay uno con ese nombre lo sobre escribe "../Archivos/log.txt"
+    FILE *archivo = fopen(ruta, "w");
+
+    if(archivo == NULL){
+        //mensaje de error
+        printf("Ocurrio un error, el archivo no fue creado con exito!\n\n");
+
+        //cerrar el archivo
+        fclose(archivo);
+
+        //detener el metodo
+        return 0;
+    }
+
+    //mensaje de exito
+    printf("\nEl archivo a sido creado con exito!\n\n");
+
+    //cerrar el archivo
+    fclose(archivo);
+
+    return 1;
+}
+int escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioExterno, double tiempoPromedioEspera, double tiempoPromedioEjecucion, const char *nombreArchivo, int *encabezadoEscrito) {
     FILE *archivo;
-    archivo = fopen("procesos.txt", "a");
+
+    archivo = fopen(nombreArchivo, "a");
 
     if (archivo == NULL) {
-        printf("Error al abrir el archivo.\n");
+        printf("Ocurrió un error, el archivo no fue encontrado!\n\n");
+        fclose(archivo);
+        return 0;
+    }
+
+    fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    fprintf(archivo, "ID:       Nombre:          Peso:      Entrada/Salida:  Tiempo de E/S:  Desperdicio Interno:  Desperdicio Externo:  Tiempo Promedio Espera:  Tiempo Promedio Ejecución:\n");
+    fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
+    *encabezadoEscrito = 1;
+
+
+    fprintf(archivo, "%-10d %-18s %-10d %-16s %-16d %-22d %-20d %-23.6lf %-25.6lf\n",
+            nodo->id, nodo->nombre, nodo->peso, nodo->nombreE_S, nodo->tiempoE_S, desperdicioInterno, desperdicioExterno, tiempoPromedioEspera, tiempoPromedioEjecucion);
+    fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
+
+    fclose(archivo);
+    return 1;
+}
+
+
+
+void agregarBloqueRendimientoGeneral(const char *nombreArchivo, int totalProcesosFinalizados, double tiempoTotalEjecucion, double promedioProcesosFinalizados) {
+    FILE *archivo;
+
+    archivo = fopen(nombreArchivo, "a");
+
+    if (archivo == NULL) {
+        printf("Ocurrió un error, el archivo no fue encontrado!\n\n");
+        fclose(archivo);
         return;
     }
 
-    fprintf(archivo, "ID: %d\n", nodo->id);
-    fprintf(archivo, "Nombre: %s\n", nodo->nombre);
-    fprintf(archivo, "Peso: %d\n", nodo->peso);
-    fprintf(archivo, "Iteraciones: %d\n", nodo->nIteraciones);
-    fprintf(archivo, "Ejecución: %s\n", nodo->ejecucion ? "Sí" : "No");
-    fprintf(archivo, "Entrada/Salida: %s\n", nodo->nombreE_S);
-    fprintf(archivo, "Tiempo de E/S: %d\n", nodo->tiempoE_S);
-    fprintf(archivo, "Contexto: %s\n", nodo->contexto ? "Sí" : "No");
-    fprintf(archivo, "Lista PFVT: %d\n", nodo->listaPFVT);
-    fprintf(archivo, "Inicio: %d\n", nodo->inicio);
-    fprintf(archivo, "Finalización: %d\n", nodo->finalizacion);
+    fprintf(archivo, "\nRendimiento general:\n");
+    fprintf(archivo, "------------------------\n");
+    fprintf(archivo, "Total de procesos finalizados: %d\n", totalProcesosFinalizados);
+    fprintf(archivo, "Tiempo total de ejecucion: %.6lf\n", tiempoTotalEjecucion);
+    fprintf(archivo, "Promedio de proceso finalizados por unidad de tiempo: %.6lf\n", promedioProcesosFinalizados);
+    fprintf(archivo, "------------------------\n\n");
 
     fclose(archivo);
 }
-*/
-
-
-/*
-void leerArchivo() {
+void leerArchivoVista(GtkTextBuffer *buffer, const char *prueba) {
     FILE *archivo;
-    NodoProceso nodo;
-    archivo = fopen("procesos.txt", "r");
+    char linea[256];
 
+    // Abrir el archivo en modo lectura
+    archivo = fopen(prueba, "r");
     if (archivo == NULL) {
-        printf("Error al abrir el archivo.\n");
+        g_print("Error al abrir el archivo.\n");
         return;
     }
 
-    while (fscanf(archivo, "ID: %d\n", &nodo.id) != EOF) {
-        fscanf(archivo, "Nombre: %[^\n]\n", nodo.nombre);
-        fscanf(archivo, "Peso: %d\n", &nodo.peso);
-        fscanf(archivo, "Iteraciones: %d\n", &nodo.nIteraciones);
-
-        char ejecucion[5];
-        fscanf(archivo, "Ejecución: %s\n", ejecucion);
-        nodo.ejecucion = (strcmp(ejecucion, "Sí") == 0);
-
-        fscanf(archivo, "Entrada/Salida: %[^\n]\n", nodo.nombreE_S);
-        fscanf(archivo, "Tiempo de E/S: %d\n", &nodo.tiempoE_S);
-
-        char contexto[5];
-        fscanf(archivo, "Contexto: %s\n", contexto);
-        nodo.contexto = (strcmp(contexto, "Sí") == 0);
-
-        fscanf(archivo, "Lista PFVT: %d\n", &nodo.listaPFVT);
-        fscanf(archivo, "Inicio: %d\n", &nodo.inicio);
-        fscanf(archivo, "Finalización: %d\n", &nodo.finalizacion);
-
-        // Aquí puedes hacer lo que quieras con el nodo leído
+    // Leer el archivo línea por línea
+    while (fgets(linea, sizeof(linea), archivo) != NULL) {
+        // Agregar la línea al buffer de texto de GTK
+        gchar *tabulacion = g_strjoin("\t", linea, NULL);
+        gtk_text_buffer_insert_at_cursor(buffer, tabulacion, -1);
+        g_free(tabulacion);
     }
 
+    // Cerrar el archivo
     fclose(archivo);
-}*/
+}
+
+
+
 
 #endif //PROYECTO_2_SO_ARCHIVO_H

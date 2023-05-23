@@ -7,6 +7,7 @@
 #include "MatrizMemoria/Matriz.h"
 #include "Logica/Logica.h"
 #include "ListaLigadas/ListasLigadas.h"
+#include "Interfaz/VistaRendimiento.h"
 struct Bloque matriz[8][8];
 //bandera para la finalizacion de la simulacion
 int banderaFinalizacion = 0;
@@ -122,7 +123,7 @@ int main() {
     printf("\nPromedio de proceso finalizados por unidad de tiempo: %.2f segundos\n", promedio);
 
     printf("\033[1;31m\n--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
-
+    mostrarVentana();
     return 0;
 }
 

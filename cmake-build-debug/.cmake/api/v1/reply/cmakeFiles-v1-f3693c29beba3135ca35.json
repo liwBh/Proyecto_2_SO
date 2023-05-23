@@ -45,6 +45,21 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
+			"path" : "/snap/clion/237/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeFindCodeBlocks.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/237/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeExtraGeneratorDetermineCompilerMacrosAndIncludeDirs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/237/bin/cmake/linux/x64/share/cmake-3.25/Modules/ProcessorCount.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
 			"path" : "/snap/clion/237/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeCInformation.cmake"
 		},
 		{
@@ -81,13 +96,28 @@
 			"isCMake" : true,
 			"isExternal" : true,
 			"path" : "/snap/clion/237/bin/cmake/linux/x64/share/cmake-3.25/Modules/CMakeCommonLanguageInclude.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/237/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPkgConfig.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/237/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageHandleStandardArgs.cmake"
+		},
+		{
+			"isCMake" : true,
+			"isExternal" : true,
+			"path" : "/snap/clion/237/bin/cmake/linux/x64/share/cmake-3.25/Modules/FindPackageMessage.cmake"
 		}
 	],
 	"kind" : "cmakeFiles",
 	"paths" : 
 	{
-		"build" : "/home/liwbh/CLionProjects/Proyecto_2_SO/cmake-build-debug",
-		"source" : "/home/liwbh/CLionProjects/Proyecto_2_SO"
+		"build" : "/home/elmer/Documentos/GitHub/Proyecto_2_SO/cmake-build-debug",
+		"source" : "/home/elmer/Documentos/GitHub/Proyecto_2_SO"
 	},
 	"version" : 
 	{
