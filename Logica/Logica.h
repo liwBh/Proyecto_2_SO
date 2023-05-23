@@ -8,6 +8,8 @@
 #include <ctype.h>
 #include "../Listas/Lista.h"
 #include "../MatrizMemoria/Matriz.h"
+#include "../ListaLigadas/ListasLigadas.h"
+#include "../Socios/Socios.h"
 #include <math.h>
 
 //============================ Administracion de procesos FCFS ============================//
@@ -443,6 +445,23 @@ int reasignacionMemoriaXpolitica(int tipoPolitica, struct Bloque matriz[8][8], N
             //asignarle espacio en memoria en base a mapa de bits, al proceso entrante al contexto de ejecucion
             printf("\033[1;31m\n----------MAPA DE BITS----------\n\n\033[0m");
             asignarEspacioDisponibleMB(matriz,nodoProceso,listaContenedor,listaListos, listaPeticion);
+            break;
+
+        case 3:
+
+            //asignarle espacio en memoria en base a Lista Ligadas, al proceso entrante al contexto de ejecucion
+            printf("\033[1;31m\n----------LISTAS LIGADAS----------\n\033[0m");
+            nodoProceso->numBloques = encontrarCantidadDeBloques(nodoProceso->peso);
+            asignarEspacioDisponibleLL(nodoProceso->id);
+            break;
+
+        case 4:
+
+            //asignarle espacio en memoria en base a Lista Ligadas, al proceso entrante al contexto de ejecucion
+            printf("\033[1;31m\n----------Socios----------\n\033[0m");
+            nodoProceso->numBloques = nuevoEspacio(nodoProceso->peso);
+            asignarEspacioDisponibleS(nodoProceso);
+
             break;
 
         default:

@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include "../Listas/Nodo.h"
 
+/*
 void escribirArchivo(NodoProceso *nodo) {
     FILE *archivo;
     archivo = fopen("procesos.txt", "a");
@@ -30,6 +31,10 @@ void escribirArchivo(NodoProceso *nodo) {
 
     fclose(archivo);
 }
+*/
+
+
+/*
 void leerArchivo() {
     FILE *archivo;
     NodoProceso nodo;
@@ -64,5 +69,6 @@ void leerArchivo() {
     }
 
     fclose(archivo);
-}
+}*/
+
 #endif //PROYECTO_2_SO_ARCHIVO_H
