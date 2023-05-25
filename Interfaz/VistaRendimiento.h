@@ -168,31 +168,31 @@ void on_button_clicked(GtkWidget *widget, gpointer data) {
     // Crear la nueva ventana y agregarla a la lista de ventanas abiertas
     if (widget == botones[0]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("MapaBits.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("ParticionesFijas.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[1]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("ParticionesFijas.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("MapaBits.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[2]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba3.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("PrimerAjuste.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[3]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba4.txt"));
+            nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("PeorAjuste.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[4]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba5.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("MejorAjuste.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[5]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba6.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("SiguienteAjuste.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[6]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("prueba7.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("Socios.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     }
 
@@ -207,12 +207,12 @@ void crearBotones(GtkWidget *grid) {
     char labels[n][20]; // Arreglo de etiquetas para los botones
 
     // Llenar las etiquetas de los botones
-    snprintf(labels[0], sizeof(labels[0]), "Mapa Bits");
-    snprintf(labels[1], sizeof(labels[1]), "Particiones Fijas");
+    snprintf(labels[0], sizeof(labels[0]), "Particiones Fijas");
+    snprintf(labels[1], sizeof(labels[1]), "Mapa Bits");
     snprintf(labels[2], sizeof(labels[2]), "Primer Ajuste");
     snprintf(labels[3], sizeof(labels[3]), "Peor Ajuste");
     snprintf(labels[4], sizeof(labels[4]), "Mejor Ajuste");
-    snprintf(labels[5], sizeof(labels[5]), "Ajuste Rapido");
+    snprintf(labels[5], sizeof(labels[5]), "Siguiente Ajuste");
     snprintf(labels[6], sizeof(labels[6]), "Socios");
 
     for (int i = 0; i < n; i++) {
@@ -235,7 +235,7 @@ void on_window_destroy(GtkWidget *widget, gpointer data) {
 }
 void* mostrarVentana() {
     // Inicializar GTK
-    g_setenv("GTK_DEBUG", "interactive", 1);
+//    g_setenv("GTK_DEBUG", "interactive", 1);
     gtk_init(NULL, NULL);
 
 

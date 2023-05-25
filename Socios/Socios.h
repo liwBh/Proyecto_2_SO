@@ -195,8 +195,7 @@ void asignarEspacioDisponibleS(NodoProceso *nodoProceso) {
                 *******************************************/
                 imprimirEstadoMemoria();
                 printf("Asignandole Memoria al Proceso %d (%d KB)...\n", nodoProceso->id, nodoProceso->peso);
-                //sleep(1);
-                //system("clear");
+
                 // Aquí asignamos los Procesos:
                 memoria.particiones[i].libre = FALSE; // Indicamos que la Partición está Ocupada
                 NodoProceso *clon = clonarNodo(nodoProceso);
@@ -214,11 +213,9 @@ void asignarEspacioDisponibleS(NodoProceso *nodoProceso) {
                     verificar si ya cabe el Proceso en Memoria.
                 ******************************************************/
                 // Puramente Estético:
-                system("clear");
                 imprimirEstadoMemoria();
                 printf("Dividiendo la Partición %d (%d KB).\n", memoria.particiones[i].id, memoria.particiones[i].tamano);
                 sleep(1);
-                system("clear");
                 imprimirEstadoMemoria();
                 // Aquí Dividimos:
                 Particion aux;							   // Partición Auxiliar
@@ -314,7 +311,6 @@ void liberarMemoriaSocios(int processID) {
                     memoria.particiones[i].libre = TRUE;  // Liberamos la Memoria
                     deleted = TRUE;						  // Indicamos que se Liberó
                     // Estético:
-                    system("clear");
                     imprimirEstadoMemoria();
                     printf("Memoria Liberada...\n");
                     break;
@@ -339,7 +335,6 @@ void liberarMemoriaSocios(int processID) {
                 Si la memoria está vacía, se reinician
                 todas las variables de la Memoria
             **********************************************/
-            system("clear");     // Limpiamos Pantalla de la Consola
             iniciarMemoria();        // Reiniciamos las Particiones de la Memoria
             imprimirEstadoMemoria(); // Imprimimos el Estado de la Memoria
             printf("Toda la Memoria ha sido Liberada...\n");
@@ -401,273 +396,3 @@ int calcularDesperdicioInternoTotalSocios(ListaProcesos *listaContenedor){
 
 
 #endif //PROYECTO_2_SO_SOCIOS_H
-
-//// INCLUDE / DEFINE:
-//#include <semaphore.h>   /* Para uso de Semáforos     */
-//#include <pthread.h>     /* Para uso de los Hilos     */
-//#include <stdlib.h>      /* Para uso de Rand y Srand  */
-//#include <time.h>		 /* Para uso con Srand y Rand */
-//#include <signal.h>      /* Funcion que lee CTRL+Z    */
-//#include <unistd.h>      /* Para uso de Sleep         */
-//#include <stdio.h>       /* Para Entrada / Salida     */
-//#include "Listas/Lista.h"
-//#include "Logica/Logica.h"
-//#include "Socios/Socios.h"
-//
-//
-////lista programas para ser atendidos
-//ListaProcesos *listaPeticion;
-////lista programas contenedor
-//ListaProcesos *listaContenedor;
-////Lista socio
-//ListaSocio  *listaSocio;
-////numero de procesos
-//int nProcesos = 0;
-//bool iniciarSocio = false;
-////bandera para la finalizacion de la simulacion
-//int banderaFinalizacion = 0;
-//int tipoPolitica = 7;
-//
-//
-//
-//// FUNCIONES A UTILIZAR:
-////void freeMemory(int processID);		/* Liberar la Memoria Usada por un Proceso        */
-////int newSpace(int processSize);		/* Determina la Potencia de 2 más cercana         */
-////void allocMemory(Process *p);		/* Le Asigna Memoria a un Proceso específico      */
-////void sigint_handler(int sig);       /* Se ejecuta al presionar las teclas CTRL+C      */
-////void delPartition(int pos);			/* Elimina una Partición de la Memoria            */
-////void socios(Memory *main);			/* Función que se Ejecuta en el Main              */
-////void printMemoryStatus();			/* Imprime el Estado de la Memoria en Pantalla    */
-////void initMemory();					/* Inicializa la Partición Inicial de Memoria     */
-////int memoryEmpty();					/* Verifica si Todas las Particiones están Libres */
-////void sysPause();                    /* Se encarga de Simular una Pausa en el Programa */
-//
-//
-//void crearListas();
-//void llenarListaProcesosEsperando();
-//void llenarMemoriaInicio();
-//
-//
-//// HILOS:
-//sem_t mutex;				  /* Administrador de los Hilos en Sistemas Socios     */
-//void *startSocios(void *arg); /* Función que se va a Encargar de manejar los Hilos */
-//
-//void *startSocios(void *arg) {
-//    /***********************************************
-//        Esta función es la que se encarga de la
-//        Funcionalidad de cada uno de los Hilos.
-//
-//        Empezamos asigandole Memoria a un Proceso,
-//        y aumentamos la Variable 'needSpace' que
-//        utilizamos para simular que un Proceso ya
-//        Termino y/o que necesita Espacio.
-//
-//        Cuando 'needSpace' sea divisible entre 2
-//        se va a Liberar la Memoria de un Proceso.
-//    ************************************************/
-//    // Recibimos la ID del Proceso:
-//    int ID = *(int *)arg;
-//
-//    // Bloqueamos el Semáforo:
-//    sem_wait(&mutex);
-//
-//    // Asignamos Memoria al Proceso:
-//    // allocMemory(&list[ID]);
-//    sysPause();
-//
-//    // Liberamos la Memoria del Proceso:
-//    if (needSpace % 2 == 0 || needSpace == TRUE) {
-//        liberarMemoria(ID + 1);
-//        sysPause();
-//    }
-//
-//    // Incrementamos needSpace:
-//    needSpace++;
-//
-//
-//
-//    // Liberamos el Semáforo:
-//    sem_post(&mutex);
-//
-//    // Indicamos que ya terminó el Hilo:
-//    pthread_exit(NULL);
-//}
-//int main() {
-//
-//    printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
-//
-//    printf("\nTamaño de memoria = 256kb\n");
-//    printf("Tamaño del bloque = 4kb\n");
-//
-//    //creando las listas del emulador
-//    crearListas();
-//
-//    //creando los procesos del emulador
-//    llenarListaProcesosEsperando();
-//
-//    //llenar lista de contenedor -> en base a la capacidad de la memoria
-//    printf("\033[1;33m\nLlenando memoria aplicando politica de Socios tamaños\n\033[0m");
-//    llenarMemoriaInicio();
-//
-//    printf("\033[0;32m\nProcesos agregados en la lista de listos\n\033[0m");
-//    mostrarListaProcesos(listaPeticion);
-//
-//    printf("\033[1;32m\nProcesos agregados en la lista de contexto de ejecucion\n\033[0m");
-//    mostrarListaProcesos(listaContenedor);
-//
-//
-//    if(tipoPolitica == 7 && iniciarSocio == false){
-//
-//        // Creamos e Inicializamos la Memoria:
-//        iniciarMemoria();
-//        imprimirEstadoMemoria();
-//
-//        iniciarSocio = true;
-//    }
-//
-//    //lista procesos en contexto
-//    NodoProceso *aux = listaContenedor->primero;
-//    while (aux != NULL) {
-//
-//        // Asignamos Memoria al Proceso:
-//        asignarMemoria( aux );
-//        validarLlenado();
-//        srand(time(NULL));
-//        int processID = rand() % 10 + 1;
-//        printf("\n\n==============================Liberar=====================: %d\n\n", processID);
-//        liberarMemoria(processID);
-//
-//        //sysPause();
-//
-//        // Liberamos la Memoria del Proceso:
-////        if (needSpace % 2 == 0 || needSpace == TRUE) {
-////            freeMemory(aux->id);
-////            sysPause();
-////        }
-//
-//
-//        // Incrementamos needSpace:
-//        // needSpace++;
-//
-//
-//        aux = aux->siguiente;
-//    }
-//
-//
-//    exit(0);
-//
-////    // Limpiamos Pantalla:
-////    system("clear");
-////
-////    // Creamos e Inicializamos la Memoria:
-////    initMemory();
-////    printMemoryStatus();
-////
-////    // Creamos los Hilos y el Semáforo:
-////    pthread_t hilos[NUM_PROCESS];
-////    sem_init(&mutex, 0, 1);
-////
-////    /*************************************************************
-////        Esto permite terminar el Programa en Cualquier Momento
-////        con solo presionar la combinación de Teclas Ctrl + C:
-////    *************************************************************/
-////
-////    // Registra el manejador de señal para SIGINT
-////    signal(SIGINT, sigint_handler);
-////    printf("Presiona Ctrl-C para Terminar el Programa en Cualquier Momento.\n");
-////    sysPause();
-////
-////    while(1) {
-////        // Creamos los Procesos:
-////        int powers[9] = {2, 3, 5, 7, 28, 64, 128, 14, 9};
-////        srand(time(NULL));
-////        for (int i = 0; i < NUM_PROCESS; i++) {
-////            int size = rand() % 9;
-////            list[i].size = powers[size];
-////            list[i].id = i + 1;
-////        }
-////
-////        // Iniciamos los Hilos:
-////        for (int i = 0; i < NUM_PROCESS; i++) {
-////            pthread_create(&hilos[i], NULL, startSocios, &i);
-////            pthread_join(hilos[i], NULL);
-////        }
-////    }
-//
-//    // Destruimos el Semáforo:
-//    sem_destroy(&mutex);
-//    return 0;
-//}
-//
-//
-//
-//void crearListas(){
-//    //Listas del emulador
-//    listaContenedor = crearListaProcesos();
-//    listaPeticion = crearListaProcesos();
-//
-//    listaSocio = crearListaSocio();
-//
-//}
-//
-//void llenarListaProcesosEsperando(){
-//
-//    printf("\033[33m\n---------Creando procesos ---------\n\033[0m");
-//
-//
-//    srand(time(NULL));
-//    nProcesos = rand() % (30 - 25 + 1) + 25;
-//
-//    //inicializar array de procesos
-//    //se retorna un puntero a la primer pos del vector de procesos
-//
-//    for (int i = 0; i < nProcesos; ++i) {
-//        char str[10];
-//        char nombre[10] = "P-";
-//        int peso = rand() % 30 + 1 ;
-//        int iteraciones = rand() % 5 + 2;
-//        int indice_aleatorio = rand() % 3;
-//        int tiempo = (rand() % 3) + 1;
-//        char *dispositivos[] = {"mouse", "teclado", "pantalla"};
-//
-//        sprintf(str, "%d",i);
-//        strcat(nombre,  str);
-//
-//        //crear peticion de proceso
-//        NodoProceso *nodo = crearNodoProceso(i,nombre,peso,iteraciones,dispositivos[indice_aleatorio],tiempo);
-//        nodo->sumTiempoES = (0.000010 * tiempo);
-//        //insertar la peticion del proceso en la lista
-//        insertar(listaPeticion,nodo);
-//
-//    }
-//
-//    //imprimiendo lista de procesos
-//    mostrarListaProcesos(listaPeticion);
-//}
-//
-//void llenarMemoriaInicio(){
-//    //iniciaria con particion fija de varios tamaños
-//    int detener = 0;
-//
-//    int contador = 0;
-//
-//    while( detener == 0) {
-//
-//        //reasignacion de memoria, en base a la politica actual
-//        banderaFinalizacion = reasignacionMemoriaXpolitica(tipoPolitica, listaPeticion->primero, listaContenedor, listaPeticion);
-//
-//        //agregar un proceso nuevo a contexto de ejecucion
-//        entrarContextoEjecucion(listaPeticion,listaContenedor);
-//        fflush(stdout);
-//
-//
-//        contador++;
-//
-//
-//        if( listaPeticion->primero == NULL) {
-//            detener = 1;
-//        }
-//
-//    }
-//
-//}

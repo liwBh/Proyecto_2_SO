@@ -21,6 +21,7 @@ bool LLINICIADO = false;
 bool iniciarSocio = false;
 //numero de procesos
 int nProcesos = 0;
+int encabezadoEscrito = 0;
 //variables para evaluar desperdicio interno de cada proceso
 int desperdicioInternoTotal = 0;
 //variable para evaluar desperdicio externo dentro del algoritmo de planificacion
@@ -30,6 +31,10 @@ int desperdicioExterno= 0;
 float promedio = 0.0;
 time_t inicioPrograma;
 int procesosFinalizados =0;
+
+//variables de tiempo para cada politica
+time_t inicioPolitica;
+time_t finPolitica;
 
 //hilos
 pthread_t planificador;
@@ -47,6 +52,7 @@ ListaProcesos *listaEspera;
 ListaProcesos *listaListos;
 
 void crearListas();
+void crearArchivosTxt( );
 void llenarListaProcesosEsperando();
 void llenarMemoriaInicio();
 void *administrarProcesos(void *args);
@@ -64,6 +70,14 @@ int main() {
 
     //creando las listas del emulador
     crearListas();
+
+    //Creando txt
+    crearArchivosTxt();
+
+//    time_t fin2 = time(NULL); // Obtener el tiempo actual
+//    double tiempo_transcurrido = difftime(fin2, inicioPrograma); // Calcular el tiempo transcurrido en segundos
+//    promedio = ((promedio * (procesosFinalizados - 1)) + tiempo_transcurrido) / procesosFinalizados; // Calcular el nuevo promedio
+//    agregarBloqueRendimientoGeneral("../Archivos/ParticionesFijas.txt",procesosFinalizados,tiempo_transcurrido,promedio);
 
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
@@ -135,6 +149,27 @@ void crearListas(){
     //FCFS
     listaEspera = crearListaProcesos();
     listaListos = crearListaProcesos();
+}
+
+void crearArchivosTxt( ) {
+    const char *nombres[] = {
+            "ParticionesFijas",
+            "MapaBits",
+            "PrimerAjuste",
+            "PeorAjuste",
+            "MejorAjuste",
+            "SiguienteAjuste",
+            "Socios"
+    };
+
+    int cantidad_archivos = sizeof(nombres) / sizeof(nombres[0]);
+
+    for (int i = 0; i < cantidad_archivos; i++) {
+        char ruta[100];
+        snprintf(ruta, sizeof(ruta), "../Archivos/%s.txt", nombres[i]);
+
+        crearArchivo(ruta);
+    }
 }
 
 void llenarListaProcesosEsperando(){
@@ -357,11 +392,51 @@ void *administrarProcesos(void *args){
             //realizar cambio de politica
             printf("\033[1;31m\n====================={ Aplicar cambio de politica }=====================\n\033[0m");
 
+
+//================================ Escribir en txt segun la politica actual ================================
+            switch (tipoPolitica) {
+                case 1://particiones fijas
+                    escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/ParticionesFijas.txt",&encabezadoEscrito);
+
+                    break;
+                case 2://mapa de bits
+                    escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/MapaBits.txt",&encabezadoEscrito);
+
+                    break;
+                case 3://listas ligadas
+                    if( ajusteListaLigada == 1){//peor ajuste
+                        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/PeorAjuste.txt",&encabezadoEscrito);
+
+                    }else if( ajusteListaLigada == 2 ){//primer ajuste
+                        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/PrimerAjuste.txt",&encabezadoEscrito);
+
+                    }else if( ajusteListaLigada == 3 ){//siguente ajuste
+                        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/SiguienteAjuste.txt",&encabezadoEscrito);
+
+                    }else if( ajusteListaLigada == 4 ){//mejor ajuste
+                        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/MejorAjuste.txt",&encabezadoEscrito);
+
+                    }
+
+                    break;
+                //case 4://socios
+                    //escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/Socios.txt",&encabezadoEscrito);
+
+                    //break;
+
+
+                default:
+                    break;
+            }
+
+//================================ Escribir en txt segun la politica actual ================================
+
             if( tipoPolitica != 3){
                 tipoPolitica++;
             }
 
-            if( tipoPolitica == 3){
+            if( tipoPolitica == 3 && LLINICIADO == true){
+
                 ajusteListaLigada++;
 
                 if(ajusteListaLigada > 4){
@@ -371,7 +446,7 @@ void *administrarProcesos(void *args){
         }
 
 
-//======================================== Listas Ligadas ================================
+//======================================== Iniciar politica Listas Ligadas ================================
         //Aplicar politica Lista Ligadas
         if(tipoPolitica == 3 && LLINICIADO == false){
             // Inicializar la lista ligada con un hueco que representa toda la memoria disponible
@@ -386,9 +461,8 @@ void *administrarProcesos(void *args){
             //liberar de memoria un proceso
             liberarSegmento(nodoProceso->id);
         }
-//======================================================================================
 
-//================================== Socios ============================================
+//================================== Iniciar politica  Socios ============================================
         //Aplicar politica socios
         if(tipoPolitica == 4 && iniciarSocio == false){
             iniciarSocios(listaContenedor);
@@ -448,6 +522,9 @@ void *administrarProcesos(void *args){
     if( listaPeticion->primero == NULL || listaListos->primero == NULL){
         //indicar que la simulacion ha terminado
         banderaFinalizacion = 1;
+
+        //escribir el redimiento de la politica de socios
+        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/Socios.txt",&encabezadoEscrito);
     }
 
     return NULL;

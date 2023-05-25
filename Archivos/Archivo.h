@@ -33,7 +33,9 @@ int crearArchivo(char* ruta){
 
     return 1;
 }
-int escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioExterno, double tiempoPromedioEspera, double tiempoPromedioEjecucion, const char *nombreArchivo, int *encabezadoEscrito) {
+
+
+int escribirArchivo(ListaProcesos *listaContenedor, int desperdicioInterno, int desperdicioExterno, const char *nombreArchivo, int *encabezadoEscrito) {
     FILE *archivo;
 
     archivo = fopen(nombreArchivo, "a");
@@ -44,19 +46,32 @@ int escribirArchivo(NodoProceso *nodo, int desperdicioInterno, int desperdicioEx
         return 0;
     }
 
+    //se escribe el encabezado del archivo
     fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
     fprintf(archivo, "ID:       Nombre:          Peso:      Entrada/Salida:  Tiempo de E/S:  Desperdicio Interno:  Desperdicio Externo:  Tiempo Promedio Espera:  Tiempo Promedio Ejecución:\n");
     fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
     *encabezadoEscrito = 1;
 
+    //se recorre la lista de procesos en ejecucion y se registra
+    NodoProceso *nodo = listaContenedor->primero;
+    while( nodo != NULL ){
 
-    fprintf(archivo, "%-10d %-18s %-10d %-16s %-16d %-22d %-20d %-23.6lf %-25.6lf\n",
-            nodo->id, nodo->nombre, nodo->peso, nodo->nombreE_S, nodo->tiempoE_S, desperdicioInterno, desperdicioExterno, tiempoPromedioEspera, tiempoPromedioEjecucion);
-    fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
+        double tiempoPromedioEjecucion = nodo->sumTiempoEj / nodo->nEjecucion;
+        double tiempoPromedioEspera = nodo->nEspera!=0 ? nodo->sumTiempoES / nodo->nEspera : 0;
+
+        fprintf(archivo, "%-10d %-18s %-10d %-16s %-16d %-22d %-20d %-23.6lf %-25.6lf\n",
+                nodo->id, nodo->nombre, nodo->peso, nodo->nombreE_S, nodo->tiempoE_S, desperdicioInterno, desperdicioExterno, tiempoPromedioEspera, tiempoPromedioEjecucion);
+        fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
+
+
+        nodo = nodo->siguiente;
+    }
+
 
     fclose(archivo);
     return 1;
 }
+
 
 
 

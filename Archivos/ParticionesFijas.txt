@@ -1,72 +1,22 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ID:       Nombre:          Peso:      Entrada/Salida:  Tiempo de E/S:  Desperdicio Interno:  Desperdicio Externo:  Tiempo Promedio Espera:  Tiempo Promedio Ejecución:
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 0
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
+0          P-0                28         teclado          2                23                     120                  0.000000                -nan                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+1          P-1                30         mouse            1                23                     120                  0.000000                -nan                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 1
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
+2          P-2                3          pantalla         2                23                     120                  0.000000                -nan                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+7          P-7                28         teclado          1                23                     120                  0.000000                -nan                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 2
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
+8          P-8                2          pantalla         1                23                     120                  0.000000                -nan                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 3
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
-
-
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 4
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
-
-
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 5
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
-
-
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 6
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
-
-
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 7
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
-
-
-Rendimiento general:
-------------------------
-Total de procesos finalizados: 8
-Tiempo total de ejecucion: 0.000000
-Promedio de proceso finalizados por unidad de tiempo: inf
-------------------------
+9          P-9                22         teclado          1                23                     120                  0.000000                -nan                     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
