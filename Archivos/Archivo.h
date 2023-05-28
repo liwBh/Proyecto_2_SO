@@ -10,17 +10,42 @@
 #include <glib.h>
 #include "../Logica/Logica.h"
 
+char *obtenerRutaRelativa(char* ruta) {
+    char *currentDir = g_get_current_dir(); //ruta del proyecto
+    char newFilePath[200]; //variable para depurar la ruta del proyecto
+    memset(newFilePath, '\0', sizeof(newFilePath));
+    char *subStr = "/cmake-build-debug"; //cadena a eliminar
+    char *pos = strstr(currentDir, subStr);
+
+    //manejo de errores al depurar la cadena de la ruta
+    if (pos != NULL) {
+        strncpy(newFilePath, currentDir, pos - currentDir);
+        newFilePath[pos - currentDir] = '\0';
+        strcat(newFilePath, pos + strlen(subStr));
+    } else {
+        strcpy(newFilePath, currentDir);
+    }
+
+    //armando la ruta absoluta
+    char *rutaAbsoluta = malloc(strlen(newFilePath) + strlen("/Archivos/") + strlen(ruta) + 1);
+    strcpy(rutaAbsoluta, newFilePath);
+    strcat(rutaAbsoluta, "/Archivos/");
+    strcat(rutaAbsoluta, ruta);
+
+
+    return rutaAbsoluta;
+}
+
 int crearArchivo(char* ruta){
     //"playbin uri=file:////home/liwbh/CLionProjects/Proyecto-01-SO/Sonidos/victoria.wav"
     // usando el modo w crea el archivo, si ya hay uno con ese nombre lo sobre escribe "../Archivos/log.txt"
-    FILE *archivo = fopen(ruta, "w");
+
+
+    FILE *archivo = fopen(obtenerRutaRelativa(ruta), "w");
 
     if(archivo == NULL){
         //mensaje de error
         printf("Ocurrio un error, el archivo no fue creado con exito!\n\n");
-
-        //cerrar el archivo
-        fclose(archivo);
 
         //detener el metodo
         return 0;
@@ -36,14 +61,13 @@ int crearArchivo(char* ruta){
 }
 
 
-int escribirArchivo(ListaProcesos *listaListos, ListaProcesos *listaEspera,  int tipoPolitica, const char *nombreArchivo, int *encabezadoEscrito) {
+int escribirArchivo(ListaProcesos *listaListos, ListaProcesos *listaEspera,  int tipoPolitica,char *nombreArchivo, int *encabezadoEscrito) {
     FILE *archivo;
 
-    archivo = fopen(nombreArchivo, "a");
+    archivo = fopen(obtenerRutaRelativa(nombreArchivo), "a");
 
     if (archivo == NULL) {
         printf("Ocurrió un error, el archivo no fue encontrado!\n\n");
-        fclose(archivo);
         return 0;
     }
 
@@ -96,14 +120,13 @@ int escribirArchivo(ListaProcesos *listaListos, ListaProcesos *listaEspera,  int
 
 
 
-void agregarBloqueRendimientoGeneral(const char *nombreArchivo,double desperdicioExterno, int totalProcesosFinalizados, double tiempoTotalEjecucion, int procesosEjecucion) {
+void agregarBloqueRendimientoGeneral(char *nombreArchivo,double desperdicioExterno, int totalProcesosFinalizados, double tiempoTotalEjecucion, int procesosEjecucion) {
     FILE *archivo;
 
-    archivo = fopen(nombreArchivo, "a");
+    archivo = fopen(obtenerRutaRelativa(nombreArchivo), "a");
 
     if (archivo == NULL) {
         printf("Ocurrió un error, el archivo no fue encontrado!\n\n");
-        fclose(archivo);
         return;
     }
 
@@ -122,12 +145,12 @@ void agregarBloqueRendimientoGeneral(const char *nombreArchivo,double desperdici
 
     fclose(archivo);
 }
-void leerArchivoVista(GtkTextBuffer *buffer, const char *prueba) {
+void leerArchivoVista(GtkTextBuffer *buffer,char *prueba) {
     FILE *archivo;
     char linea[256];
 
     // Abrir el archivo en modo lectura
-    archivo = fopen(prueba, "r");
+    archivo = fopen(obtenerRutaRelativa(prueba), "r");
     if (archivo == NULL) {
         g_print("Error al abrir el archivo.\n");
         return;
@@ -144,8 +167,5 @@ void leerArchivoVista(GtkTextBuffer *buffer, const char *prueba) {
     // Cerrar el archivo
     fclose(archivo);
 }
-
-
-
 
 #endif //PROYECTO_2_SO_ARCHIVO_H

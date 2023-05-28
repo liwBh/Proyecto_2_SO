@@ -17,22 +17,6 @@ void insertarUnProceso(ListaProcesos *lista, NodoProceso *nodo){
     insertar(lista, nodo);
 }
 
-//Pasa un proceso de la lista de espera a la lista que ya fueron atendidos en memoria
-//void pasarProcesoContenedor(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor){
-//    if(!listaVacia(listaPeticion)){
-//        //Crea un nodo con el primero de la lista de espera
-//        NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
-//
-//        //Inserta el nodo en la lista contenedor
-//        insertarUnProceso(listaContenedor,almacenarProceso);
-//        //Elimina el nodo de la lista de espera
-//        eliminarNodo(listaPeticion,almacenarProceso->id);
-//    }else{
-//        printf("\033[1;31mYa no hay mas procesos\033[0m");
-//
-//    }
-//}
-
 //Metodo para liberar memoria de la matriz segun las posiciones en que se ubica el proceso, con la lista de posiciones
 void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
     NodoPosicion *aux = nodo->listaPosicion->primero;
@@ -218,6 +202,8 @@ void asignarEspacioMemoria(struct Bloque matriz[8][8], NodoProceso *nodo){
 }
 
 void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaContenedor){
+    printf("\033[0;31m%s\033[0m", "\n\nDesfragmentando la memoria \n\033[0m");
+
     //limpiar posicion en matriz
     for (int i = 0; i < 8; ++i) {
         for (int j = 0; j < 8; ++j) {
@@ -225,6 +211,7 @@ void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaConten
             matriz[i][j].idProceso = 0;
         }
     }
+    mostrarMatriz(matriz);
 
     //recorrer lista
     NodoProceso *aux = listaContenedor->primero;
@@ -232,7 +219,7 @@ void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaConten
         //resetea la lista de posiciones de cada proceso
         aux->listaPosicion = crearListaPosicion();
         //determinar el numero de bloques
-        int nBloques = (aux->peso / 4);
+        int nBloques = aux->numBloques;
         printf("\033[38;5;214m\nMoviendo el numero de bloques: %d del proceso: %d\033[0m", nBloques, aux->id);
 
         //colocar el numero de posciones desde la ultima posicion
@@ -257,9 +244,9 @@ void desfragmentarMemoria(struct Bloque matriz[8][8], ListaProcesos *listaConten
         aux = aux->siguiente;
     }
 
-    printf("\033[0;32m%s\033[0m", "\n\nLa memoria terminó de ser desfragmentada\n");
+    printf("\033[0;32m%s\033[0m", "\n\nLa memoria terminó de ser desfragmentada\n\033[0m");
 
-    // mostrarMatriz(matriz);
+    mostrarMatriz(matriz);
 }
 
 //metodo que llena la lista de posiciones en memoria de un nodo, si estan contiguos -> solo politica PFVT
@@ -456,7 +443,7 @@ int reasignacionMemoriaXpolitica(int tipoPolitica, struct Bloque matriz[8][8], N
 
         case 4:
 
-            //asignarle espacio en memoria en base a Lista Ligadas, al proceso entrante al contexto de ejecucion
+            //asignarle espacio en memoria en base a socios, al proceso entrante al contexto de ejecucion
             printf("\033[1;31m\n----------Socios----------\n\033[0m");
             nodoProceso->numBloques = nuevoEspacio(nodoProceso->peso);
             asignarEspacioDisponibleS(nodoProceso);

@@ -9,39 +9,15 @@
 #include "../Archivos/Archivo.h"
 #include "../Sonidos//Sonido.h"
 #define MAX_VENTANAS 10
+
 GtkWidget* ventanas_abiertas[MAX_VENTANAS];
+
 int num_ventanas_abiertas = 0;
 
-
 GtkWidget *botones[7];
-;
 
 GtkWidget* ventana_principal = NULL;
-char *obtenerRutaRelativa(char* ruta) {
-    char *currentDir = g_get_current_dir(); //ruta del proyecto
-    char newFilePath[200]; //variable para depurar la ruta del proyecto
-    memset(newFilePath, '\0', sizeof(newFilePath));
-    char *subStr = "/cmake-build-debug"; //cadena a eliminar
-    char *pos = strstr(currentDir, subStr);
 
-    //manejo de errores al depurar la cadena de la ruta
-    if (pos != NULL) {
-        strncpy(newFilePath, currentDir, pos - currentDir);
-        newFilePath[pos - currentDir] = '\0';
-        strcat(newFilePath, pos + strlen(subStr));
-    } else {
-        strcpy(newFilePath, currentDir);
-    }
-
-    //armando la ruta absoluta
-    char *rutaAbsoluta = malloc(strlen(newFilePath) + strlen("/Archivos/") + strlen(ruta) + 1);
-    strcpy(rutaAbsoluta, newFilePath);
-    strcat(rutaAbsoluta, "/Archivos/");
-    strcat(rutaAbsoluta, ruta);
-
-
-    return rutaAbsoluta;
-}
 
 void cerrarVentanas() {
     for (int i = 0; i < num_ventanas_abiertas; i++) {
@@ -168,33 +144,33 @@ void on_button_clicked(GtkWidget *widget, gpointer data) {
     // Crear la nueva ventana y agregarla a la lista de ventanas abiertas
     if (widget == botones[0]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("ParticionesFijas.txt"));
+        nueva_ventana = crearVentana(widget, data, "ParticionesFijas.txt");
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[1]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("MapaBits.txt"));
+        nueva_ventana = crearVentana(widget, data, "MapaBits.txt");
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[2]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("PeorAjuste.txt"));
+        nueva_ventana = crearVentana(widget, data, "PeorAjuste.txt");
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[3]) {
 
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("PrimerAjuste.txt"));
+        nueva_ventana = crearVentana(widget, data, "PrimerAjuste.txt");
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[4]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("SiguienteAjuste.txt"));
+        nueva_ventana = crearVentana(widget, data, "SiguienteAjuste.txt");
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[5]) {
 
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("MejorAjuste.txt"));
+        nueva_ventana = crearVentana(widget, data, "MejorAjuste.txt");
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[6]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("Socios.txt"));
+        nueva_ventana = crearVentana(widget, data, "Socios.txt");
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     }
 

@@ -61,6 +61,7 @@ void *iniciarPlanificador(void *args);
 
 
 int main() {
+
     //se toma el tiempo de inicio del programa
     inicioPrograma = time(NULL);
     printf("\033[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------\033[0m\n");
@@ -74,7 +75,6 @@ int main() {
 
     //Creando txt
     crearArchivosTxt();
-
 
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
@@ -136,6 +136,8 @@ int main() {
     printf( "\nPromedio de procesos finalizados por unidad de tiempo = %d procesos / %f segundos = %f procesos por segundos\n",procesosFinalizados,tiempo_transcurrido, promedio);
 
     printf("\033[1;31m\n--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
+
+
     mostrarVentana();
     return 0;
 }
@@ -165,7 +167,7 @@ void crearArchivosTxt( ) {
 
     for (int i = 0; i < cantidad_archivos; i++) {
         char ruta[100];
-        snprintf(ruta, sizeof(ruta), "../Archivos/%s.txt", nombres[i]);
+        snprintf(ruta, sizeof(ruta), "%s.txt", nombres[i]);
 
         crearArchivo(ruta);
     }
@@ -393,42 +395,42 @@ void *administrarProcesos(void *args){
                 case 1://particiones fijas
                     finPolitica = time(NULL);
                     tiempoTrascurridoPolitica = difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
-                    escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/ParticionesFijas.txt",&encabezadoEscrito);
-                    agregarBloqueRendimientoGeneral("../Archivos/ParticionesFijas.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                    escribirArchivo(listaListos,listaEspera,tipoPolitica,"ParticionesFijas.txt",&encabezadoEscrito);
+                    agregarBloqueRendimientoGeneral("ParticionesFijas.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
 
                     inicioPolitica = time(NULL);//inicio tiempo politica actual
                     break;
                 case 2://mapa de bits
                     finPolitica = time(NULL);
                     tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
-                    escribirArchivo(listaListos,listaEspera,tipoPolitica, "../Archivos/MapaBits.txt",&encabezadoEscrito);
-                    agregarBloqueRendimientoGeneral("../Archivos/MapaBits.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                    escribirArchivo(listaListos,listaEspera,tipoPolitica, "MapaBits.txt",&encabezadoEscrito);
+                    agregarBloqueRendimientoGeneral("MapaBits.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
                     inicioPolitica = time(NULL);//inicio tiempo politica actual
                     break;
                 case 3://listas ligadas
                     if( ajusteListaLigada == 1){//peor ajuste
                         finPolitica = time(NULL);
                         tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
-                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/PeorAjuste.txt",&encabezadoEscrito);
-                        agregarBloqueRendimientoGeneral("../Archivos/PeorAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"PeorAjuste.txt",&encabezadoEscrito);
+                        agregarBloqueRendimientoGeneral("PeorAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
                         inicioPolitica = time(NULL);//inicio tiempo politica actual
                     }else if( ajusteListaLigada == 2 ){//primer ajuste
                         finPolitica = time(NULL);
                         tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundoa
-                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/PrimerAjuste.txt",&encabezadoEscrito);
-                        agregarBloqueRendimientoGeneral("../Archivos/PrimerAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"PrimerAjuste.txt",&encabezadoEscrito);
+                        agregarBloqueRendimientoGeneral("PrimerAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
                         inicioPolitica = time(NULL);//inicio tiempo politica actual
                     }else if( ajusteListaLigada == 3 ){//siguente ajuste
                         finPolitica = time(NULL);
                         tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
-                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/SiguienteAjuste.txt",&encabezadoEscrito);
-                        agregarBloqueRendimientoGeneral("../Archivos/SiguienteAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"SiguienteAjuste.txt",&encabezadoEscrito);
+                        agregarBloqueRendimientoGeneral("SiguienteAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
                         inicioPolitica = time(NULL);//inicio tiempo politica actual
                     }else if( ajusteListaLigada == 4 ){//mejor ajuste
                         finPolitica = time(NULL);
                         tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundo
-                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/MejorAjuste.txt",&encabezadoEscrito);
-                        agregarBloqueRendimientoGeneral("../Archivos/MejorAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"MejorAjuste.txt",&encabezadoEscrito);
+                        agregarBloqueRendimientoGeneral("MejorAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
                         inicioPolitica = time(NULL);//inicio tiempo politica actual
                     }
 
@@ -440,6 +442,9 @@ void *administrarProcesos(void *args){
             }
 
 //================================ Escribir en txt segun la politica actual ================================
+            if(tipoPolitica < 3){// aplicar de forma forzada desgragmentacion
+                desfragmentarMemoria(matriz, listaContenedor);
+            }
 
             if( tipoPolitica != 3){
                 tipoPolitica++;
@@ -450,8 +455,8 @@ void *administrarProcesos(void *args){
                     //escribir el redimiento de la politica de socios
                     finPolitica = time(NULL);
                     tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
-                    escribirArchivo(listaListos,listaEspera, tipoPolitica,"../Archivos/Socios.txt",&encabezadoEscrito);
-                    agregarBloqueRendimientoGeneral("../Archivos/Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                    escribirArchivo(listaListos,listaEspera, tipoPolitica,"Socios.txt",&encabezadoEscrito);
+                    agregarBloqueRendimientoGeneral("Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
 
 
                     return  NULL;
@@ -558,8 +563,8 @@ void *administrarProcesos(void *args){
         //escribir el redimiento de la politica de socios
         finPolitica = time(NULL);
         tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
-        escribirArchivo(listaListos,listaEspera, tipoPolitica,"../Archivos/Socios.txt",&encabezadoEscrito);
-        agregarBloqueRendimientoGeneral("../Archivos/Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+        escribirArchivo(listaListos,listaEspera, tipoPolitica,"Socios.txt",&encabezadoEscrito);
+        agregarBloqueRendimientoGeneral("Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
 
     }
 

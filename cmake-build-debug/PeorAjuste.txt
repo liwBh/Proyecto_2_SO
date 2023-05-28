@@ -1,0 +1,10 @@
+
+Rendimiento general:
+------------------------
+Desperdicio Externo Total: 168.000000
+Total de procesos finalizados: 21
+Total de procesos en Ejecucion: 7
+Tiempo de ejecucion de la politica: 65.000000 segundos
+Promedio de proceso finalizados por unidad de tiempo: 0.338462 segundos
+------------------------
+

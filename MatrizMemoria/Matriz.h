@@ -34,7 +34,7 @@ void mostrarMatriz(struct Bloque matriz[8][8]){
     }
 }
 
-//Metodo que valida si la matriz asigno un 75% de su espacio
+//Metodo que valida si la matriz asigno un 50% de su espacio
 bool validarLlenado( struct Bloque matriz[8][8] ){
     int contador = 0;
 

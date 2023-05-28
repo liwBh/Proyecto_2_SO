@@ -1,0 +1,816 @@
+[1;31m------------- Emulador de memoria Particiones Fijas y Variables ------------[0m
+
+Tamaño de memoria = 256kb
+Tamaño del bloque = 4kb
+
+El archivo a sido creado con exito!
+
+
+El archivo a sido creado con exito!
+
+
+El archivo a sido creado con exito!
+
+
+El archivo a sido creado con exito!
+
+
+El archivo a sido creado con exito!
+
+
+El archivo a sido creado con exito!
+
+
+El archivo a sido creado con exito!
+
+[33m
+---------Creando procesos ---------
+[0m
+
+[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 9, Nombre: P-9, Peso: 22, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 10, Nombre: P-10, Peso: 7, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 11, Nombre: P-11, Peso: 10, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 12, Nombre: P-12, Peso: 13, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 13, Nombre: P-13, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 14, Nombre: P-14, Peso: 18, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 15, Nombre: P-15, Peso: 6, Iteraciones: 5, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 16, Nombre: P-16, Peso: 7, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 17, Nombre: P-17, Peso: 14, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 18, Nombre: P-18, Peso: 12, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 19, Nombre: P-19, Peso: 15, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 20, Nombre: P-20, Peso: 1, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 21, Nombre: P-21, Peso: 12, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 22, Nombre: P-22, Peso: 30, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 23, Nombre: P-23, Peso: 24, Iteraciones: 5, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 24, Nombre: P-24, Peso: 25, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 25, Nombre: P-25, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 26, Nombre: P-26, Peso: 22, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 27, Nombre: P-27, Peso: 22, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 28, Nombre: P-28, Peso: 1, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 29, Nombre: P-29, Peso: 10, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 30, Nombre: P-30, Peso: 29, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 31, Nombre: P-31, Peso: 22, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 32, Nombre: P-32, Peso: 2, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 33, Nombre: P-33, Peso: 22, Iteraciones: 2, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 34, Nombre: P-34, Peso: 6, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[1;33m
+Inicializando estructura de Memoria[0m
+
+
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;32m
+El tiempo de inicio del programa es: Sun May 28 13:53:18 2023
+[0m
+[1;33m
+Llenando memoria aplicando politica de particiones fijas de varios tamaños
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 8 para el proceso: 0
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 8 para el proceso: 1
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 2 para el proceso: 2
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 1 para el proceso: 3
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 2 para el proceso: 4
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 4 para el proceso: 5
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 1 para el proceso: 6
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 2 para el proceso: 7
+[0m[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 8 para el proceso: 8
+[0m[0;33m
+
+------------------Procesos actuales en memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;33m
+Lista de Particion fija de tamaño: 4 kb, numero de bloques: 1![0m
+[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m
+
+[0;33m
+Lista de Particion fija de tamaño: 8 kb, numero de bloques: 2![0m
+[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m
+
+[0;33m
+Lista de Particion fija de tamaño: 16 kb, numero de bloques: 4![0m
+[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m
+
+[0;33m
+Lista de Particion fija de tamaño: 32 kb, numero de bloques: 8![0m
+[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;32m
+Procesos restantes en la lista de solicitudes
+[0m
+
+[0;34mId: 9, Nombre: P-9, Peso: 22, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 10, Nombre: P-10, Peso: 7, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 11, Nombre: P-11, Peso: 10, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 12, Nombre: P-12, Peso: 13, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 13, Nombre: P-13, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 14, Nombre: P-14, Peso: 18, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 15, Nombre: P-15, Peso: 6, Iteraciones: 5, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 16, Nombre: P-16, Peso: 7, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 17, Nombre: P-17, Peso: 14, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 18, Nombre: P-18, Peso: 12, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 19, Nombre: P-19, Peso: 15, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 20, Nombre: P-20, Peso: 1, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 21, Nombre: P-21, Peso: 12, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 22, Nombre: P-22, Peso: 30, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 23, Nombre: P-23, Peso: 24, Iteraciones: 5, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 24, Nombre: P-24, Peso: 25, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 25, Nombre: P-25, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 26, Nombre: P-26, Peso: 22, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 27, Nombre: P-27, Peso: 22, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 28, Nombre: P-28, Peso: 1, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 29, Nombre: P-29, Peso: 10, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 30, Nombre: P-30, Peso: 29, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 31, Nombre: P-31, Peso: 22, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 32, Nombre: P-32, Peso: 2, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 33, Nombre: P-33, Peso: 22, Iteraciones: 2, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 34, Nombre: P-34, Peso: 6, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[1;32m
+Procesos agregados en la lista de contexto de ejecucion
+[0m
+
+[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;32m
+Procesos agregados en la lista de listos
+[0m
+
+[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 0, Nombre P-0
+
+Bloques utilizados 8, desperdicio Interno del proceso: 9 kb
+Tiempo de Ejecucion 0.000035 segundos
+Iteraciones restantes: 4
+[1;33m
+Direcciones de Memoria del proceso:  [0m[0][0] [0][1] [0][2] [0][3] [0][4] [0][5] [0][6] [0][7] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 112 kb
+[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 1, Nombre P-1
+
+Bloques utilizados 8, desperdicio Interno del proceso: 12 kb
+Tiempo de Ejecucion 0.000052 segundos
+Iteraciones restantes: 1
+[1;33m
+Direcciones de Memoria del proceso:  [0m[1][0] [1][1] [1][2] [1][3] [1][4] [1][5] [1][6] [1][7] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 112 kb
+[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 2, Nombre P-2
+
+Bloques utilizados 2, desperdicio Interno del proceso: 3 kb
+Tiempo de Ejecucion 0.000042 segundos
+Iteraciones restantes: 2
+[1;33m
+Direcciones de Memoria del proceso:  [0m[2][0] [2][1] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 112 kb
+[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 3, Nombre P-3
+
+Bloques utilizados 1, desperdicio Interno del proceso: 1 kb
+Tiempo de Ejecucion 0.000041 segundos
+Iteraciones restantes: 2
+[1;33m
+Direcciones de Memoria del proceso:  [0m[2][2] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 112 kb
+[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 4, Nombre P-4
+
+Bloques utilizados 2, desperdicio Interno del proceso: 2 kb
+Tiempo de Ejecucion 0.000040 segundos
+Iteraciones restantes: 3
+[1;33m
+Direcciones de Memoria del proceso:  [0m[2][3] [2][4] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 112 kb
+[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 5, Nombre P-5
+
+Bloques utilizados 4, desperdicio Interno del proceso: 2 kb
+Tiempo de Ejecucion 0.000037 segundos
+Iteraciones restantes: 4
+[1;33m
+Direcciones de Memoria del proceso:  [0m[2][5] [2][6] [2][7] [3][0] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 112 kb
+[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 6, Nombre P-6
+
+Bloques utilizados 1, desperdicio Interno del proceso: 1 kb
+Tiempo de Ejecucion 0.000034 segundos
+Iteraciones restantes: 4
+[1;33m
+Direcciones de Memoria del proceso:  [0m[3][1] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 112 kb
+[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 3 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 7, Nombre P-7
+
+Bloques utilizados 2, desperdicio Interno del proceso: 3 kb
+Tiempo de Ejecucion 0.000033 segundos
+Iteraciones restantes: 3
+[1;33m
+Direcciones de Memoria del proceso:  [0m[3][2] [3][3] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 112 kb
+[1;31m
+-------- EL proceso tiene un crecimiento en memoria ---------[0m
+
+El crecimiento del proceso es: 7 kb
+[1;33m
+Direcciones de Memoria a Liberar:  [0m[3][2] [3][3] 
+
+Liberando Memoria utilizada por el proceso
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 4 para el proceso: 7
+[0m[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 8, Nombre: P-8, Peso: 23, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 3 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 12, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+
+
+[0;32m
+*************** Enviando proceso a Ejecucion *******************
+[0m
+Datos del proceso: ID 8, Nombre P-8
+
+Bloques utilizados 8, desperdicio Interno del proceso: 9 kb
+Tiempo de Ejecucion 0.000030 segundos
+Iteraciones restantes: 0
+[1;33m
+Direcciones de Memoria del proceso:  [0m[3][4] [3][5] [3][6] [3][7] [4][0] [4][1] [4][2] [4][3] 
+[1;33m
+Informacion de rendimiento de memoria
+[0m
+Cantidad de procesos en contexto de ejecucion : 9
+Desperdicio interno total : 42 kb
+Desperdicio externo total : 104 kb
+[1;31m
+------ { El proceso: ID 8, Nombre P-8 ha terminado su ejecucion! } ------
+[0m[1;33m
+Informacion de rendimiento de memoria
+[0m
+El promedio de ejecucion del proceso es: 0.000030 
+El promedio de espera del proceso es: 0.000000 
+[1;33m
+Direcciones de Memoria a Liberar:  [0m[3][4] [3][5] [3][6] [3][7] [4][0] [4][1] [4][2] [4][3] 
+
+Liberando Memoria utilizada por el proceso
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;31m
+----------PARTICIONES FIJAS CON VARIOS TAMAÑOS----------
+
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m[1;34m[ 0 ][0m
+[0;32mEl numero de bloques: 8 para el proceso: 9
+[0m[1;33m
+Procesos restantes en la lista de Peticiones![0m
+
+[0;34mId: 10, Nombre: P-10, Peso: 7, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 11, Nombre: P-11, Peso: 10, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 12, Nombre: P-12, Peso: 13, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 13, Nombre: P-13, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 14, Nombre: P-14, Peso: 18, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 15, Nombre: P-15, Peso: 6, Iteraciones: 5, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 16, Nombre: P-16, Peso: 7, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 17, Nombre: P-17, Peso: 14, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 18, Nombre: P-18, Peso: 12, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 19, Nombre: P-19, Peso: 15, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 20, Nombre: P-20, Peso: 1, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 21, Nombre: P-21, Peso: 12, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 22, Nombre: P-22, Peso: 30, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 23, Nombre: P-23, Peso: 24, Iteraciones: 5, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 24, Nombre: P-24, Peso: 25, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 25, Nombre: P-25, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 26, Nombre: P-26, Peso: 22, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 27, Nombre: P-27, Peso: 22, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 28, Nombre: P-28, Peso: 1, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 29, Nombre: P-29, Peso: 10, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 30, Nombre: P-30, Peso: 29, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 31, Nombre: P-31, Peso: 22, Iteraciones: 3, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 32, Nombre: P-32, Peso: 2, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 33, Nombre: P-33, Peso: 22, Iteraciones: 2, Dispositivo E/S: teclado, Tiempo E/S: 1 
+[0m[0;34mId: 34, Nombre: P-34, Peso: 6, Iteraciones: 1, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[1;33m
+Procesos restantes en la lista de Contenedor![0m
+
+[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 5, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 5, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 5, Iteraciones: 4, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 9, Nombre: P-9, Peso: 22, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[1;33m
+Procesos restantes en la lista de listos![0m
+
+[0;34mId: 0, Nombre: P-0, Peso: 23, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[0;34mId: 1, Nombre: P-1, Peso: 20, Iteraciones: 1, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 3, Nombre: P-3, Peso: 3, Iteraciones: 2, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;34mId: 2, Nombre: P-2, Peso: 5, Iteraciones: 2, Dispositivo E/S: pantalla, Tiempo E/S: 2 
+[0m[0;34mId: 4, Nombre: P-4, Peso: 6, Iteraciones: 3, Dispositivo E/S: pantalla, Tiempo E/S: 3 
+[0m[0;34mId: 9, Nombre: P-9, Peso: 22, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 2 
+[0m[0;34mId: 5, Nombre: P-5, Peso: 14, Iteraciones: 4, Dispositivo E/S: teclado, Tiempo E/S: 2 
+[0m[1;33m
+Procesos restantes en la lista de E/S![0m
+
+[0;34mId: 6, Nombre: P-6, Peso: 3, Iteraciones: 4, Dispositivo E/S: pantalla, Tiempo E/S: 1 
+[0m[0;34mId: 7, Nombre: P-7, Peso: 12, Iteraciones: 3, Dispositivo E/S: mouse, Tiempo E/S: 1 
+[0m[0;33m
+
+------------------Condicion actual de memoria------------------
+[0m
+
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m
+[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ][0m[1;34m[ 1 ]
