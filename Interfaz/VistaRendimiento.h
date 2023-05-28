@@ -176,19 +176,21 @@ void on_button_clicked(GtkWidget *widget, gpointer data) {
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[2]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("PrimerAjuste.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("PeorAjuste.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[3]) {
+
         reproducirSonido("/Sonidos/button1.mp3");
-            nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("PeorAjuste.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("PrimerAjuste.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[4]) {
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("MejorAjuste.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("SiguienteAjuste.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[5]) {
+
         reproducirSonido("/Sonidos/button1.mp3");
-        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("SiguienteAjuste.txt"));
+        nueva_ventana = crearVentana(widget, data, obtenerRutaRelativa("MejorAjuste.txt"));
         ventanas_abiertas[num_ventanas_abiertas++] = nueva_ventana;
     } else if (widget == botones[6]) {
         reproducirSonido("/Sonidos/button1.mp3");
@@ -209,10 +211,11 @@ void crearBotones(GtkWidget *grid) {
     // Llenar las etiquetas de los botones
     snprintf(labels[0], sizeof(labels[0]), "Particiones Fijas");
     snprintf(labels[1], sizeof(labels[1]), "Mapa Bits");
-    snprintf(labels[2], sizeof(labels[2]), "Primer Ajuste");
-    snprintf(labels[3], sizeof(labels[3]), "Peor Ajuste");
-    snprintf(labels[4], sizeof(labels[4]), "Mejor Ajuste");
-    snprintf(labels[5], sizeof(labels[5]), "Siguiente Ajuste");
+    snprintf(labels[2], sizeof(labels[2]), "Peor Ajuste");
+    snprintf(labels[3], sizeof(labels[3]), "Primer Ajuste");
+
+    snprintf(labels[4], sizeof(labels[4]), "Siguiente Ajuste");
+    snprintf(labels[5], sizeof(labels[5]), "Mejor Ajuste");
     snprintf(labels[6], sizeof(labels[6]), "Socios");
 
     for (int i = 0; i < n; i++) {

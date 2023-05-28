@@ -18,20 +18,20 @@ void insertarUnProceso(ListaProcesos *lista, NodoProceso *nodo){
 }
 
 //Pasa un proceso de la lista de espera a la lista que ya fueron atendidos en memoria
-void pasarProcesoContenedor(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor){
-    if(!listaVacia(listaPeticion)){
-        //Crea un nodo con el primero de la lista de espera
-        NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
-
-        //Inserta el nodo en la lista contenedor
-        insertarUnProceso(listaContenedor,almacenarProceso);
-        //Elimina el nodo de la lista de espera
-        eliminarNodo(listaPeticion,almacenarProceso->id);
-    }else{
-        printf("\033[1;31mYa no hay mas procesos\033[0m");
-
-    }
-}
+//void pasarProcesoContenedor(ListaProcesos *listaPeticion, ListaProcesos *listaContenedor){
+//    if(!listaVacia(listaPeticion)){
+//        //Crea un nodo con el primero de la lista de espera
+//        NodoProceso *almacenarProceso = clonarNodo(listaPeticion->primero);
+//
+//        //Inserta el nodo en la lista contenedor
+//        insertarUnProceso(listaContenedor,almacenarProceso);
+//        //Elimina el nodo de la lista de espera
+//        eliminarNodo(listaPeticion,almacenarProceso->id);
+//    }else{
+//        printf("\033[1;31mYa no hay mas procesos\033[0m");
+//
+//    }
+//}
 
 //Metodo para liberar memoria de la matriz segun las posiciones en que se ubica el proceso, con la lista de posiciones
 void liberarMemoria(NodoProceso *nodo, struct Bloque matriz[8][8]){
@@ -66,6 +66,7 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
 
                 aux->tiempoE_S -= 1; // Restar 1 al tiempo de espera
                 //mostrarNodoProceso(aux);
+                //aux->nEspera++;
 
                 //si el tiempo de espera se acabo
                 if (aux->tiempoE_S == 0) {
@@ -84,8 +85,6 @@ void continuarProcesosEspera(ListaProcesos *listaEspera, ListaProcesos *listaLis
                     eliminarNodo(listaEspera, aux->id);
                     break; // Salir del ciclo while después de procesar un nodo
                 }
-            }else{
-                aux->nEspera++;
             }
 
             aux = aux->siguiente;
@@ -141,7 +140,7 @@ int encontrarCantidadDeBloques(int n) {
     return resultado;
 }
 
-int calcularDesperdicioInterno(NodoProceso *procesoEvaluar){
+int calcularDesperdicioInterno(NodoProceso *procesoEvaluar) {
     int nbloques = procesoEvaluar->numBloques;
     int peso = procesoEvaluar->peso;
     int resultado = (nbloques * 4) - peso;

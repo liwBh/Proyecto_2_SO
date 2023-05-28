@@ -8,6 +8,7 @@
 #include "../Listas/Nodo.h"
 #include <gtk/gtk.h>
 #include <glib.h>
+#include "../Logica/Logica.h"
 
 int crearArchivo(char* ruta){
     //"playbin uri=file:////home/liwbh/CLionProjects/Proyecto-01-SO/Sonidos/victoria.wav"
@@ -35,7 +36,7 @@ int crearArchivo(char* ruta){
 }
 
 
-int escribirArchivo(ListaProcesos *listaContenedor, int desperdicioInterno, int desperdicioExterno, const char *nombreArchivo, int *encabezadoEscrito) {
+int escribirArchivo(ListaProcesos *listaListos, ListaProcesos *listaEspera,  int tipoPolitica, const char *nombreArchivo, int *encabezadoEscrito) {
     FILE *archivo;
 
     archivo = fopen(nombreArchivo, "a");
@@ -48,19 +49,39 @@ int escribirArchivo(ListaProcesos *listaContenedor, int desperdicioInterno, int 
 
     //se escribe el encabezado del archivo
     fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
-    fprintf(archivo, "ID:       Nombre:          Peso:      Entrada/Salida:  Tiempo de E/S:  Desperdicio Interno:  Desperdicio Externo:  Tiempo Promedio Espera:  Tiempo Promedio Ejecución:\n");
+    fprintf(archivo, "ID:       Nombre:          Peso:      Entrada/Salida:  Tiempo de E/S:  Desperdicio Interno:    Tiempo Promedio Espera:  Tiempo Promedio Ejecución:\n");
     fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
     *encabezadoEscrito = 1;
 
-    //se recorre la lista de procesos en ejecucion y se registra
-    NodoProceso *nodo = listaContenedor->primero;
+
+    //se recorre la lista de procesos en ejecucion(lista de listos y lista de espera) y se registra
+    NodoProceso *nodo = listaListos->primero;
     while( nodo != NULL ){
 
-        double tiempoPromedioEjecucion = nodo->sumTiempoEj / nodo->nEjecucion;
-        double tiempoPromedioEspera = nodo->nEspera!=0 ? nodo->sumTiempoES / nodo->nEspera : 0;
+        int desperdicioInterno = tipoPolitica < 3 ? calcularDesperdicioInterno(nodo) :  0;
 
-        fprintf(archivo, "%-10d %-18s %-10d %-16s %-16d %-22d %-20d %-23.6lf %-25.6lf\n",
-                nodo->id, nodo->nombre, nodo->peso, nodo->nombreE_S, nodo->tiempoE_S, desperdicioInterno, desperdicioExterno, tiempoPromedioEspera, tiempoPromedioEjecucion);
+
+        double tiempoPromedioEjecucion = nodo->nEjecucion!=0 ? nodo->sumTiempoEj / nodo->nEjecucion : 0;
+        double tiempoPromedioEspera = nodo->nEspera!=0 && nodo->sumTiempoES!=0 ? nodo->sumTiempoES / nodo->nEspera : 0;
+
+        fprintf(archivo, "%-10d %-18s %-10d %-16s %-16d %-22d %-23f %-25f\n",
+                nodo->id, nodo->nombre, nodo->peso, nodo->nombreE_S, nodo->tiempoE_S, desperdicioInterno,  tiempoPromedioEspera, tiempoPromedioEjecucion);
+        fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
+
+
+        nodo = nodo->siguiente;
+    }
+
+    nodo = listaEspera->primero;
+    while( nodo != NULL ){
+
+        int desperdicioInterno = tipoPolitica < 3 ? calcularDesperdicioInterno(nodo) :  0;
+
+        double tiempoPromedioEjecucion = nodo->nEjecucion!=0 ? nodo->sumTiempoEj / nodo->nEjecucion : 0;
+        double tiempoPromedioEspera = nodo->nEspera!=0 && nodo->sumTiempoES!=0 ? nodo->sumTiempoES / nodo->nEspera : 0;
+
+        fprintf(archivo, "%-10d %-18s %-10d %-16s %-16d %-22d %-23f %-25f\n",
+                nodo->id, nodo->nombre, nodo->peso, nodo->nombreE_S, nodo->tiempoE_S, desperdicioInterno,  tiempoPromedioEspera, tiempoPromedioEjecucion);
         fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
 
 
@@ -75,7 +96,7 @@ int escribirArchivo(ListaProcesos *listaContenedor, int desperdicioInterno, int 
 
 
 
-void agregarBloqueRendimientoGeneral(const char *nombreArchivo, int totalProcesosFinalizados, double tiempoTotalEjecucion, double promedioProcesosFinalizados) {
+void agregarBloqueRendimientoGeneral(const char *nombreArchivo,double desperdicioExterno, int totalProcesosFinalizados, double tiempoTotalEjecucion, int procesosEjecucion) {
     FILE *archivo;
 
     archivo = fopen(nombreArchivo, "a");
@@ -86,11 +107,17 @@ void agregarBloqueRendimientoGeneral(const char *nombreArchivo, int totalProceso
         return;
     }
 
+    double promedioFinal =  (totalProcesosFinalizados + 1) / tiempoTotalEjecucion ;
+
     fprintf(archivo, "\nRendimiento general:\n");
     fprintf(archivo, "------------------------\n");
+    fprintf(archivo, "Desperdicio Externo Total: %f\n", desperdicioExterno);
     fprintf(archivo, "Total de procesos finalizados: %d\n", totalProcesosFinalizados);
-    fprintf(archivo, "Tiempo total de ejecucion: %.6lf\n", tiempoTotalEjecucion);
-    fprintf(archivo, "Promedio de proceso finalizados por unidad de tiempo: %.6lf\n", promedioProcesosFinalizados);
+    fprintf(archivo, "Total de procesos en Ejecucion: %d\n", procesosEjecucion);
+    fprintf(archivo, "Tiempo de ejecucion de la politica: %f segundos\n", tiempoTotalEjecucion);
+    fprintf(archivo, "Promedio de proceso finalizados por unidad de tiempo: %.6lf segundos\n", promedioFinal);
+//    fprintf(archivo, "Promedio de procesos finalizados por unidad de tiempo = %d procesos / %f segundos = %f procesos por segundos\n",totalProcesosFinalizados,tiempoTotalEjecucion, promedioFinal);
+
     fprintf(archivo, "------------------------\n\n");
 
     fclose(archivo);

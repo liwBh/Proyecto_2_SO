@@ -29,6 +29,7 @@ int desperdicioExterno= 0;
 
 //variables para llevar control del promedio de procesos finalizados desde que se inicio el programa
 float promedio = 0.0;
+float tiempoTrascurridoPolitica = 0.0;
 time_t inicioPrograma;
 int procesosFinalizados =0;
 
@@ -52,7 +53,7 @@ ListaProcesos *listaEspera;
 ListaProcesos *listaListos;
 
 void crearListas();
-void crearArchivosTxt( );
+void crearArchivosTxt();
 void llenarListaProcesosEsperando();
 void llenarMemoriaInicio();
 void *administrarProcesos(void *args);
@@ -74,10 +75,6 @@ int main() {
     //Creando txt
     crearArchivosTxt();
 
-//    time_t fin2 = time(NULL); // Obtener el tiempo actual
-//    double tiempo_transcurrido = difftime(fin2, inicioPrograma); // Calcular el tiempo transcurrido en segundos
-//    promedio = ((promedio * (procesosFinalizados - 1)) + tiempo_transcurrido) / procesosFinalizados; // Calcular el nuevo promedio
-//    agregarBloqueRendimientoGeneral("../Archivos/ParticionesFijas.txt",procesosFinalizados,tiempo_transcurrido,promedio);
 
     //creando los procesos del emulador
     llenarListaProcesosEsperando();
@@ -100,6 +97,8 @@ int main() {
     //llenar lista de contenedor -> en base a la capacidad de la memoria
     printf("\033[1;33m\nLlenando memoria aplicando politica de particiones fijas de varios tamaños\n\033[0m");
     llenarMemoriaInicio();
+
+    inicioPolitica = time(NULL);//inicio tiempo politica particiones fijas
 
     //Imprimir matriz
     printf("\033[0;33m\n\n------------------Procesos actuales en memoria------------------\n\033[0m");
@@ -131,10 +130,10 @@ int main() {
     //se obtiene el promedio de procesos finalizados por segundo
     time_t fin = time(NULL); // Obtener el tiempo actual
     float tiempo_transcurrido = difftime(fin, inicioPrograma); // Calcular el tiempo transcurrido en segundos
-    promedio = ((promedio * (procesosFinalizados - 1)) + tiempo_transcurrido) / procesosFinalizados; // Calcular el nuevo promedio
+    promedio = procesosFinalizados / tiempo_transcurrido; // Calcular el nuevo promedio
     printf("\nTotal de procesos finalizados: %d", procesosFinalizados);
     printf("\nTiempo total de ejecucion %f segundos", tiempo_transcurrido);
-    printf("\nPromedio de proceso finalizados por unidad de tiempo: %.2f segundos\n", promedio);
+    printf( "\nPromedio de procesos finalizados por unidad de tiempo = %d procesos / %f segundos = %f procesos por segundos\n",procesosFinalizados,tiempo_transcurrido, promedio);
 
     printf("\033[1;31m\n--------{El programa ha Finalizado su Ejecucion!}---------\033[0m\n");
     mostrarVentana();
@@ -187,7 +186,7 @@ void llenarListaProcesosEsperando(){
         char str[10];
         char nombre[10] = "P-";
         int peso = rand() % 30 + 1 ;
-        int iteraciones = rand() % 3 + 1;
+        int iteraciones = rand() % 5 + 1;
         int indice_aleatorio = rand() % 3;
         int tiempo = (rand() % 2) + 1;
         char *dispositivos[] = {"mouse", "teclado", "pantalla"};
@@ -286,7 +285,7 @@ void *administrarProcesos(void *args){
     printf("\nDesperdicio externo total : %d kb\n", desperdicioExterno);
 
     //******** generar crecimiento memoria *************
-    if( etiquetaC == false && tipoPolitica < 4){//asignar etiqueta de crecimiento
+    if( etiquetaC == false && tipoPolitica < 5){//asignar etiqueta de crecimiento
         int crecimiento = generarCreacimientoP();
 
         //Ajuste para respetar tamaño memoria
@@ -384,45 +383,56 @@ void *administrarProcesos(void *args){
             mostrarMatriz(matriz);
         }
 
-        //liberar eiqueta de crecimiento
+        //liberar eiqueta de crecimiento y realiza cambio de politica
         if(nodoProceso->crecimiento == true){
             etiquetaC = false;
             nodoProceso->crecimiento = false;
 
-            //realizar cambio de politica
-            printf("\033[1;31m\n====================={ Aplicar cambio de politica }=====================\n\033[0m");
-
-
 //================================ Escribir en txt segun la politica actual ================================
             switch (tipoPolitica) {
                 case 1://particiones fijas
-                    escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/ParticionesFijas.txt",&encabezadoEscrito);
+                    finPolitica = time(NULL);
+                    tiempoTrascurridoPolitica = difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
+                    escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/ParticionesFijas.txt",&encabezadoEscrito);
+                    agregarBloqueRendimientoGeneral("../Archivos/ParticionesFijas.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
 
+                    inicioPolitica = time(NULL);//inicio tiempo politica actual
                     break;
                 case 2://mapa de bits
-                    escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/MapaBits.txt",&encabezadoEscrito);
-
+                    finPolitica = time(NULL);
+                    tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
+                    escribirArchivo(listaListos,listaEspera,tipoPolitica, "../Archivos/MapaBits.txt",&encabezadoEscrito);
+                    agregarBloqueRendimientoGeneral("../Archivos/MapaBits.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                    inicioPolitica = time(NULL);//inicio tiempo politica actual
                     break;
                 case 3://listas ligadas
                     if( ajusteListaLigada == 1){//peor ajuste
-                        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/PeorAjuste.txt",&encabezadoEscrito);
-
+                        finPolitica = time(NULL);
+                        tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
+                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/PeorAjuste.txt",&encabezadoEscrito);
+                        agregarBloqueRendimientoGeneral("../Archivos/PeorAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                        inicioPolitica = time(NULL);//inicio tiempo politica actual
                     }else if( ajusteListaLigada == 2 ){//primer ajuste
-                        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/PrimerAjuste.txt",&encabezadoEscrito);
-
+                        finPolitica = time(NULL);
+                        tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundoa
+                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/PrimerAjuste.txt",&encabezadoEscrito);
+                        agregarBloqueRendimientoGeneral("../Archivos/PrimerAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                        inicioPolitica = time(NULL);//inicio tiempo politica actual
                     }else if( ajusteListaLigada == 3 ){//siguente ajuste
-                        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/SiguienteAjuste.txt",&encabezadoEscrito);
-
+                        finPolitica = time(NULL);
+                        tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
+                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/SiguienteAjuste.txt",&encabezadoEscrito);
+                        agregarBloqueRendimientoGeneral("../Archivos/SiguienteAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                        inicioPolitica = time(NULL);//inicio tiempo politica actual
                     }else if( ajusteListaLigada == 4 ){//mejor ajuste
-                        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/MejorAjuste.txt",&encabezadoEscrito);
-
+                        finPolitica = time(NULL);
+                        tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundo
+                        escribirArchivo(listaListos,listaEspera,tipoPolitica,"../Archivos/MejorAjuste.txt",&encabezadoEscrito);
+                        agregarBloqueRendimientoGeneral("../Archivos/MejorAjuste.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+                        inicioPolitica = time(NULL);//inicio tiempo politica actual
                     }
 
                     break;
-                //case 4://socios
-                    //escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/Socios.txt",&encabezadoEscrito);
-
-                    //break;
 
 
                 default:
@@ -433,6 +443,19 @@ void *administrarProcesos(void *args){
 
             if( tipoPolitica != 3){
                 tipoPolitica++;
+
+                if(tipoPolitica == 5){//terminar el programa
+                    banderaFinalizacion = 1;
+
+                    //escribir el redimiento de la politica de socios
+                    finPolitica = time(NULL);
+                    tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
+                    escribirArchivo(listaListos,listaEspera, tipoPolitica,"../Archivos/Socios.txt",&encabezadoEscrito);
+                    agregarBloqueRendimientoGeneral("../Archivos/Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+
+
+                    return  NULL;
+                }
             }
 
             if( tipoPolitica == 3 && LLINICIADO == true){
@@ -443,6 +466,11 @@ void *administrarProcesos(void *args){
                     tipoPolitica++;
                 }
             }
+
+
+            //realizar cambio de politica
+            printf("\033[1;31m\n====================={ Aplicar cambio de politica }=====================\n\033[0m");
+
         }
 
 
@@ -497,9 +525,13 @@ void *administrarProcesos(void *args){
         procesosFinalizados+=1;
 
     }else{
+        //aumentar el numero de esperas
+        nodoProceso->nEspera++;
+
         //Agregar en lista espera
         NodoProceso *nodoClon = clonarNodo(nodoProceso);
         insertar(listaEspera,nodoClon);
+
     }
 
     //Descontar tiempo de espera de los procesos en lista espera de E/S
@@ -524,7 +556,11 @@ void *administrarProcesos(void *args){
         banderaFinalizacion = 1;
 
         //escribir el redimiento de la politica de socios
-        escribirArchivo(listaContenedor, desperdicioInternoTotal,desperdicioExterno,"../Archivos/Socios.txt",&encabezadoEscrito);
+        finPolitica = time(NULL);
+        tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
+        escribirArchivo(listaListos,listaEspera, tipoPolitica,"../Archivos/Socios.txt",&encabezadoEscrito);
+        agregarBloqueRendimientoGeneral("../Archivos/Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
+
     }
 
     return NULL;
@@ -550,6 +586,6 @@ void *iniciarPlanificador(void *args) {
             printf("\033[31m:\nNo hay pocesos en la lista de listos\033[0m\n");
         }
 
-        /* Nota: si recorro la lista, se debe estar atento de no perde la referencia luego de eliminar de listo el proceso en ejecucion */
+        /* Nota: si recorro la lista, se debe estar atento de no perder la referencia luego de eliminar de listo el proceso en ejecucion */
     }
 }
