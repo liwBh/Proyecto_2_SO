@@ -179,7 +179,7 @@ void llenarListaProcesosEsperando(){
 
 
     srand(time(NULL));
-    nProcesos = rand() % (50 - 35 + 1) + 35;
+    nProcesos = rand() % (75 - 50 + 1) + 50;
 
     //inicializar array de procesos
     //se retorna un puntero a la primer pos del vector de procesos
@@ -435,7 +435,14 @@ void *administrarProcesos(void *args){
                     }
 
                     break;
+                case 4:
+                    //escribir el redimiento de la politica de socios
+                    finPolitica = time(NULL);
+                    tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
+                    escribirArchivo(listaListos,listaEspera, tipoPolitica,"Socios.txt",&encabezadoEscrito);
+                    agregarBloqueRendimientoGeneral("Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
 
+                    break;
 
                 default:
                     break;
@@ -451,14 +458,6 @@ void *administrarProcesos(void *args){
 
                 if(tipoPolitica == 5){//terminar el programa
                     banderaFinalizacion = 1;
-
-                    //escribir el redimiento de la politica de socios
-                    finPolitica = time(NULL);
-                    tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
-                    escribirArchivo(listaListos,listaEspera, tipoPolitica,"Socios.txt",&encabezadoEscrito);
-                    agregarBloqueRendimientoGeneral("Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
-
-
                     return  NULL;
                 }
             }
@@ -559,13 +558,6 @@ void *administrarProcesos(void *args){
     if( listaPeticion->primero == NULL || listaListos->primero == NULL){
         //indicar que la simulacion ha terminado
         banderaFinalizacion = 1;
-
-        //escribir el redimiento de la politica de socios
-        finPolitica = time(NULL);
-        tiempoTrascurridoPolitica= difftime(finPolitica, inicioPolitica); // Calcular el tiempo transcurrido en segundos
-        escribirArchivo(listaListos,listaEspera, tipoPolitica,"Socios.txt",&encabezadoEscrito);
-        agregarBloqueRendimientoGeneral("Socios.txt",desperdicioExterno,procesosFinalizados ,tiempoTrascurridoPolitica,listaContenedor->tamanio);
-
     }
 
     return NULL;
