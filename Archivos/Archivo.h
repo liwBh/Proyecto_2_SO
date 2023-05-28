@@ -71,10 +71,14 @@ int escribirArchivo(ListaProcesos *listaListos, ListaProcesos *listaEspera,  int
         return 0;
     }
 
+    fprintf(archivo,"══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+    fprintf(archivo, "\n                                                                    %s\n", nombreArchivo);
+    fprintf(archivo,"══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════\n\n");
+
     //se escribe el encabezado del archivo
-    fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+
     fprintf(archivo, "ID:       Nombre:          Peso:      Entrada/Salida:  Tiempo de E/S:  Desperdicio Interno:    Tiempo Promedio Espera:  Tiempo Promedio Ejecución:\n");
-    fprintf(archivo, "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
+    fprintf(archivo,"══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════\n");
     *encabezadoEscrito = 1;
 
 
@@ -132,16 +136,15 @@ void agregarBloqueRendimientoGeneral(char *nombreArchivo,double desperdicioExter
 
     double promedioFinal =  (totalProcesosFinalizados + 1) / tiempoTotalEjecucion ;
 
-    fprintf(archivo, "\nRendimiento general:\n");
-    fprintf(archivo, "------------------------\n");
-    fprintf(archivo, "Desperdicio Externo Total: %f\n", desperdicioExterno);
-    fprintf(archivo, "Total de procesos finalizados: %d\n", totalProcesosFinalizados);
-    fprintf(archivo, "Total de procesos en Ejecucion: %d\n", procesosEjecucion);
-    fprintf(archivo, "Tiempo de ejecucion de la politica: %f segundos\n", tiempoTotalEjecucion);
-    fprintf(archivo, "Promedio de proceso finalizados por unidad de tiempo: %.6lf segundos\n", promedioFinal);
-//    fprintf(archivo, "Promedio de procesos finalizados por unidad de tiempo = %d procesos / %f segundos = %f procesos por segundos\n",totalProcesosFinalizados,tiempoTotalEjecucion, promedioFinal);
-
-    fprintf(archivo, "------------------------\n\n");
+    fprintf(archivo,"══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════");
+    fprintf(archivo, "\n                                                                Rendimiento general:\n");
+    fprintf(archivo,"══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════\n");
+    fprintf(archivo, "                                                          Desperdicio Externo Total: %f\n", desperdicioExterno);
+    fprintf(archivo, "                                                          Total de procesos finalizados: %d\n", totalProcesosFinalizados);
+    fprintf(archivo, "                                                          Total de procesos en Ejecucion: %d\n", procesosEjecucion);
+    fprintf(archivo, "                                                          Tiempo de ejecucion de la politica: %f segundos\n", tiempoTotalEjecucion);
+    fprintf(archivo, "                                                          Promedio de proceso finalizados por unidad de tiempo: %.6lf segundos\n", promedioFinal);
+    fprintf(archivo,"══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════\n\n");
 
     fclose(archivo);
 }
