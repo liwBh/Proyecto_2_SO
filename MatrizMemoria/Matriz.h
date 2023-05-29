@@ -1,7 +1,7 @@
 
 
-#ifndef QUIZ_SO_MATRIZ_H
-#define QUIZ_SO_MATRIZ_H
+#ifndef PROYECTO_2_SO_MATRIZ_H
+#define PROYECTO_2_SO_MATRIZ_H
 #include <stdio.h>
 #include <stdbool.h>
 
@@ -27,13 +27,14 @@ void mostrarMatriz(struct Bloque matriz[8][8]){
     printf("\n\n");
     for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 8; j++) {
-            printf("[ %d ]", matriz[i][j].disponible );
+            printf("\033[1;34m[ %d ]\033[0m", matriz[i][j].disponible);
+
         }
         printf("\n");
     }
 }
 
-//Metodo que valida si la matriz asigno un 75% de su espacio
+//Metodo que valida si la matriz asigno un 50% de su espacio
 bool validarLlenado( struct Bloque matriz[8][8] ){
     int contador = 0;
 
@@ -63,4 +64,4 @@ void liberarProceso(int idProceso, struct Bloque matriz[8][8]) {
 }
 
 
-#endif //QUIZ_SO_MATRIZ_H
+#endif //PROYECTO_2_SO_MATRIZ_H
